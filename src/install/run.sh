@@ -208,7 +208,6 @@ main() {
   bash "${INSTALL_PATH}/opencode/write-codebase-index-config.sh"
   bash "${INSTALL_PATH}/graphify/setup.sh"          # per-project: hooks + skill
   bash "${INSTALL_PATH}/opencode/write-global-agents.sh"
-  bash "${INSTALL_PATH}/obsidian/scaffold-vault.sh"  # per-project: brain/ folder
   bash "${INSTALL_PATH}/opencode/write-project-agents.sh"  # always runs
   bash "${INSTALL_PATH}/shell/write-env.sh"
 
