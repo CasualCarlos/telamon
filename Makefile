@@ -99,18 +99,16 @@ help:  ## Show this help
 		fi \
 	done
 
-up: ## Start the development environment, installs/updates all tools and dependencies
-	echo -e "\n\n====== Ensuring host has all requirements... ====== \n"
-	ROOT_PATH=${ROOT_PATH} ./scripts/host-requirements/run.sh
-	$(MAKE) init
-	echo -e "\n\n====== Bringing up project containers... ====== \n"
-	$(ENV_VARS) docker compose up -d --no-recreate # needs to be after shared containers because it depends on them
+up: ## Start the ADK: install host tools and bring docker compose services up
+	echo -e "\n\n====== Installing host tools and starting services... ====== \n"
+	bash src/install/run.sh
+	echo -e "\n\n====== ADK is up. ====== \n"
 
-down: ## Shut down the development environment
-	$(ENV_VARS) docker compose down
+down: ## Shut down the ADK services
+	docker compose down
 
-purge: ## Remove all containers and volumes of development environment
-	$(ENV_VARS) docker compose down --volumes --remove-orphans
+purge: ## Remove all containers and volumes
+	docker compose down --volumes --remove-orphans
 
 restart: down up ## Restart running containers
 
