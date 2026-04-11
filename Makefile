@@ -112,5 +112,6 @@ purge: ## Remove all containers and volumes
 
 restart: down up ## Restart running containers
 
-PREFIX := init-
-init: $(shell for f in $(MAKEFILE_LIST); do grep -o ^$(PREFIX)[^:]* $$f; done | sort -u) ## Run the project init scripts
+init: ## Initialise a project to use this ADK  (usage: make init PROJ=path/to/project)
+	@if [ -z "$(PROJ)" ]; then echo "Usage: make init PROJ=path/to/project"; exit 1; fi
+	bash bin/init.sh "$(PROJ)"
