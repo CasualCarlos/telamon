@@ -110,25 +110,34 @@ up: ## Start the ADK: install host tools, then bring docker compose services up
 	echo -e "\n\033[1m\033[34m━━━ ADK is up. ━━━\033[0m\n"
 
 down: ## Shut down the ADK services
+	echo -e "\n\033[1m\033[34m━━━ Shutting down ADK services... ━━━\033[0m"
 	docker compose down
 
 purge: ## Remove all containers and volumes
+	echo -e "\n\033[1m\033[34m━━━ Purging all containers and volumes... ━━━\033[0m"
 	docker compose down --volumes --remove-orphans
 	rm -rf storage/*
 
-restart: down up ## Restart running containers
+restart: ## Stop then start ADK services
+	echo -e "\n\033[1m\033[34m━━━ Restarting ADK services... ━━━\033[0m"
+	$(MAKE) down
+	$(MAKE) up
 
 status: ## Show installation status of all ADK tools
+	echo -e "\n\033[1m\033[34m━━━ ADK Status ━━━\033[0m"
 	bash bin/status.sh
 
 update: ## Upgrade all ADK-managed tools to their latest versions
+	echo -e "\n\033[1m\033[34m━━━ Updating ADK tools... ━━━\033[0m"
 	bash bin/update.sh
 
 doctor: ## Run a comprehensive health check of the full ADK stack
+	echo -e "\n\033[1m\033[34m━━━ ADK Doctor ━━━\033[0m"
 	bash bin/doctor.sh
 
 init: ## Initialise a project to use this ADK  (usage: make init PROJ=path/to/project)
 	@if [ -z "$(PROJ)" ]; then echo "Usage: make init PROJ=path/to/project"; exit 1; fi
+	echo -e "\n\033[1m\033[34m━━━ Initialising project: $(PROJ) ━━━\033[0m"
 	bash bin/init.sh "$(PROJ)"
 
 test: ## Run the full test suite (make up + init a dummy project + assert wiring)
