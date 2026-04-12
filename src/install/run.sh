@@ -74,6 +74,26 @@ if [[ "${1:-}" == "--status" ]]; then
   exit 0
 fi
 
+# ── load_saved_inputs ──────────────────────────────────────────────────────────
+# Sources the saved setup-inputs file and exports vars for child scripts.
+# Non-interactive — used by --post-docker where inputs were already collected.
+load_saved_inputs() {
+  local dir_name
+  dir_name="$(basename "$(pwd)")"
+
+  if [[ -f "${STATE_DIR}/setup-inputs" ]]; then
+    # shellcheck disable=SC1091
+    source "${STATE_DIR}/setup-inputs" 2>/dev/null || true
+  fi
+
+  OGHAM_PROFILE="${SAVED_OGHAM_PROFILE:-${dir_name}}"
+  PROJECT_NAME="${SAVED_PROJECT_NAME:-${dir_name}}"
+  POSTGRES_PASSWORD="${SAVED_POSTGRES_PASSWORD:-ogham}"
+  OBSIDIAN_API_KEY="${SAVED_OBSIDIAN_KEY:-REPLACE_WITH_OBSIDIAN_API_KEY}"
+
+  export OGHAM_PROFILE PROJECT_NAME POSTGRES_PASSWORD OBSIDIAN_API_KEY
+}
+
 # ── collect_inputs ─────────────────────────────────────────────────────────────
 collect_inputs() {
   header "Configuration"
@@ -123,6 +143,7 @@ collect_inputs() {
   mkdir -p "${STATE_DIR}"
   cat > "${STATE_DIR}/setup-inputs" <<ENV
 SAVED_OGHAM_PROFILE="${OGHAM_PROFILE}"
+SAVED_PROJECT_NAME="${PROJECT_NAME}"
 SAVED_POSTGRES_PASSWORD="${POSTGRES_PASSWORD}"
 SAVED_OBSIDIAN_KEY="${OBSIDIAN_API_KEY}"
 ENV
@@ -173,6 +194,33 @@ print_summary() {
   echo
 }
 
+# ── Installation phases ────────────────────────────────────────────────────────
+# Phase 1: tools that must exist BEFORE docker compose up (package managers,
+#           docker itself). Called by `make up` before booting containers.
+pre_docker() {
+  bash "${INSTALL_PATH}/homebrew/install.sh"
+  bash "${INSTALL_PATH}/docker/install.sh"
+}
+
+# Phase 2: tools that require the containers to already be running (ogham needs
+#           Postgres; nomic-embed-text model must be in Ollama). Called by
+#           `make up` after docker compose up.
+post_docker() {
+  bash "${INSTALL_PATH}/python/install.sh"
+  bash "${INSTALL_PATH}/nodejs/install.sh"
+  bash "${INSTALL_PATH}/opencode/install.sh"   # installs binary + creates base opencode.json
+  bash "${INSTALL_PATH}/ogham/install.sh"       # installs binary + registers MCP block
+  bash "${INSTALL_PATH}/codebase-index/install.sh"  # registers MCP block
+  bash "${INSTALL_PATH}/obsidian/install.sh"    # registers MCP block
+  bash "${INSTALL_PATH}/graphify/install.sh"
+  bash "${INSTALL_PATH}/cass/install.sh"
+  bash "${INSTALL_PATH}/rtk/install.sh"
+
+  # ── Config files ─────────────────────────────────────────────────────────
+  bash "${INSTALL_PATH}/graphify/setup.sh"          # per-project: hooks + skill
+  bash "${INSTALL_PATH}/shell/write-env.sh"
+}
+
 # ── main ──────────────────────────────────────────────────────────────────────
 main() {
   echo -e "\n${TEXT_BOLD}${TEXT_BLUE}"
@@ -185,25 +233,14 @@ main() {
   echo -e "${TEXT_CLEAR}"
 
   collect_inputs
-
-  # ── Tool installation ──────────────────────────────────────────────────────
-  bash "${INSTALL_PATH}/homebrew/install.sh"
-  bash "${INSTALL_PATH}/docker/install.sh"
-  bash "${INSTALL_PATH}/python/install.sh"
-  bash "${INSTALL_PATH}/nodejs/install.sh"
-  bash "${INSTALL_PATH}/opencode/install.sh"   # installs binary + creates base opencode.json
-  bash "${INSTALL_PATH}/ogham/install.sh"       # installs binary + registers MCP block
-  bash "${INSTALL_PATH}/codebase-index/install.sh"  # registers MCP block
-  bash "${INSTALL_PATH}/obsidian/install.sh"    # registers MCP block
-  bash "${INSTALL_PATH}/graphify/install.sh"
-  bash "${INSTALL_PATH}/cass/install.sh"
-  bash "${INSTALL_PATH}/rtk/install.sh"
-
-  # ── Config files ───────────────────────────────────────────────────────────
-  bash "${INSTALL_PATH}/graphify/setup.sh"          # per-project: hooks + skill
-  bash "${INSTALL_PATH}/shell/write-env.sh"
-
+  pre_docker
+  post_docker
   print_summary
 }
 
-main "$@"
+case "${1:-}" in
+  --pre-docker)  collect_inputs; pre_docker ;;
+  --post-docker) load_saved_inputs; post_docker; print_summary ;;
+  --status)      ;; # handled above
+  *)             main "$@" ;;
+esac
