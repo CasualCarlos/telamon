@@ -112,6 +112,10 @@ MD
   log "Written .ai/context/adk.md"
 fi
 
+# ── 5. Write .opencode/codebase-index.json ───────────────────────────────────
+step "Writing codebase-index config..."
+(cd "${PROJ}" && bash "${ADK_ROOT}/src/install/codebase-index/init-project.sh")
+
 echo
 log "Project '${PROJECT_NAME}' initialised."
 info "Brain notes: ${BRAIN_DIR}/"

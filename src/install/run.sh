@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # =============================================================================
 # run.sh
-# Idempotent installer for the full PHP AI coding stack.
+# Idempotent installer for the full AI coding stack.
 # Supports: macOS (Apple Silicon + Intel) and Linux Mint / Ubuntu / Debian.
 # Safe to re-run at any time, in any project directory.
 #
@@ -9,6 +9,7 @@
 #   Homebrew / Linuxbrew       — package manager
 #   Docker                     — container runtime
 #   Ollama + nomic-embed-text  — local embeddings
+#   opencode                   — AI coding agent
 #   Ogham MCP + Postgres       — semantic agent memory
 #   Graphify                   — codebase knowledge graph
 #   opencode-codebase-index    — semantic codebase search (MCP)
@@ -62,6 +63,7 @@ if [[ "${1:-}" == "--status" ]]; then
   command -v graphify &>/dev/null                                          && _ok "Graphify"               || _no "Graphify"
   command -v cass     &>/dev/null                                          && _ok "cass"                   || _no "cass"
   command -v rtk      &>/dev/null                                          && _ok "RTK"                    || _no "RTK"
+  command -v opencode &>/dev/null                                          && _ok "opencode"               || _no "opencode"
   [[ -f "$HOME/.config/opencode/opencode.json" ]]          && _ok "OpenCode config"        || _no "OpenCode config"
   [[ -f "$HOME/.config/opencode/skills/memory-stack/SKILL.md" ]]   && _ok "memory-stack skill"   || _no "memory-stack skill"
   [[ -f "$HOME/.config/opencode/skills/obsidian-vault/SKILL.md" ]] && _ok "obsidian-vault skill"  || _no "obsidian-vault skill"
@@ -187,14 +189,15 @@ main() {
   bash "${INSTALL_PATH}/docker/install.sh"
   bash "${INSTALL_PATH}/python/install.sh"
   bash "${INSTALL_PATH}/nodejs/install.sh"
-  bash "${INSTALL_PATH}/ogham/install.sh"
+  bash "${INSTALL_PATH}/opencode/install.sh"   # installs binary + creates base opencode.json
+  bash "${INSTALL_PATH}/ogham/install.sh"       # installs binary + registers MCP block
+  bash "${INSTALL_PATH}/codebase-index/install.sh"  # registers MCP block
+  bash "${INSTALL_PATH}/obsidian/install.sh"    # registers MCP block
   bash "${INSTALL_PATH}/graphify/install.sh"
   bash "${INSTALL_PATH}/cass/install.sh"
   bash "${INSTALL_PATH}/rtk/install.sh"
 
   # ── Config files ───────────────────────────────────────────────────────────
-  bash "${INSTALL_PATH}/opencode/write-config.sh"
-  bash "${INSTALL_PATH}/opencode/write-codebase-index-config.sh"
   bash "${INSTALL_PATH}/graphify/setup.sh"          # per-project: hooks + skill
   bash "${INSTALL_PATH}/shell/write-env.sh"
 

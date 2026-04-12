@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Install ogham-mcp via uv, write its config, and enable FlashRank reranking.
+# Install ogham-mcp via uv, write its config, activate the profile,
+# register its MCP block in opencode.json, and enable FlashRank reranking.
 
 set -euo pipefail
 
@@ -20,10 +21,11 @@ else
   skip "Ogham ($(ogham --version 2>/dev/null || echo 'installed'))"
 fi
 
-# ── Write config ───────────────────────────────────────────────────────────────
+# ── Write ogham config ─────────────────────────────────────────────────────────
 : "${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}"
 : "${OGHAM_PROFILE:?OGHAM_PROFILE is required}"
 STATE_DIR="${STATE_DIR:-$HOME/.config/ogham}"
+mkdir -p "${STATE_DIR}"
 
 sed \
   -e "s/{{POSTGRES_PASSWORD}}/${POSTGRES_PASSWORD}/g" \
@@ -41,6 +43,23 @@ step "Activating profile: ${OGHAM_PROFILE}"
 ogham use "${OGHAM_PROFILE}" 2>/dev/null || true
 log "Profile: ${OGHAM_PROFILE}"
 
+# ── Register MCP server in opencode.json ──────────────────────────────────────
+opencode.upsert_mcp "ogham" "$(cat <<JSON
+{
+  "type": "local",
+  "command": ["uvx", "ogham-mcp"],
+  "enabled": true,
+  "environment": {
+    "DATABASE_BACKEND": "postgres",
+    "DATABASE_URL": "postgresql://ogham:${POSTGRES_PASSWORD}@localhost:5432/ogham",
+    "EMBEDDING_PROVIDER": "ollama",
+    "OLLAMA_MODEL": "nomic-embed-text",
+    "OLLAMA_BASE_URL": "http://localhost:11434"
+  }
+}
+JSON
+)"
+
 # ── Enable FlashRank reranking ─────────────────────────────────────────────────
 if state.done "ogham_rerank_installed"; then
   skip "Ogham reranking (already installed)"
@@ -55,22 +74,8 @@ else
       || warn "Could not install rerank extra"
   fi
 
-  CONFIG_FILE="$HOME/.config/opencode/opencode.json"
-  if [[ -f "${CONFIG_FILE}" ]]; then
-    python3 - "${CONFIG_FILE}" <<'PYEOF'
-import json, sys
-path = sys.argv[1]
-with open(path) as f:
-    d = json.load(f)
-env = d.get('mcp', {}).get('ogham', {}).get('environment', {})
-env['RERANK_ENABLED'] = 'true'
-env['RERANK_ALPHA'] = '0.55'
-d['mcp']['ogham']['environment'] = env
-with open(path, 'w') as f:
-    json.dump(d, f, indent=2)
-print("  \033[32m✔\033[0m  Reranking env vars added to opencode.json")
-PYEOF
-  fi
+  opencode.set_mcp_env "ogham" "RERANK_ENABLED" "true"
+  opencode.set_mcp_env "ogham" "RERANK_ALPHA"   "0.55"
 
   state.mark "ogham_rerank_installed"
   log "FlashRank reranking enabled (RERANK_ALPHA=0.55)"
