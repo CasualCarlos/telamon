@@ -249,6 +249,12 @@ assert_json_key "${INDEX_JSON}" "embeddingProvider" "ollama" \
 assert_json_key "${INDEX_JSON}" "indexing.autoIndex" "True" \
   "codebase-index.json: indexing.autoIndex == true"
 
+# ── 8. AGENTS.md ──────────────────────────────────────────────────────────────
+_section "8. AGENTS.md"
+assert_file "${PROJ}/AGENTS.md" "AGENTS.md"
+assert_file_contains "${PROJ}/AGENTS.md" "MANDATORY START SEQUENCE" \
+  "AGENTS.md contains ADK bootstrap instructions"
+
 # ── Summary ───────────────────────────────────────────────────────────────────
 echo
 echo -e "${BOLD}────────────────────────────────────────────${RESET}"

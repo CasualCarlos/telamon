@@ -14,7 +14,7 @@
 #   5. Symlinks <project>/.ai/adk/secrets → <adk-root>/storage/secrets
 #   6. Symlinks <project>/opencode.jsonc → <adk-root>/storage/opencode.jsonc
 #   7. Writes   <project>/.opencode/codebase-index.json
-# =============================================================================
+#   8. Writes or merges AGENTS.md from src/AGENTS.md
 
 set -euo pipefail
 
@@ -159,6 +159,31 @@ fi
 # ── 7. Write .opencode/codebase-index.json ───────────────────────────────────
 step "Writing codebase-index config..."
 (cd "${PROJ}" && bash "${ADK_ROOT}/src/install/codebase-index/init-project.sh")
+
+# ── 8. Write or merge AGENTS.md ──────────────────────────────────────────────
+# If the project has no AGENTS.md, copy ours. If it does, append any lines from
+# src/AGENTS.md that are not already present (line-by-line dedup).
+ADK_AGENTS_SRC="${ADK_ROOT}/src/AGENTS.md"
+PROJ_AGENTS="${PROJ}/AGENTS.md"
+
+step "Configuring AGENTS.md..."
+if [[ ! -f "${PROJ_AGENTS}" ]]; then
+  cp "${ADK_AGENTS_SRC}" "${PROJ_AGENTS}"
+  log "Created AGENTS.md"
+else
+  ADDED=0
+  while IFS= read -r line; do
+    if ! grep -qF "${line}" "${PROJ_AGENTS}"; then
+      echo "${line}" >> "${PROJ_AGENTS}"
+      ADDED=$((ADDED + 1))
+    fi
+  done < "${ADK_AGENTS_SRC}"
+  if [[ "${ADDED}" -gt 0 ]]; then
+    log "Merged ${ADDED} line(s) into existing AGENTS.md"
+  else
+    skip "AGENTS.md (all ADK lines already present)"
+  fi
+fi
 
 echo
 log "Project '${PROJECT_NAME}' initialised."
