@@ -68,16 +68,16 @@ _write_brain_note "KeyDecisions.md" "${BRAIN_DIR}/KeyDecisions.md"
 _write_brain_note "Patterns.md"     "${BRAIN_DIR}/Patterns.md"
 _write_brain_note "Gotchas.md"      "${BRAIN_DIR}/Gotchas.md"
 
-# ── 2. Symlink .ai/context/adk → <adk-root>/src/context ─────────────────────
-AI_CONTEXT_DIR="${PROJ}/.ai/context"
+# ── 2. Symlink .ai/context/static/adk → <adk-root>/src/context ──────────────
+AI_CONTEXT_DIR="${PROJ}/.ai/context/static"
 mkdir -p "${AI_CONTEXT_DIR}"
 
 CONTEXT_LINK="${AI_CONTEXT_DIR}/adk"
 if [[ -L "${CONTEXT_LINK}" ]]; then
-  skip ".ai/context/adk symlink (already exists)"
+  skip ".ai/context/static/adk symlink (already exists)"
 else
   ln -s "${ADK_ROOT}/src/context" "${CONTEXT_LINK}"
-  log "Symlinked .ai/context/adk → ${ADK_ROOT}/src/context"
+  log "Symlinked .ai/context/static/adk → ${ADK_ROOT}/src/context"
 fi
 
 # ── 3. Symlink .opencode/skills/adk → <adk-root>/src/skills ─────────────────

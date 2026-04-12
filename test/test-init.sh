@@ -181,11 +181,11 @@ assert_file_contains "${BRAIN_DIR}/NorthStar.md"    "${PROJECT_NAME}" \
 assert_file_contains "${BRAIN_DIR}/KeyDecisions.md" "${PROJECT_NAME}" \
   "KeyDecisions.md contains project name"
 
-# ── 2. .ai/context/adk symlink ───────────────────────────────────────────────
-_section "2. .ai/context/adk symlink"
-assert_dir  "${PROJ}/.ai/context" ".ai/context/ directory"
-assert_symlink "${PROJ}/.ai/context/adk" "src/context" \
-  ".ai/context/adk → <adk-root>/src/context"
+# ── 2. .ai/context/static/adk symlink ────────────────────────────────────────
+_section "2. .ai/context/static/adk symlink"
+assert_dir  "${PROJ}/.ai/context/static" ".ai/context/static/ directory"
+assert_symlink "${PROJ}/.ai/context/static/adk" "src/context" \
+  ".ai/context/static/adk → <adk-root>/src/context"
 
 # ── 3. .opencode/skills/adk symlink ──────────────────────────────────────────
 _section "3. .opencode/skills/adk symlink"
