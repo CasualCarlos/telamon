@@ -36,7 +36,7 @@ mkdir -p "${CONFIG_DIR}"
 if [[ -f "${CONFIG_FILE}" ]]; then
   skip "opencode.json (already exists)"
 else
-  cp "${SCRIPT_DIR}/opencode.json.tmpl" "${CONFIG_FILE}"
+  cp "${SCRIPT_DIR}/opencode.dist.jsonc" "${CONFIG_FILE}"
   log "opencode.json created → ${CONFIG_FILE}"
   info "Tool install scripts will register their MCP servers into this file."
 fi
