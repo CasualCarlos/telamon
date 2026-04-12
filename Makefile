@@ -115,6 +115,9 @@ purge: ## Remove all containers and volumes
 
 restart: down up ## Restart running containers
 
+status:
+	src/install/run.sh --status
+
 init: ## Initialise a project to use this ADK  (usage: make init PROJ=path/to/project)
 	@if [ -z "$(PROJ)" ]; then echo "Usage: make init PROJ=path/to/project"; exit 1; fi
 	bash bin/init.sh "$(PROJ)"
