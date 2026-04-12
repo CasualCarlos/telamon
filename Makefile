@@ -102,11 +102,11 @@ help:  ## Show this help
 up: ## Start the ADK: install host tools, then bring docker compose services up
 	@test -f .env || cp .env.dist .env
 	echo -e "\n\n====== Installing prerequisites (homebrew, docker)... ====== \n"
-	bash src/install/run.sh --pre-docker
+	bash bin/install.sh --pre-docker
 	echo -e "\n\n====== Bringing up services... ====== \n"
 	docker compose up -d --no-recreate
 	echo -e "\n\n====== Installing remaining tools (requires containers)... ====== \n"
-	bash src/install/run.sh --post-docker
+	bash bin/install.sh --post-docker
 	echo -e "\n\n====== ADK is up. ====== \n"
 
 down: ## Shut down the ADK services
@@ -114,17 +114,18 @@ down: ## Shut down the ADK services
 
 purge: ## Remove all containers and volumes
 	docker compose down --volumes --remove-orphans
+	rm -rf storage/*
 
 restart: down up ## Restart running containers
 
 status: ## Show installation status of all ADK tools
-	src/install/run.sh --status
+	bash bin/status.sh
 
 update: ## Upgrade all ADK-managed tools to their latest versions
-	bash src/install/update.sh
+	bash bin/update.sh
 
 doctor: ## Run a comprehensive health check of the full ADK stack
-	bash src/install/doctor.sh
+	bash bin/doctor.sh
 
 init: ## Initialise a project to use this ADK  (usage: make init PROJ=path/to/project)
 	@if [ -z "$(PROJ)" ]; then echo "Usage: make init PROJ=path/to/project"; exit 1; fi
