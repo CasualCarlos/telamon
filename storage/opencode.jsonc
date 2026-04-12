@@ -8,7 +8,8 @@
   ],
   "default_agent": "developer",
   "plugin": [
-    "opencode-scheduler"
+    "opencode-scheduler",
+    ".opencode/plugins/graphify.js"
   ],
   "permission": {
     "edit": "allow",

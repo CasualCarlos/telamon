@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Install graphify (codebase knowledge graph tool) via uv.
+# Install graphify (codebase knowledge graph tool) via uv,
+# and register its OpenCode plugin in storage/opencode.jsonc.
 
 set -euo pipefail
 
@@ -17,3 +18,8 @@ if ! command -v graphify &>/dev/null; then
 else
   skip "Graphify ($(graphify --version 2>/dev/null || echo 'installed'))"
 fi
+
+# ── Register OpenCode plugin in storage/opencode.jsonc ────────────────────────
+# The plugin JS is shipped as a static asset at src/install/graphify/graphify.js.
+# Projects receive it via init-project.sh which copies it to .opencode/plugins/.
+opencode.upsert_plugin ".opencode/plugins/graphify.js"

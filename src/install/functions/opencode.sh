@@ -79,6 +79,65 @@ print(f"  \033[32m✔\033[0m  MCP server '{server_name}' registered in opencode 
 PYEOF
 }
 
+# opencode.upsert_plugin <plugin-path>
+#
+# Adds a plugin path to the "plugin" list in opencode.jsonc if not already present.
+#
+# Arguments:
+#   $1 — plugin path string (e.g. ".opencode/plugins/graphify.js")
+#
+# Example:
+#   opencode.upsert_plugin ".opencode/plugins/graphify.js"
+opencode.upsert_plugin() {
+  local plugin_path="$1"
+  local config_file="${OPENCODE_CONFIG_FILE}"
+
+  if [[ ! -f "${config_file}" ]]; then
+    warn "opencode config not found — skipping plugin registration for '${plugin_path}'"
+    return 0
+  fi
+
+  python3 - "${config_file}" "${plugin_path}" <<'PYEOF'
+import json, sys
+
+def strip_jsonc_comments(text):
+    result = []
+    i, n = 0, len(text)
+    while i < n:
+        if text[i] == '"':
+            j = i + 1
+            while j < n:
+                if text[j] == '\\': j += 2
+                elif text[j] == '"': j += 1; break
+                else: j += 1
+            result.append(text[i:j]); i = j
+        elif text[i:i+2] == '//':
+            j = text.find('\n', i)
+            i = j if j != -1 else n
+        elif text[i:i+2] == '/*':
+            j = text.find('*/', i+2)
+            i = j + 2 if j != -1 else n
+        else:
+            result.append(text[i]); i += 1
+    return ''.join(result)
+
+config_file, plugin_path = sys.argv[1], sys.argv[2]
+
+with open(config_file) as f:
+    config = json.loads(strip_jsonc_comments(f.read()))
+
+plugins = config.setdefault("plugin", [])
+if plugin_path not in plugins:
+    plugins.append(plugin_path)
+    with open(config_file, "w") as f:
+        json.dump(config, f, indent=2)
+        f.write("\n")
+    print(f"  \033[32m✔\033[0m  Plugin '{plugin_path}' registered in opencode config")
+else:
+    print(f"  \033[2m–  {plugin_path} already in plugin list (skipped)\033[0m")
+PYEOF
+}
+
 # opencode.set_mcp_env <server-name> <key> <value>
 #
 # Sets a single environment variable inside an existing MCP server block.
