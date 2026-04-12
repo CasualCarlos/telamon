@@ -15,6 +15,7 @@
 #   6. Symlinks <project>/opencode.jsonc → <adk-root>/storage/opencode.jsonc
 #   7. Writes   <project>/.opencode/codebase-index.json
 #   8. Writes or merges AGENTS.md from src/AGENTS.md
+#   9. Installs Graphify git hooks and OpenCode plugin in the project
 
 set -euo pipefail
 
@@ -184,6 +185,9 @@ else
     skip "AGENTS.md (all ADK lines already present)"
   fi
 fi
+
+# ── 9. Graphify git hooks + OpenCode plugin ───────────────────────────────────
+(cd "${PROJ}" && INSTALL_PATH="${ADK_ROOT}/src/install" bash "${ADK_ROOT}/src/install/graphify/init-project.sh")
 
 echo
 log "Project '${PROJECT_NAME}' initialised."

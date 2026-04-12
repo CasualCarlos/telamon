@@ -223,7 +223,6 @@ post_docker() {
   bash "${INSTALL_PATH}/rtk/install.sh"
 
   # ── Config files ─────────────────────────────────────────────────────────
-  bash "${INSTALL_PATH}/graphify/init-project.sh"          # per-project: hooks + skill
   bash "${INSTALL_PATH}/shell/write-env.sh"
 }
 
