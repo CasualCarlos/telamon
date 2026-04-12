@@ -1,4 +1,7 @@
 tmp/
+# legacy data dirs (pre-storage/ migration) — kept for safety
+pgdata/
+ollama/
 storage/*
 !storage/.gitkeep
 !storage/opencode.jsonc
