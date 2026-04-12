@@ -11,8 +11,9 @@
 #   2. Symlinks <project>/.ai/context/adk  → <adk-root>/src/context
 #   3. Symlinks <project>/.opencode/skills/adk → <adk-root>/src/skills
 #   4. Writes   <project>/.ai/adk.ini with the project name variable
-#   5. Symlinks <project>/opencode.jsonc → <adk-root>/storage/opencode.jsonc
-#   6. Writes   <project>/.opencode/codebase-index.json
+#   5. Symlinks <project>/.ai/adk/secrets → <adk-root>/storage/secrets
+#   6. Symlinks <project>/opencode.jsonc → <adk-root>/storage/opencode.jsonc
+#   7. Writes   <project>/.opencode/codebase-index.json
 # =============================================================================
 
 set -euo pipefail
@@ -103,7 +104,21 @@ INI
   log "Written .ai/adk.ini"
 fi
 
-# ── 5. opencode config: symlink or merge ─────────────────────────────────────
+# ── 5. Symlink .ai/adk/secrets → <adk-root>/storage/secrets ─────────────────
+# opencode resolves {file:.ai/adk/secrets/<name>} relative to the project root
+# where opencode.jsonc lives. This symlink makes the ADK secrets visible there.
+ADK_SECRETS_DIR="${PROJ}/.ai/adk"
+mkdir -p "${ADK_SECRETS_DIR}"
+
+SECRETS_LINK="${ADK_SECRETS_DIR}/secrets"
+if [[ -L "${SECRETS_LINK}" ]]; then
+  skip ".ai/adk/secrets symlink (already exists)"
+else
+  ln -s "${ADK_ROOT}/storage/secrets" "${SECRETS_LINK}"
+  log "Symlinked .ai/adk/secrets → ${ADK_ROOT}/storage/secrets"
+fi
+
+# ── 6. opencode config: symlink or merge ─────────────────────────────────────
 # Detect any existing opencode config (symlink or regular file, .jsonc or .json)
 OPENCODE_TARGET="${ADK_ROOT}/storage/opencode.jsonc"
 MERGE_SCRIPT="${ADK_ROOT}/src/install/opencode/merge-config.py"
@@ -141,7 +156,7 @@ if [[ "${OPENCODE_LINK}" != "__skip__" ]]; then
   fi
 fi
 
-# ── 6. Write .opencode/codebase-index.json ───────────────────────────────────
+# ── 7. Write .opencode/codebase-index.json ───────────────────────────────────
 step "Writing codebase-index config..."
 (cd "${PROJ}" && bash "${ADK_ROOT}/src/install/codebase-index/init-project.sh")
 

@@ -57,7 +57,7 @@ opencode.upsert_mcp "ogham" "$(cat <<JSON
   "enabled": true,
   "environment": {
     "DATABASE_BACKEND": "postgres",
-    "DATABASE_URL": "{file:storage/secrets/ogham-database-url}",
+    "DATABASE_URL": "{file:.ai/adk/secrets/ogham-database-url}",
     "EMBEDDING_PROVIDER": "ollama",
     "OLLAMA_MODEL": "nomic-embed-text",
     "OLLAMA_BASE_URL": "http://localhost:11434"

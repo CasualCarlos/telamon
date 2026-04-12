@@ -169,7 +169,7 @@ opencode.upsert_mcp "obsidian" "$(cat <<JSON
   ],
   "enabled": true,
   "environment": {
-    "API_KEY": "{file:storage/secrets/obsidian-api-key}",
+    "API_KEY": "{file:.ai/adk/secrets/obsidian-api-key}",
     "API_URLS": "[\"https://${OBS_HOST}:27124\"]"
   }
 }

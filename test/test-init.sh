@@ -201,8 +201,13 @@ assert_file_contains "${PROJ}/.ai/adk.ini" "project_name = ${PROJECT_NAME}" \
 assert_file_contains "${PROJ}/.ai/adk.ini" "\[adk\]" \
   ".ai/adk.ini has [adk] section"
 
-# ── 5. opencode config ────────────────────────────────────────────────────────
-_section "5. opencode.jsonc"
+# ── 5. .ai/adk/secrets symlink ────────────────────────────────────────────────
+_section "5. .ai/adk/secrets"
+assert_symlink "${PROJ}/.ai/adk/secrets" "storage/secrets" \
+  ".ai/adk/secrets → <adk-root>/storage/secrets"
+
+# ── 6. opencode config ────────────────────────────────────────────────────────
+_section "6. opencode.jsonc"
 OPENCODE_CONFIG=""
 for _candidate in "${PROJ}/opencode.jsonc" "${PROJ}/opencode.json"; do
   if [[ -e "${_candidate}" || -L "${_candidate}" ]]; then
@@ -235,8 +240,8 @@ else
   fi
 fi
 
-# ── 6. .opencode/codebase-index.json ─────────────────────────────────────────
-_section "6. .opencode/codebase-index.json"
+# ── 7. .opencode/codebase-index.json ─────────────────────────────────────────
+_section "7. .opencode/codebase-index.json"
 INDEX_JSON="${PROJ}/.opencode/codebase-index.json"
 assert_file "${INDEX_JSON}" ".opencode/codebase-index.json"
 assert_json_key "${INDEX_JSON}" "embeddingProvider" "ollama" \
