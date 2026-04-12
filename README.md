@@ -109,7 +109,8 @@ Installed as an opencode plugin that auto-patches shell commands.
 | `ogham-postgres` | `pgvector/pgvector:pg17` | Vector database for Ogham memory |
 | `adk-ollama` | `ollama/ollama:latest` | Local embedding model server |
 | `adk-ollama-init` | `ollama/ollama:latest` | One-shot job: pulls `nomic-embed-text` on first start |
-| `obsidian-mcp` | `oleksandrkucherenko/obsidian-mcp:latest` | Bridges agent to Obsidian vault |
+
+> **Obsidian MCP** runs on-demand via `docker run` (not a persistent service) so it does not crash when Obsidian is not running.
 
 ---
 
@@ -166,9 +167,12 @@ make up
 ```
 
 `make up` will:
-1. Copy `.env.dist` → `.env` (if not present) — edit it to set your Postgres password and Obsidian API key
-2. Run `src/install/run.sh` — installs all host tools (Homebrew, Docker, Python/uv, Node.js, Ogham, Graphify, cass, RTK) and writes opencode config files
-3. Start Docker services (`postgres`, `ollama`, `obsidian-mcp`)
+1. Copy `.env.dist` → `.env` (if not present)
+2. Install prerequisite host tools (Homebrew, Docker) — `--pre-docker` phase
+3. Start Docker services (`postgres`, `ollama`)
+4. Install remaining tools (opencode, Ogham, Graphify, cass, RTK, codebase-index, Obsidian MCP) — `--post-docker` phase
+
+If `.ai/adk.ini` exists with `project_name` set, the installer reads it silently (no prompts for project name/profile). If `.env` already has `POSTGRES_PASSWORD` set, the password prompt is also skipped.
 
 > The installer is **idempotent** — safe to re-run at any time. Already-installed tools are skipped.
 
@@ -200,7 +204,8 @@ make up       # if not already running
 Check status at any time:
 
 ```bash
-make status
+make status    # quick installation status
+make doctor    # comprehensive health check (connectivity, secrets, config)
 ```
 
 ---
@@ -281,14 +286,17 @@ The Obsidian API key comes from: *Obsidian → Settings → Community Plugins �
 
 ## Make targets
 
-| Target                  | Description                                        |
-|-------------------------|----------------------------------------------------|
-| `make up`               | Install host tools + start Docker services         |
-| `make down`             | Stop Docker services                               |
-| `make restart`          | `down` then `up`                                   |
-| `make purge`            | Stop services and delete all volumes (destructive) |
-| `make status`           | Requered tools installation status                 |
-| `make init PROJ=<path>` | Initialise a project to use this ADK               |
+| Target                  | Description                                                     |
+|-------------------------|-----------------------------------------------------------------|
+| `make up`               | Install host tools + start Docker services                      |
+| `make down`             | Stop Docker services                                            |
+| `make restart`          | `down` then `up`                                                |
+| `make purge`            | Stop services and delete all volumes (destructive)              |
+| `make status`           | Quick installation status of all ADK tools                      |
+| `make doctor`           | Comprehensive health check (connectivity, config, secrets)      |
+| `make update`           | Upgrade all ADK-managed tools to their latest versions          |
+| `make init PROJ=<path>` | Initialise a project to use this ADK                            |
+| `make test`             | Run the full test suite (make up + init dummy project + assert) |
 
 ---
 
@@ -306,29 +314,44 @@ src/
     obsidian.md              # how to use the Obsidian vault
     codebase-index.md        # how to use the codebase index
   skills/
+    graphify/SKILL.md        # codebase knowledge graph skill
     memory-stack/SKILL.md    # session-start memory bootstrap skill
-    obsidian-vault/SKILL.md  # vault read/write/wrap-up skill
+    obsidian-vault/          # vault skill + brain template files
+      SKILL.md
+      NorthStar.md           # brain template: goals and focus areas
+      KeyDecisions.md        # brain template: architecture decisions
+      Patterns.md            # brain template: codebase conventions
+      Gotchas.md             # brain template: traps and known issues
   install/
-    run.sh                   # orchestrator: collect inputs → install tools → write configs
-    functions/               # shared bash library (colors, stdout, state, os, apt)
+    run.sh                   # orchestrator: --pre-docker, --post-docker, --status
+    update.sh                # upgrades all ADK-managed tools to latest versions
+    doctor.sh                # comprehensive health check (connectivity, config, secrets)
+    functions/               # shared bash library (colors, stdout, state, os, apt, opencode)
     homebrew/install.sh
     docker/install.sh
     python/install.sh        # installs uv
     nodejs/install.sh
     ogham/                   # ogham binary + config + FlashRank reranking
     graphify/                # graphify binary + per-project git hook setup
-    cass/                    # cass binary + initial index build
+    cass/                    # cass binary
     rtk/                     # RTK binary + opencode plugin wiring
-    opencode/                # opencode.json, AGENTS.md, and codebase-index config
-    obsidian/                # vault scaffold templates (NorthStar, KeyDecisions, …)
+    opencode/                # opencode binary + shared storage/opencode.jsonc template
+    codebase-index/          # MCP registration + per-project codebase-index.json
+    obsidian/                # Obsidian binary install + MCP registration
     shell/write-env.sh       # shell profile PATH additions
   docker/
     initdb/ogham-schema.sql  # Postgres schema (applied automatically on first start)
 
-storage/                     # per-project brain notes (git-ignored content)
-  <project-name>/brain/      # NorthStar, KeyDecisions, Patterns, Gotchas
+storage/                     # runtime data — git-ignored except opencode.jsonc
+  opencode.jsonc             # shared opencode config (tracked); projects symlink to this
+  secrets/                   # one plain-text file per secret (git-ignored)
+  state/                     # installer state (saved inputs, completed steps)
+  pgdata/                    # Postgres data volume (git-ignored)
+  ollama/                    # Ollama model cache (git-ignored)
+  graphify/                  # graphify output cache (git-ignored)
+  <project-name>/brain/      # per-project brain notes (NorthStar, KeyDecisions, …)
 
-docker-compose.yml           # postgres, ollama, ollama-init, obsidian-mcp
-.env.dist                    # template for .env
-Makefile                     # up, down, purge, restart, init
+docker-compose.yml           # postgres, ollama, ollama-init
+.env.dist                    # template for .env (POSTGRES_PASSWORD, OBSIDIAN_API_KEY)
+Makefile                     # up, down, purge, restart, status, doctor, update, init, test
 ```
