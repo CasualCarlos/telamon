@@ -65,8 +65,7 @@ if [[ "${1:-}" == "--status" ]]; then
   command -v rtk      &>/dev/null                                          && _ok "RTK"                    || _no "RTK"
   command -v opencode &>/dev/null                                          && _ok "opencode"               || _no "opencode"
   [[ -f "$HOME/.config/opencode/opencode.json" ]]          && _ok "OpenCode config"        || _no "OpenCode config"
-  [[ -f "$HOME/.config/opencode/skills/memory-stack/SKILL.md" ]]   && _ok "memory-stack skill"   || _no "memory-stack skill"
-  [[ -f "$HOME/.config/opencode/skills/obsidian-vault/SKILL.md" ]] && _ok "obsidian-vault skill"  || _no "obsidian-vault skill"
+  [[ -d "${INSTALL_PATH}/../skills" ]]                     && _ok "ADK skills (src/skills)" || _no "ADK skills (src/skills)"
   ogham health &>/dev/null 2>&1                            && _ok "Ogham ↔ Postgres"       || _no "Ogham ↔ Postgres"
   echo
   exit 0
