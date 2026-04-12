@@ -149,11 +149,14 @@ collect_inputs() {
   default_pg_pass="${env_pg_pass:-${saved_pg_pass:-ogham}}"
 
   # ── 5. Prompt only for values we cannot resolve ────────────────────────────
+  local prompted=0
+
   if [[ -n "${ini_project}" ]]; then
     info "Project name from .ai/adk.ini: ${ini_project}"
     OGHAM_PROFILE="${ini_project}"
     PROJECT_NAME="${ini_project}"
   else
+    prompted=1
     ask "Ogham memory profile for this project [${default_profile}]:"
     read -r PROFILE_INPUT
     OGHAM_PROFILE="${PROFILE_INPUT:-${default_profile}}"
@@ -167,6 +170,7 @@ collect_inputs() {
     info "Postgres password from .env (already set)"
     POSTGRES_PASSWORD="${env_pg_pass}"
   else
+    prompted=1
     ask "Postgres password [${default_pg_pass}]:"
     read -r -s PG_PASS_INPUT; echo
     POSTGRES_PASSWORD="${PG_PASS_INPUT:-${default_pg_pass}}"
@@ -177,9 +181,13 @@ collect_inputs() {
   echo -e "  ${TEXT_BOLD}Profile :${TEXT_CLEAR} ${OGHAM_PROFILE}"
   echo -e "  ${TEXT_BOLD}Project :${TEXT_CLEAR} ${PROJECT_NAME}"
   echo
-  ask "Proceed? (Y/n):"
-  read -r CONFIRM
-  [[ "${CONFIRM}" =~ ^[Nn] ]] && { info "Aborted."; exit 0; }
+
+  # Only ask for confirmation when the user was prompted for at least one value
+  if [[ "${prompted}" -eq 1 ]]; then
+    ask "Proceed? (Y/n):"
+    read -r CONFIRM
+    [[ "${CONFIRM}" =~ ^[Nn] ]] && { info "Aborted."; exit 0; }
+  fi
 
   mkdir -p "${STATE_DIR}"
   cat > "${STATE_DIR}/setup-inputs" <<ENV
