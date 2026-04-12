@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-# Install cass (agent session history search) via Homebrew tap, then build its index.
+# Install cass (agent session history search) via Homebrew tap.
+# The initial index is NOT built here — it runs lazily on first `cass search`
+# or can be triggered manually with `cass index`.
 
 set -euo pipefail
 
@@ -19,16 +21,4 @@ else
   skip "cass ($(cass --version 2>/dev/null || echo 'installed'))"
 fi
 
-# ── Build initial index ────────────────────────────────────────────────────────
-if state.done "cass_indexed"; then
-  skip "cass initial index"
-else
-  if command -v cass &>/dev/null; then
-    step "Building initial cass index..."
-    cass index 2>/dev/null || true
-    state.mark "cass_indexed"
-    log "cass index built"
-  else
-    warn "cass not found — skipping index"
-  fi
-fi
+info "Run 'cass index' to build the session index (skipped here — can be slow)."
