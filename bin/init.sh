@@ -42,7 +42,7 @@ PROJECT_NAME="$(basename "${PROJ}")"
 header "ADK init — ${PROJECT_NAME}"
 
 # ── 1. Brain scaffold in storage/<project-name>/brain/ ───────────────────────
-BRAIN_DIR="${ADK_ROOT}/storage/${PROJECT_NAME}/brain"
+BRAIN_DIR="${ADK_ROOT}/storage/obsidian/${PROJECT_NAME}/brain"
 TEMPLATE_DIR="${ADK_ROOT}/src/skills/obsidian-vault"
 TODAY="$(date +%Y-%m-%d)"
 

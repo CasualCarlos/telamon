@@ -185,7 +185,7 @@ make init PROJ=path/to/your-project
 ```
 
 This will:
-- Create `storage/<project-name>/brain/` with scaffold notes (`NorthStar.md`, `KeyDecisions.md`, `Patterns.md`, `Gotchas.md`)
+- Create `storage/obsidian/<project-name>/brain/` with scaffold notes (`NorthStar.md`, `KeyDecisions.md`, `Patterns.md`, `Gotchas.md`)
 - Symlink `<project>/.ai/context/adk` → `<adk-root>/src/context` (agent instruction docs)
 - Symlink `<project>/.opencode/skills/adk` → `<adk-root>/src/skills` (agent skills)
 - Write `<project>/.ai/adk.ini` with the project name variable
@@ -350,7 +350,7 @@ storage/                     # runtime data — git-ignored except opencode.json
   pgdata/                    # Postgres data volume (git-ignored)
   ollama/                    # Ollama model cache (git-ignored)
   graphify/                  # graphify output cache (git-ignored)
-  <project-name>/brain/      # per-project brain notes (NorthStar, KeyDecisions, …)
+  obsidian/<project-name>/brain/ # per-project brain notes (NorthStar, KeyDecisions, …)
 
 docker-compose.yml           # postgres, ollama, ollama-init
 .env.dist                    # template for .env (POSTGRES_PASSWORD, OBSIDIAN_API_KEY)

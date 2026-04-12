@@ -168,14 +168,14 @@ echo -e "${BOLD}ADK init assertions — project: ${PROJECT_NAME}${RESET}"
 echo -e "${BOLD}Project path: ${PROJ}${RESET}"
 
 # ── 1. Brain scaffold (in ADK storage, not in project) ────────────────────────
-_section "1. Brain scaffold (storage/${PROJECT_NAME}/brain/)"
-BRAIN_DIR="${ADK_ROOT}/storage/${PROJECT_NAME}/brain"
+_section "1. Brain scaffold (storage/obsidian/${PROJECT_NAME}/brain/)"
+BRAIN_DIR="${ADK_ROOT}/storage/obsidian/${PROJECT_NAME}/brain"
 
-assert_dir  "${BRAIN_DIR}"                       "storage/${PROJECT_NAME}/brain/"
-assert_file "${BRAIN_DIR}/NorthStar.md"          "storage/${PROJECT_NAME}/brain/NorthStar.md"
-assert_file "${BRAIN_DIR}/KeyDecisions.md"       "storage/${PROJECT_NAME}/brain/KeyDecisions.md"
-assert_file "${BRAIN_DIR}/Patterns.md"           "storage/${PROJECT_NAME}/brain/Patterns.md"
-assert_file "${BRAIN_DIR}/Gotchas.md"            "storage/${PROJECT_NAME}/brain/Gotchas.md"
+assert_dir  "${BRAIN_DIR}"                       "storage/obsidian/${PROJECT_NAME}/brain/"
+assert_file "${BRAIN_DIR}/NorthStar.md"          "storage/obsidian/${PROJECT_NAME}/brain/NorthStar.md"
+assert_file "${BRAIN_DIR}/KeyDecisions.md"       "storage/obsidian/${PROJECT_NAME}/brain/KeyDecisions.md"
+assert_file "${BRAIN_DIR}/Patterns.md"           "storage/obsidian/${PROJECT_NAME}/brain/Patterns.md"
+assert_file "${BRAIN_DIR}/Gotchas.md"            "storage/obsidian/${PROJECT_NAME}/brain/Gotchas.md"
 assert_file_contains "${BRAIN_DIR}/NorthStar.md"    "${PROJECT_NAME}" \
   "NorthStar.md contains project name"
 assert_file_contains "${BRAIN_DIR}/KeyDecisions.md" "${PROJECT_NAME}" \
