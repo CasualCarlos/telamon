@@ -305,6 +305,10 @@ The Obsidian API key comes from: *Obsidian → Settings → Community Plugins �
 ```
 bin/
   init.sh                    # project initialiser (brain scaffold + symlinks)
+  install.sh                 # orchestrator: --pre-docker, --post-docker phases
+  update.sh                  # upgrades all ADK-managed tools to latest versions
+  doctor.sh                  # comprehensive health check (connectivity, config, secrets)
+  status.sh                  # quick installation status of all ADK tools
 
 src/
   context/                   # agent instruction docs (loaded into every project)
@@ -323,9 +327,6 @@ src/
       Patterns.md            # brain template: codebase conventions
       Gotchas.md             # brain template: traps and known issues
   install/
-    run.sh                   # orchestrator: --pre-docker, --post-docker, --status
-    update.sh                # upgrades all ADK-managed tools to latest versions
-    doctor.sh                # comprehensive health check (connectivity, config, secrets)
     functions/               # shared bash library (colors, stdout, state, os, apt, opencode)
     homebrew/install.sh
     docker/install.sh
