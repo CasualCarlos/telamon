@@ -9,6 +9,7 @@
 set -euo pipefail
 
 INSTALL_PATH="${INSTALL_PATH:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck disable=SC1091
 . "${INSTALL_PATH}/functions/autoload.sh"
 
@@ -18,19 +19,10 @@ STATE_DIR="${STATE_DIR:-$HOME/.config/ogham}"
 
 header "Ogham Config & Profile"
 
-cat > "${STATE_DIR}/config.toml" <<TOML
-[database]
-backend = "postgres"
-url = "postgresql://ogham:${POSTGRES_PASSWORD}@localhost:5432/ogham"
-
-[embedding]
-provider = "ollama"
-model = "nomic-embed-text"
-url = "http://localhost:11434"
-
-[profile]
-default = "${OGHAM_PROFILE}"
-TOML
+sed \
+  -e "s/{{POSTGRES_PASSWORD}}/${POSTGRES_PASSWORD}/g" \
+  -e "s/{{OGHAM_PROFILE}}/${OGHAM_PROFILE}/g" \
+  "${SCRIPT_DIR}/config.toml.tmpl" > "${STATE_DIR}/config.toml"
 log "Ogham config written → ${STATE_DIR}/config.toml"
 
 if ogham health &>/dev/null 2>&1; then

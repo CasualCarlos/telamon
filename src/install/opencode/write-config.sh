@@ -4,12 +4,13 @@
 # Refreshes the Obsidian API key on every run.
 #
 # Required env vars:
-#   PG_PASSWORD        — Postgres password
+#   POSTGRES_PASSWORD  — Postgres password
 #   OBSIDIAN_API_KEY   — Obsidian Local REST API key
 
 set -euo pipefail
 
 INSTALL_PATH="${INSTALL_PATH:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck disable=SC1091
 . "${INSTALL_PATH}/functions/autoload.sh"
 
@@ -57,41 +58,9 @@ fi
   && cp "${CONFIG_FILE}" "${CONFIG_FILE}.backup" \
   && warn "Backed up existing opencode.json → opencode.json.backup"
 
-cat > "${CONFIG_FILE}" <<JSON
-{
-  "mcp": {
-    "ogham": {
-      "type": "local",
-      "command": ["uvx", "ogham-mcp"],
-      "enabled": true,
-      "environment": {
-        "DATABASE_BACKEND": "postgres",
-        "DATABASE_URL": "postgresql://ogham:${POSTGRES_PASSWORD}@localhost:5432/ogham",
-        "EMBEDDING_PROVIDER": "ollama",
-        "OLLAMA_MODEL": "nomic-embed-text",
-        "OLLAMA_BASE_URL": "http://localhost:11434"
-      }
-    },
-    "codebase-index": {
-      "type": "local",
-      "command": ["npx", "opencode-codebase-index-mcp", "--project", "."],
-      "enabled": true
-    },
-    "obsidian": {
-      "type": "local",
-      "command": [
-        "docker", "run", "--rm", "-i",
-        "-e", "API_KEY",
-        "-e", "API_URLS",
-        "oleksandrkucherenko/obsidian-mcp:latest"
-      ],
-      "enabled": true,
-      "environment": {
-        "API_KEY": "${OBSIDIAN_API_KEY}",
-        "API_URLS": "[\"https://${OBS_HOST}:27124\"]"
-      }
-    }
-  }
-}
-JSON
+sed \
+  -e "s/{{POSTGRES_PASSWORD}}/${POSTGRES_PASSWORD}/g" \
+  -e "s/{{OBSIDIAN_API_KEY}}/${OBSIDIAN_API_KEY}/g" \
+  -e "s/{{OBS_HOST}}/${OBS_HOST}/g" \
+  "${SCRIPT_DIR}/opencode.json.tmpl" > "${CONFIG_FILE}"
 log "OpenCode config written → ${CONFIG_FILE}"

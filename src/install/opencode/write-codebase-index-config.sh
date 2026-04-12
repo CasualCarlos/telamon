@@ -5,6 +5,7 @@
 set -euo pipefail
 
 INSTALL_PATH="${INSTALL_PATH:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck disable=SC1091
 . "${INSTALL_PATH}/functions/autoload.sh"
 
@@ -17,26 +18,6 @@ if [[ -f "${INDEX_CONFIG}" ]]; then
 fi
 
 mkdir -p "$(pwd)/.opencode"
-cat > "${INDEX_CONFIG}" <<JSON
-{
-  "embeddingProvider": "ollama",
-  "indexing": {
-    "autoIndex": true,
-    "watchFiles": true,
-    "maxFileSize": 1048576,
-    "maxChunksPerFile": 100,
-    "autoGc": true,
-    "gcIntervalDays": 7
-  },
-  "search": {
-    "maxResults": 20,
-    "minScore": 0.1,
-    "hybridWeight": 0.6,
-    "fusionStrategy": "rrf",
-    "rrfK": 60,
-    "rerankTopN": 20
-  }
-}
-JSON
+cp "${SCRIPT_DIR}/codebase-index.json" "${INDEX_CONFIG}"
 log "codebase-index config written → .opencode/codebase-index.json"
 info "Run /index inside OpenCode to build the initial codebase index."
