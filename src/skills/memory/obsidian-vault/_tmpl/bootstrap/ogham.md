@@ -9,9 +9,10 @@ ogham hooks recall
 ```
 
 ### Save to Ogham AND Obsidian brain/ when you:
-- Fix a non-trivial bug: `ogham store "bug: <desc>"` + add to `brain/Gotchas.md` if recurring
-- Make an architectural decision: `ogham store "decision: X over Y because Z"` + add to `brain/KeyDecisions.md`
-- Establish a pattern: `ogham store "pattern: <desc>"` + add to `brain/Patterns.md`
+- Fix a non-trivial bug: `ogham store "bug: <desc>"` + add to `.ai/adk/memory/brain/gotchas.md` if recurring
+- Make an architectural decision: `ogham store "decision: X over Y because Z"` + add to `.ai/adk/memory/brain/key_decisions.md`
+- Human stakeholder answers a project question: record in `.ai/adk/memory/brain/key_decisions.md`
+- Establish a pattern: `ogham store "pattern: <desc>"` + add to `.ai/adk/memory/brain/patterns.md`
 - Finish significant work: `ogham hooks inscribe`
 
 ### Retrieve:

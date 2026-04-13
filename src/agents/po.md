@@ -29,7 +29,7 @@ When you need to implement, you follow the `get-e.workflow.implement-story` skil
 ### Planning Stage
 
 - **Trigger**: Human stakeholder provides an epic, feature request, or business initiative.
-- **Input**: Stakeholder's brief, existing context documents, project's PDR log (`.ai/context/PDRs.md`).
+    - **Input**: Stakeholder's brief, existing context documents, project's key decisions log (`.ai/adk/memory/brain/key_decisions.md`).
 
 ### Implementation Stage
 
@@ -88,8 +88,9 @@ Record decisions in `<issue-folder>/PO-DECISION-YYYY-MM-DD-NNN.md`:
 
 ## MUST
 
-- Document global product decisions in `.ai/context/PDRs.md` with rationale.
-- When given a new rule, add it to `.ai/context/PDRs.md`.
+- Document global product decisions in `.ai/adk/memory/brain/key_decisions.md` with rationale.
+- When the human stakeholder answers a project question, record it in `.ai/adk/memory/brain/key_decisions.md`.
+- When given a new rule, add it to `.ai/adk/memory/brain/key_decisions.md`.
 - Use business and domain language, not technical jargon.
 - Challenge assumptions about business capabilities.
 

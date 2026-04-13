@@ -1,18 +1,18 @@
 ## Obsidian — Curated Knowledge Vault
 
-Obsidian holds the project's curated knowledge: goals, architectural decisions, patterns, gotchas, and in-progress work notes. It is the source of truth for long-lived human-readable knowledge.
+Obsidian holds the project's curated knowledge: architectural decisions, patterns, gotchas, and in-progress work notes. It is the source of truth for long-lived human-readable knowledge.
 
 ### Every session start:
-Read `<project>/brain/NorthStar.md` from the vault — this sets goals, focus, and off-limits areas.
+Read `.ai/adk/memory/brain/memories.md` — this is the index of all knowledge topics for this project.
 
 ### Vault structure (per project):
 ```
-<project>/
+.ai/adk/memory/
   brain/
-    NorthStar.md       ← current goals, focus, off-limits — READ THIS FIRST
-    KeyDecisions.md    ← architectural decisions with rationale
-    Patterns.md        ← established codebase patterns
-    Gotchas.md         ← known traps and constraints
+    memories.md        ← knowledge index — READ THIS FIRST
+    key_decisions.md   ← architectural decisions + human stakeholder answers
+    patterns.md        ← established codebase patterns
+    gotchas.md         ← known traps and constraints
   work/
     active/            ← in-progress notes (1-3 files max)
     archive/YYYY/      ← completed notes by year
@@ -22,10 +22,10 @@ Read `<project>/brain/NorthStar.md` from the vault — this sets goals, focus, a
 ```
 
 ### Save to brain/ when you:
-- Make an architectural decision → append to `brain/KeyDecisions.md`
-- Establish a codebase pattern → append to `brain/Patterns.md`
-- Find a trap or constraint → append to `brain/Gotchas.md`
-- Goals or focus shift → update `brain/NorthStar.md`
+- Make an architectural decision → append to `.ai/adk/memory/brain/key_decisions.md`
+- Human stakeholder answers a project question → append to `.ai/adk/memory/brain/key_decisions.md`
+- Establish a codebase pattern → append to `.ai/adk/memory/brain/patterns.md`
+- Find a trap or constraint → append to `.ai/adk/memory/brain/gotchas.md`
 
 ### Retrieval rules:
 - **brain/ files**: read directly — always relevant, no search needed

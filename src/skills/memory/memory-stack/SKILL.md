@@ -10,6 +10,7 @@ description: "Use at session start and when deciding what to store or retrieve. 
 ogham use <project-name>
 ogham hooks recall
 ```
+Read `.ai/adk/memory/brain/memories.md` — knowledge index for this project.
 
 ## Step 2 — Self-initialize once per project (check each time, build if missing):
 
@@ -30,10 +31,10 @@ ogham hooks recall
 ## Step 3 — Retrieval priority:
 | Question type | Tool |
 |---|---|
-| Memory topics / knowledge index | Read `brain/memories.md` directly |
-| Architectural decisions + rationale | Read `brain/key_decisions.md` directly |
-| Codebase patterns | Read `brain/patterns.md` directly |
-| Known traps and constraints | Read `brain/gotchas.md` directly |
+| Knowledge index | Read `.ai/adk/memory/brain/memories.md` directly |
+| Architectural decisions + stakeholder answers | Read `.ai/adk/memory/brain/key_decisions.md` directly |
+| Codebase patterns | Read `.ai/adk/memory/brain/patterns.md` directly |
+| Known traps and constraints | Read `.ai/adk/memory/brain/gotchas.md` directly |
 | Architecture, relationships, god nodes | `graphify query "<question>"` |
 | Code by meaning ("find auth logic") | codebase-index (ask naturally) |
 | Past decisions/bugs this project | `ogham search "<keywords>"` |
@@ -41,9 +42,10 @@ ogham hooks recall
 | Specs, ADRs, requirements | Obsidian vault search (follow obsidian-vault skill) |
 
 ## Step 4 — Save to BOTH Ogham AND Obsidian brain/ when:
-- Bug fixed (non-trivial): `ogham store "bug: <desc>"` + add to `brain/gotchas.md` if recurring
-- Decision made: `ogham store "decision: X over Y because Z"` + add to `brain/key_decisions.md`
-- Pattern established: `ogham store "pattern: <desc>"` + add to `brain/patterns.md`
+- Bug fixed (non-trivial): `ogham store "bug: <desc>"` + add to `.ai/adk/memory/brain/gotchas.md` if recurring
+- Decision made: `ogham store "decision: X over Y because Z"` + add to `.ai/adk/memory/brain/key_decisions.md`
+- Human stakeholder answers a project question: record in `.ai/adk/memory/brain/key_decisions.md`
+- Pattern established: `ogham store "pattern: <desc>"` + add to `.ai/adk/memory/brain/patterns.md`
 - Session ends with significant work: `ogham hooks inscribe`
 
 ## Never save: ls/git status/cat/pwd, secrets, trivial single-line edits
@@ -61,4 +63,4 @@ Follow the obsidian-vault skill wrap-up workflow:
 ogham use <new-project-name>
 ogham hooks recall
 ```
-Then read `<new-project>/brain/memories.md` and run Step 2 checks.
+Then read `.ai/adk/memory/brain/memories.md` and run Step 2 checks.

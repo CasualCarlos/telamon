@@ -7,14 +7,14 @@ description: "Use when reading, searching, or writing the Obsidian vault via obs
 
 ## Vault folder structure (per project)
 
-Each project lives in its own subfolder. Inside:
+Each project's vault lives at `.ai/adk/memory/` inside the project. Inside:
 
 ```
-<project>/
+.ai/adk/memory/
   bootstrap/         ← always loaded into context (treat as part of AGENTS.md)
   brain/
-    memories.md       ← index of memory topics (points to topic notes)
-    key_decisions.md  ← architectural decisions with rationale
+    memories.md       ← knowledge index — READ THIS FIRST
+    key_decisions.md  ← architectural decisions + human stakeholder answers
     patterns.md       ← established patterns in this codebase
     gotchas.md        ← known traps and constraints
   work/
@@ -43,10 +43,10 @@ Exception: the user explicitly names a file, or you're reading brain/ files at s
 
 ### Rule 2 — Direct reads for brain/ files
 brain/ files are small and always relevant — read them directly, no search needed:
-- `<project>/brain/memories.md` — read at session start
-- `<project>/brain/key_decisions.md` — read before architecture work
-- `<project>/brain/patterns.md` — read before writing new code
-- `<project>/brain/gotchas.md` — read before touching known problem areas
+- `.ai/adk/memory/brain/memories.md` — read at session start
+- `.ai/adk/memory/brain/key_decisions.md` — read before architecture work or when stakeholder answers are needed
+- `.ai/adk/memory/brain/patterns.md` — read before writing new code
+- `.ai/adk/memory/brain/gotchas.md` — read before touching known problem areas
 
 ### Rule 3 — Max 3 notes per task (non-brain)
 Pick top 3 by relevance score. Tell the user if truncated ("Found 7 notes, reading top 3").
@@ -76,15 +76,16 @@ Discard results with relevance score < 0.6. Say "No relevant notes found" and us
 ### Where to write things
 | Content | Location |
 |---|---|
-| Agent bootstrap instructions (always-on context) | `bootstrap/` |
-| Architectural decision + rationale | `brain/key_decisions.md` |
-| Codebase pattern established | `brain/patterns.md` |
-| Hidden trap or constraint found | `brain/gotchas.md` |
-| In-progress work note | `work/active/` |
-| Completed work note | `work/archive/YYYY/` |
-| Incident | `work/incidents/` |
-| Architecture doc | `reference/` |
-| Draft / reasoning scratchpad | `thinking/` (delete after promoting) |
+| Agent bootstrap instructions (always-on context) | `.ai/adk/memory/bootstrap/` |
+| Architectural decision + rationale | `.ai/adk/memory/brain/key_decisions.md` |
+| Human stakeholder answer to a project question | `.ai/adk/memory/brain/key_decisions.md` |
+| Codebase pattern established | `.ai/adk/memory/brain/patterns.md` |
+| Hidden trap or constraint found | `.ai/adk/memory/brain/gotchas.md` |
+| In-progress work note | `.ai/adk/memory/work/active/` |
+| Completed work note | `.ai/adk/memory/work/archive/YYYY/` |
+| Incident | `.ai/adk/memory/work/incidents/` |
+| Architecture doc | `.ai/adk/memory/reference/` |
+| Draft / reasoning scratchpad | `.ai/adk/memory/thinking/` (delete after promoting) |
 
 ### Never write:
 - Secrets, API keys, passwords
@@ -97,9 +98,10 @@ Discard results with relevance score < 0.6. Say "No relevant notes found" and us
 When the user says "wrap up", "let's wrap", "wrapping up", or similar — run this before ending:
 
 1. **Promote learnings to brain/**:
-   - New architectural decision → append to `brain/key_decisions.md`
-   - New codebase pattern → append to `brain/patterns.md`
-   - New gotcha or constraint → append to `brain/gotchas.md`
+   - New architectural decision → append to `.ai/adk/memory/brain/key_decisions.md`
+   - Human stakeholder answer → append to `.ai/adk/memory/brain/key_decisions.md`
+   - New codebase pattern → append to `.ai/adk/memory/brain/patterns.md`
+   - New gotcha or constraint → append to `.ai/adk/memory/brain/gotchas.md`
 
 2. **Archive completed work**:
    - Move completed `work/active/` notes to `work/archive/YYYY/`

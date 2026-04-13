@@ -1,0 +1,162 @@
+---
+name: get-e.changeset-review
+description: "Reviews a code changeset against a plan and project conventions. Use when reviewing code changes from a developer, after implementation is complete and ready for review."
+---
+
+# Skill: Changeset Review
+
+Systematic code review of a changeset against an architect's plan and project conventions.
+
+## When to Apply
+
+- After a developer signals task completion and readiness for review
+- When reviewing a PR or code changeset before merge
+
+## Review Workflow
+
+Execute these steps in order before writing any review report.
+
+### 0. Run the Test Suite
+
+Run the test command. Record pass/fail, number of tests, failures. Failing tests are an automatic BLOCKER. Complete remaining steps regardless.
+
+### 1. Parameter & Argument Integrity
+
+For every added or modified method:
+- Verify every parameter is used in the method body. Flag parameters silently ignored in favour of hardcoded values.
+- Verify call-site arguments match the parameter's semantic intent, not just its type.
+
+### 2. Dead Code & Orphaned References
+
+When a class, method, or interface is deleted or renamed:
+- Search the entire codebase for remaining references (DI bindings, config, architectural rules, baselines, routes, docs).
+- Check for orphaned imports and dead container bindings.
+
+### 3. Dependency Wiring Completeness
+
+When constructor or factory signatures change:
+- Verify all container bindings, registrations, and factories supply the new parameters.
+- Verify variadic/collection parameters are wired, not silently defaulting to empty.
+
+### 4. Import Hygiene
+
+After any file modification:
+- No unused imports remaining.
+- No missing imports for newly referenced symbols.
+
+### 5. Cross-file Rename Consistency
+
+When any symbol is renamed:
+- Search all file types (source, config, YAML, JSON, TOML, Markdown, architectural rules, baselines).
+- Verify references in comments, doc tags, and string-based references are updated.
+
+### 6. Test Assertion Completeness
+
+For every added or modified test method:
+- Verify every assertion matches what the method name claims.
+- Flag any test whose name states an ordering, cardinality, or conditional but whose body only asserts existence or non-null.
+- Example violation: name says "after" or "before" but body never compares positions.
+
+**Test coverage regression check** — When an existing test is modified, compare the set of assertions before and after:
+- If assertions were removed or narrowed (e.g. full-row content comparison reduced to header-only), flag it as a WARNING unless the test's name was also updated to reflect the reduced scope.
+- A test named `amounts_are_converted_using_billing_rate` that no longer asserts anything about amounts or conversion is a BLOCKER — the test name makes a promise the body must keep.
+- Fixture files (`*.csv`, `*.json`, `*.xml`, snapshot files) that are updated in the changeset but are no longer loaded by any test are dead fixtures — flag as WARNING and require deletion or re-use.
+
+### 7. Static Analysis Baseline Hygiene
+
+When `phparkitect.baseline.json`, `phpstan-baseline.neon`, or any other static-analysis baseline file is modified:
+- Any new entry added is a BLOCKER — the architecture rule states baselines must not grow (see ARCHITECTURE.md "Do not add issues to static analysis tools baselines").
+- Accept only removals. Require the developer to fix the violation or update the architectural rule instead.
+
+### 8. Decorator & Wrapper Integrity
+
+When a decorator or wrapper class forwards calls to an inner dependency:
+- Every parameter of the decorated method must be forwarded — flag any that are silently dropped.
+- When an inner method's signature has de-facto convention parameters not declared in the interface (e.g. `$index` on `Queue::pop()`), verify the decorator forwards them so the inner object's behaviour is not silently broken.
+
+### 9. State-Machine Reset Placement
+
+When a method maintains mutable state that accumulates across calls and resets on a condition:
+- Verify the reset fires on the correct branch. Resetting on the job-found path (early return) when the intent is to reset only on completion (null/empty path) is a BLOCKER — it discards state that was intentionally accumulated.
+- Verify that every caller path that should seed the accumulator does so before it is consumed. A conditional seed (`if empty → seed`) that leaves the accumulator stale when it is non-empty is a BLOCKER.
+
+### 10. Utility Method Abstraction Bypass
+
+When a method calls a sibling method to reuse logic, verify the sibling's internal invariants hold for every call sequence the caller produces.
+- If the sibling has its own state machine, check that the caller does not drive it into an inconsistent state (e.g. pre-registering side-channel entries that are then consumed out of order).
+- Prefer direct computation over indirect state manipulation when the sibling's state machine was not designed for external driving.
+
+### 11. N+1 Query Regression
+
+When a changeset introduces a bulk-load (e.g. `whereIn`, `with()`, eager loading) to avoid per-row queries:
+- Search the entire flow for any remaining call that lazily loads the same relation on individual models (e.g. `$model->relation` inside a loop, or a called method that accesses `$model->relation` internally).
+- A bulk-load that coexists with a per-row lazy load of the same relation in the same pipeline is a WARNING — the optimization is incomplete and N+1 queries still occur.
+- Check called methods (not just inline code) — a helper like `fromBillingTrip()` may load `$billingTrip->trip` even if the handler pre-fetches trips separately.
+
+### 12. `@phpstan-ignore` and Type-Masking
+
+When a `@phpstan-ignore` or `@phpstan-ignore-next-line` comment is added or already present on modified code:
+- Identify what error is being suppressed and whether it indicates a genuine type mismatch rather than a PHPStan false positive.
+- Under `strict_types=1`, passing a `string` where `int` is declared raises a `TypeError` at runtime. Eloquent commonly returns numeric strings for integer columns when the attribute lacks a cast. A callback typed as `fn (int $id)` applied to a plucked integer column is unsafe without a cast — flag as WARNING and suggest `fn (string|int $id): T => new T((int) $id)`.
+- An `@phpstan-ignore` that hides a real type mismatch rather than a PHPStan false positive is a WARNING, not an acceptable suppression.
+
+## Review Report
+
+Save to `<issue-folder>/REVIEW-YYYY-MM-DD-NNN.md`.
+
+### Template
+
+> # Review Report
+>
+> **Verdict**: APPROVED | CHANGES REQUESTED | ESCALATED
+>
+> - **Test Suite** — Pass/fail, test count, failures.
+> - **Plan Compliance** — Does implementation match the plan? All steps complete? Unauthorized deviations?
+> - **Directory Structure** — File layout matches architecture document?
+> - **Domain Quality** — Rich models (not anemic)? Value Objects for domain concepts? Classes sealed/final?
+> - **Port Contracts** — Typed DTOs? No raw arrays crossing boundaries? Cross-layer exceptions at port level? No transport leaks?
+> - **Application Boundary** — DTOs returned (not domain entities) to presentation?
+> - **Parameter & Argument Integrity** — Parameters used? Arguments semantically correct?
+> - **Dead Code & Orphaned References** — Old references removed across entire codebase?
+> - **Dependency Wiring** — Registrations updated for new parameters? Variadic params wired?
+> - **Import Hygiene** — No unused or missing imports?
+> - **Cross-file Rename Consistency** — All references updated across all file types?
+> - **Test Quality** — Descriptive names? Comprehensive coverage? Reusable named test doubles? Assertions match method name claims (ordering, cardinality, conditions)? No coverage regression (assertions not removed or narrowed without updating the test name)? No orphaned fixture files?
+> - **Static Analysis Baseline Hygiene** — No new entries added to any baseline file?
+> - **Decorator & Wrapper Integrity** — All parameters forwarded through decorators? De-facto convention params forwarded?
+> - **State-Machine Reset Placement** — Resets on the correct branch? Every path that should seed the accumulator does so?
+> - **Utility Method Abstraction Bypass** — Sibling method state machine not driven into inconsistent state?
+> - **N+1 Query Regression** — Bulk-loads not undermined by remaining per-row lazy loads in the same pipeline (including in called helper methods)?
+> - **`@phpstan-ignore` and Type-Masking** — Suppressions masking real type mismatches (e.g. `string` vs `int` under `strict_types=1`) rather than PHPStan false positives?
+> - **Code Style** — Symbols imported? No FQCNs inline? Explicit guards? Sealed/final convention?
+> - **Role Compliance** — All code changes made by the Developer?
+> - **Documentation** — Manual config steps documented? Obsolete steps removed?
+>
+> ## Findings
+>
+> _If none: "No findings. All checks passed."_
+>
+> ### Finding <n>: <Title>
+> - **Severity**: BLOCKER | WARNING | INFO
+> - **File path**:
+> - **Problem found**:
+> - **Why it matters**:
+> - **Correct approach**:
+>
+> ## Tools used
+>
+> ### SKILLS
+> List skills used by the agent while doing the review, or "None."
+>
+> ### MCP tools
+> List MCP tools used by the agent while doing the review, or "None."
+
+### Severity Definitions
+
+- **BLOCKER** — Must fix before merge. Breaks functionality, fails tests, or violates a hard architectural rule.
+- **WARNING** — Should fix. Violates conventions or likely to cause issues. When in doubt vs BLOCKER, choose BLOCKER.
+- **INFO** — Consider fixing. Style or readability improvement with no functional impact.
+
+### Handling No Findings
+
+When verdict is APPROVED, still produce the full report with every section addressed. Mark each section with "No issues found." This confirms the check was performed.
