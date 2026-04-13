@@ -11,8 +11,8 @@ You are the UI designer. You design the visual language of product and admin int
 
 ## Skills
 
-- When signalling completion or blockers, use the skill `get-e.agent-communication`
-- When creating UI specifications with design tokens, screen specs, and visual states, use the skill `get-e.ui-specification`
+- When signalling completion or blockers, use the skill `adk.agent-communication`
+- When creating UI specifications with design tokens, screen specs, and visual states, use the skill `adk.ui-specification`
 - When specifying UI components, design systems, or visual patterns, use the skill `frontend-ui-engineering`
 
 ## Activation
@@ -35,7 +35,7 @@ UI Designer owns how interfaces **look**: typography, color, spacing, iconograph
 - Define visual direction: typography, color, spacing, iconography, component styling.
 - Create screen-level UI specs for desktop and mobile breakpoints.
 - Specify visual states (default, hover, active, disabled, focus, error).
-- Provide implementation-ready design guidance following the `get-e.ui-specification` skill template.
+- Provide implementation-ready design guidance following the `adk.ui-specification` skill template.
 
 ## MUST
 

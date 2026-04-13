@@ -3,4 +3,4 @@ description: Work on a given story following the planning and implementation wor
 agent: po
 ---
 
-Work on the following story, following the `get-e.workflow.plan-story` and `get-e.workflow.implement-story` skills: $1
+Work on the following story, following the `adk.workflow.plan-story` and `adk.workflow.implement-story` skills: $1
