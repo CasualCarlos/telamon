@@ -9,11 +9,23 @@ Run this before compaction or when wrapping up a session. It combines memory pro
 
 ## 0. Check Last-Capture Watermark
 
-Before scanning anything, check `.ai/adk/memory/thinking/.last-capture`:
-- If it **exists**: only process content produced *after* the `timestamp` recorded there. Use `git log --oneline --after="<timestamp>" --no-merges` to scope commit history. Skip anything already filed.
-- If it **does not exist**: this is the first capture — process all session content.
+Watermark files are scoped per git worktree so concurrent agents in different
+worktrees track their own capture history independently.
 
-(When triggered via the compaction plugin, the scope is already injected into the prompt — no need to re-read the file.)
+Find the watermark for the current worktree:
+`.ai/adk/memory/thinking/.last-capture-<worktree-dirname>.json`
+
+Where `<worktree-dirname>` is the lowercase basename of the current working
+directory (e.g. `my-project`, `my-project-feat-auth`).
+
+- If the file **exists**: only process content produced *after* the `timestamp`
+  recorded there. Use `git log --oneline --after="<timestamp>" --no-merges` to
+  scope commit history. Skip anything already filed.
+- If it **does not exist**: this is the first capture for this worktree —
+  process all session content.
+
+(When triggered via the compaction plugin, the watermark path and scope clause
+are already injected into the prompt — no need to re-read the file.)
 
 ## 1. Identify What Happened
 
