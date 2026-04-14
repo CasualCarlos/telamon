@@ -22,7 +22,7 @@ All tools run locally. No data leaves your machine.
 ## Tools
 
 ### Tier 1 — Highest ROI
-- Ogham + Postgres + Ollama
+- [Ogham MCP](https://ogham-mcp.dev) + Postgres + Ollama
   The single biggest gain for multi-project work. Large codebases accumulate years of tribal knowledge,
   without persistent memory the agent rediscovers all of it every session.
 - Intelephense LSP
@@ -35,19 +35,22 @@ All tools run locally. No data leaves your machine.
   and key contacts is worth more than any indexing tool on a project the agent hasn't seen before.
 
 ### Tier 2 — High value, worth the setup cost
-- Graphify
+- [Graphify](https://github.com/safishamsi/graphify)
   Particularly valuable for large legacy codebases where nobody has a complete mental model anymore.
   God nodes alone — knowing which classes everything routes through — prevents the agent from making changes in the wrong place.
   The OpenCode plugin means it fires automatically. One upfront LLM cost, then git hooks keep it current.
-- opencode-codebase-index
+- [RTK](https://github.com/rtk-ai/rtk)
+  Removes useless tokens from commonly used cli tools output.
+  Highest ROI for token efficiency — zero config, immediate, compounds with all other tools
+- [opencode-codebase-index](https://github.com/Helweg/opencode-codebase-index)
   Complements Graphify. Graphify tells you the structure, codebase-index lets you find code by meaning.
   "Find all places we handle currency conversion" works even if the functions aren't named obviously.
   Each project gets its own local index.
 
-### Tier 3 — Useful but optional
-- cass
+### Tier 3 — Useful
+- [Cass](https://github.com/dicklesworthstone/coding_agent_session_search)
   Uses the history of past sessions to draw from.
-- Obsidian MCP
+- [Obsidian MCP](https://hub.docker.com/r/oleksandrkucherenko/obsidian-mcp) & [Obsidian Mind](https://github.com/breferrari/obsidian-mind?tab=readme-ov-file)
   High value if you actually maintain notes. If nobody writes docs it adds nothing.
 - Specialized agents
   The gains from routing planning to a smarter model and execution to a cheaper one compound with project size.
@@ -409,4 +412,9 @@ Makefile                     # up, down, purge, restart, status, doctor, update,
 ## Acknowledgements and References
 
 - [Obsidian Mind](https://github.com/breferrari/obsidian-mind?tab=readme-ov-file)
-- 
+- [Cass](https://github.com/dicklesworthstone/coding_agent_session_search)
+- [Addy Osmani Skills](https://github.com/addyosmani/agent-skills)
+- [Codebase Index](https://github.com/Helweg/opencode-codebase-index)
+- [Graphify](https://github.com/safishamsi/graphify)
+- [Ogham MCP](https://ogham-mcp.dev)
+- [RTK](https://github.com/rtk-ai/rtk)
