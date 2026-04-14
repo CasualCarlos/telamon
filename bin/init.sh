@@ -74,8 +74,8 @@ else
     mkdir -p "${dest_dir}"
 
     if [[ "$(basename "${tmpl_file}")" == ".gitkeep" ]]; then
-      # Directory placeholder → real empty file (no value in symlinking these)
-      touch "${dest}"
+      # Directory placeholder — the dir was already created by mkdir -p; skip
+      continue
     elif grep -q "PROJECT_NAME\|DATE_PLACEHOLDER" "${tmpl_file}" 2>/dev/null; then
       # File has placeholders → real copy with substitution
       cp "${tmpl_file}" "${dest}"
