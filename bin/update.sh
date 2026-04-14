@@ -176,6 +176,25 @@ else
   _skip_tool "npm"
 fi
 
+# ── QMD ────────────────────────────────────────────────────────────────────────
+header "QMD (semantic vault search)"
+
+if command -v qmd &>/dev/null; then
+  step "Upgrading QMD via npm..."
+  npm install -g @tobilu/qmd --quiet 2>/dev/null \
+    && log "qmd → $(qmd --version 2>/dev/null || echo 'updated')" \
+    || _fail "QMD upgrade failed — try: npm install -g @tobilu/qmd"
+
+  step "Refreshing QMD vault index..."
+  if qmd update 2>/dev/null && qmd embed 2>/dev/null; then
+    log "QMD vault index refreshed"
+  else
+    warn "QMD re-index did not complete cleanly — run manually: qmd update && qmd embed"
+  fi
+else
+  _skip_tool "qmd"
+fi
+
 # ── Summary ────────────────────────────────────────────────────────────────────
 echo
 echo -e "${TEXT_BOLD}${TEXT_GREEN}══════════════════════════════════════════${TEXT_CLEAR}"

@@ -143,6 +143,14 @@
         "API_KEY": "{file:.ai/adk/secrets/obsidian-api-key}",
         "API_URLS": "[\"https://host.docker.internal:27124\"]"
       }
+    },
+    "qmd": {
+      "type": "local",
+      "command": [
+        "qmd",
+        "mcp"
+      ],
+      "enabled": true
     }
   }
 }

@@ -1,6 +1,6 @@
 ---
 name: memory-stack
-description: "Use at session start and when deciding what to store or retrieve. Covers Ogham (agent memory), codebase-index (code search), cass (session history), graphify (knowledge graph), and Obsidian (docs vault + brain/ notes). Trigger: session start, 'remember this', 'what did we decide', 'search the codebase', 'wrap up', or after completing significant work."
+description: "Use at session start and when deciding what to store or retrieve. Covers Ogham (agent memory), codebase-index (code search), cass (session history), graphify (knowledge graph), QMD (vault semantic search), and Obsidian (docs vault + brain/ notes). Trigger: session start, 'remember this', 'what did we decide', 'search the codebase', 'wrap up', or after completing significant work."
 ---
 
 # Memory Stack — Session Rules
@@ -11,6 +11,16 @@ ogham use <project-name>
 ogham hooks recall
 ```
 Read `.ai/adk/memory/brain/memories.md` — knowledge index for this project.
+
+Run QMD incremental update to keep vault index current:
+```bash
+qmd update && qmd embed
+```
+Then query for recent relevant context:
+```bash
+qmd query "what was the last major decision we made" -n 5
+qmd query "what patterns and gotchas should I know" -n 5
+```
 
 ## Step 2 — Self-initialize once per project (check each time, build if missing):
 
@@ -37,6 +47,7 @@ Read `.ai/adk/memory/brain/memories.md` — knowledge index for this project.
 | Architectural decisions + stakeholder answers | Read `.ai/adk/memory/brain/key_decisions.md` directly |
 | Codebase patterns | Read `.ai/adk/memory/brain/patterns.md` directly |
 | Known traps and constraints | Read `.ai/adk/memory/brain/gotchas.md` directly |
+| Vault semantic search ("did we ever…") | `qmd query "<question>" -n 10` (load `adk.qmd` skill for full guide) |
 | Architecture, relationships, god nodes | `graphify query "<question>"` |
 | Code by meaning ("find auth logic") | codebase-index (ask naturally) |
 | Past decisions/bugs this project | `ogham search "<keywords>"` |

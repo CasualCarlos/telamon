@@ -51,6 +51,8 @@ All tools run locally. No data leaves your machine.
 ### Tier 3 — Useful
 - [Cass](https://github.com/dicklesworthstone/coding_agent_session_search)
   Uses the history of past sessions to draw from.
+- [QMD](https://github.com/tobi/qmd)
+  Semantic search over the Obsidian vault using local GGUF models. The `bootstrap/` folder is excluded (it's loaded directly like AGENTS.md); `brain/`, `work/`, `reference/`, and `thinking/` are each a separate collection. Exposed as an MCP server.
 - [Obsidian MCP](https://hub.docker.com/r/oleksandrkucherenko/obsidian-mcp) & [Obsidian Mind](https://github.com/breferrari/obsidian-mind?tab=readme-ov-file)
   High value if you actually maintain notes. If nobody writes docs it adds nothing.
 - Specialized agents
@@ -129,6 +131,20 @@ Useful for recovering context from previous sessions: *"what did we decide about
 
 - Built once with `cass index --full`; a **post-commit git hook** installed by `make init` runs `cass index` incrementally after every commit to keep the index current
 - Search with `cass search --robot "<topic>"` (the `--robot` flag is required — bare `cass search` launches a blocking interactive TUI)
+
+---
+
+### 🔎 QMD — Vault Semantic Search
+[qmd](https://github.com/tobi/qmd)
+
+Provides semantic (vector) search over the ADK Obsidian vault using **fully local GGUF models** (~2 GB, auto-downloaded on first use). Stores a global index at `~/.cache/qmd/index.sqlite`.
+
+- One named collection per vault section: `<project>-brain`, `<project>-work`, `<project>-reference`, `<project>-thinking`
+- The `bootstrap/` folder is intentionally excluded — it is already loaded via AGENTS.md and does not benefit from search
+- Exposed as an MCP server (`qmd mcp`) with `query`, `get`, `multi_get`, and `status` tools
+- Search by natural language question: `qmd query "what did we decide about caching?" -n 10`
+- Use **before** reading vault files directly to avoid redundant context loading
+- `qmd update && qmd embed` keeps the index current (fast incremental refresh)
 
 ---
 
@@ -217,8 +233,10 @@ A skill that switches the agent into an ultra-compressed communication mode — 
 |---|---|---|
 | **Session start** | Ogham | Recalls past decisions, bugs, and patterns for this project |
 | **Session start** | Obsidian `brain/` | Loads goals, decisions, patterns, and known gotchas |
+| **Session start** | QMD | Semantic vault search — surfaces related context before diving in |
 | **Understanding code** | Graphify | Structural map: layers, god nodes, module relationships |
 | **Finding code** | Codebase Index | Semantic search: *"where is the auth logic?"* |
+| **Finding vault notes** | QMD | Semantic vault search: *"did we ever deal with X?"* |
 | **Recovering past context** | cass | Searches previous agent session transcripts |
 | **Writing code** | RTK | Compresses bash output to save tokens |
 | **Long sessions** | Caveman | Reduces response verbosity ~75% on demand |
@@ -268,6 +286,7 @@ This will:
 - Install the **Graphify** git hook and OpenCode plugin in the project
 - Install the **session-capture** OpenCode plugin in the project (auto-captures before compaction)
 - Install the **cass** post-commit git hook in the project (incremental index after every commit)
+- Register **QMD** vault collections (`<project>-brain`, `-work`, `-reference`, `-thinking`) and build the initial semantic index
 
 After this, when `opencode` starts in the project, it automatically loads the ADK context and skills.
 
@@ -302,6 +321,12 @@ Then check and build (once each, if missing):
 - Graphify knowledge graph: `graphify .`
 - Codebase index: `index_codebase` tool
 - cass index (first time only): `cass index --full`
+
+Then run QMD incremental refresh and surface recent context:
+```bash
+qmd update && qmd embed
+qmd query "what patterns and gotchas should I know" -n 5
+```
 
 ---
 
@@ -405,6 +430,7 @@ src/
       memory-stack/SKILL.md  # session-start memory bootstrap skill
       session-capture/SKILL.md  # pre-compaction + wrap-up memory capture skill
       cass/SKILL.md          # cass usage skill (downloaded from upstream on install/update)
+      qmd/SKILL.md           # QMD vault semantic search skill (downloaded or bundled)
       graphify/SKILL.md      # codebase knowledge graph skill
       obsidian-vault/        # vault skill + vault scaffold template
         SKILL.md
@@ -461,6 +487,7 @@ src/
     graphify/                # graphify binary + per-project git hook + opencode plugin
     cass/                    # cass binary + skill download + init-project.sh (post-commit hook)
     caveman/                 # caveman skill download (no binary)
+    qmd/                     # qmd binary install + skill download + init-project.sh (vault collections)
     rtk/                     # RTK binary + opencode plugin wiring
     opencode/                # opencode binary + shared storage/opencode.jsonc template
     codebase-index/          # MCP registration + per-project codebase-index.json
@@ -494,6 +521,7 @@ Makefile                     # up, down, purge, restart, status, doctor, update,
 - [Caveman](https://github.com/JuliusBrussee/caveman)
 - [Obsidian Mind](https://github.com/breferrari/obsidian-mind?tab=readme-ov-file)
 - [Cass](https://github.com/dicklesworthstone/coding_agent_session_search)
+- [QMD](https://github.com/tobi/qmd)
 - [Addy Osmani Skills](https://github.com/addyosmani/agent-skills)
 - [Codebase Index](https://github.com/Helweg/opencode-codebase-index)
 - [Graphify](https://github.com/safishamsi/graphify)
