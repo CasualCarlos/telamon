@@ -31,6 +31,34 @@ SKIPPED=0
 _fail()    { echo -e "  ${TEXT_RED}✖${TEXT_CLEAR}  $1"; FAILED=$((FAILED + 1)); }
 _skip_tool() { echo -e "  ${TEXT_DIM}–  $1 (not installed — skipping)${TEXT_CLEAR}"; SKIPPED=$((SKIPPED + 1)); }
 
+# ── ADK repo self-update ───────────────────────────────────────────────────────
+header "ADK repo"
+
+_STASHED=0
+if git -C "${ADK_ROOT}" diff --quiet && git -C "${ADK_ROOT}" diff --cached --quiet; then
+  skip "stash (nothing to stash)"
+else
+  step "Stashing local changes..."
+  git -C "${ADK_ROOT}" stash push --include-untracked -m "update.sh auto-stash" \
+    && log "Changes stashed" \
+    && _STASHED=1 \
+    || _fail "git stash failed — aborting rebase"
+fi
+
+if [[ "${FAILED}" -eq 0 ]]; then
+  step "Rebasing onto origin..."
+  git -C "${ADK_ROOT}" pull --rebase \
+    && log "Rebased onto $(git -C "${ADK_ROOT}" rev-parse --abbrev-ref HEAD)" \
+    || _fail "git pull --rebase failed — resolve conflicts, then run 'git stash pop' if needed"
+fi
+
+if [[ "${_STASHED}" -eq 1 && "${FAILED}" -eq 0 ]]; then
+  step "Restoring stashed changes..."
+  git -C "${ADK_ROOT}" stash pop \
+    && log "Stash restored" \
+    || _fail "git stash pop failed — resolve conflicts manually"
+fi
+
 # ── Homebrew ───────────────────────────────────────────────────────────────────
 header "Package managers"
 
