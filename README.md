@@ -13,6 +13,7 @@ tools for software development. It provides:
 - **Codebase understanding** — semantic code search and a structural knowledge graph
 - **Curated knowledge vault** — human-readable notes that survive model resets
 - **Session recall** — searchable history of every past agent conversation
+- **Automatic session capture** — learnings are promoted to memory before context is compacted
 - **Token efficiency** — automatic compression of context sent to the LLM
 
 All tools run locally. No data leaves your machine.
@@ -73,8 +74,7 @@ Exposed to the agent via an MCP server.
 ### 🗺️ Graphify — Codebase Knowledge Graph
 [graphify](https://github.com/graphifyy/graphifyy)
 
-Builds a structural knowledge graph of the codebase. Identifies god nodes, architectural layers, c
-all relationships, and module boundaries. 
+Builds a structural knowledge graph of the codebase. Identifies god nodes, architectural layers, call relationships, and module boundaries. 
 Maintained automatically via git hooks after the initial build.
 
 - Built once with `graphify .`; git hooks keep it current after every commit
@@ -122,13 +122,25 @@ Obsidian must be installed separately (see [Prerequisites](#prerequisites)).
 ---
 
 ### 🗂️ cass — Agent Session History Search
-[cass](https://github.com/dicklesworthstone/cass)
+[cass](https://github.com/dicklesworthstone/coding_agent_session_search)
 
 Indexes past agent session conversations and makes them full-text searchable. 
 Useful for recovering context from previous sessions: *"what did we decide about the payment flow last week?"*
 
 - Built once with `cass index`; updates automatically
-- Search with `cass search "<topic>"`
+- Search with `cass search --robot "<topic>"` (the `--robot` flag is required — bare `cass search` launches a blocking interactive TUI)
+
+---
+
+### 📸 Session Capture — Automatic Memory Promotion
+
+An OpenCode plugin that fires before every context compaction and on explicit wrap-up. 
+It promotes session learnings to the vault's `brain/` notes and Ogham automatically — no manual intervention needed.
+
+- **Pre-compaction hook**: runs before the LLM generates a compaction summary; ensures nothing is lost when the context window shrinks
+- **Wrap-up trigger**: say *"wrap up"* to run a full capture pass at any time
+- **Per-worktree watermark**: tracks what has already been captured so concurrent agents in different git worktrees don't duplicate entries
+- Routes content to the right destination automatically: decisions → `key_decisions.md`, patterns → `patterns.md`, bugs → `gotchas.md`, etc.
 
 ---
 
@@ -140,6 +152,18 @@ Installed as an opencode plugin that auto-patches shell commands.
 
 - Installed globally and wired into opencode automatically (`rtk init -g --opencode --auto-patch`)
 - No configuration needed; works transparently
+
+---
+
+### 🪨 Caveman — Token-Efficient Communication Mode
+[caveman](https://github.com/JuliusBrussee/caveman)
+
+A skill that switches the agent into an ultra-compressed communication mode — ~75% token reduction while keeping full technical accuracy. Useful for long sessions or when you want brief, direct answers.
+
+- Activate by saying *"caveman mode"*, *"less tokens"*, or `/caveman`
+- Supports intensity levels: `lite`, `full` (default), `ultra`, `wenyan-lite`, `wenyan-full`, `wenyan-ultra`
+- Automatically drops filler, articles, and pleasantries; technical terms and code blocks are unchanged
+- Deactivate with *"stop caveman"* or *"normal mode"*
 
 ---
 
@@ -178,6 +202,11 @@ Installed as an opencode plugin that auto-patches shell commands.
 │  │                   Host CLI Tools                          │  │
 │  │  graphify  ·  cass  ·  rtk  ·  ogham                      │  │
 │  └───────────────────────────────────────────────────────────┘  │
+│                                                                 │
+│  ┌────────────────────────────────────────────────────────────┐  │
+│  │              OpenCode Plugins (always-on)                  │  │
+│  │  session-capture  ·  graphify  ·  rtk                      │  │
+│  └────────────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -191,8 +220,10 @@ Installed as an opencode plugin that auto-patches shell commands.
 | **Finding code** | Codebase Index | Semantic search: *"where is the auth logic?"* |
 | **Recovering past context** | cass | Searches previous agent session transcripts |
 | **Writing code** | RTK | Compresses bash output to save tokens |
+| **Long sessions** | Caveman | Reduces response verbosity ~75% on demand |
 | **After significant work** | Ogham | Stores new decisions, patterns, bug fixes |
 | **After significant work** | Obsidian | Promotes learnings to `brain/` notes |
+| **Before compaction** | Session Capture | Auto-promotes learnings; runs before every context compaction |
 | **End of session** | Ogham + Obsidian | Inscribes session summary; archives completed work notes |
 
 ---
@@ -233,6 +264,8 @@ This will:
   - `reference/` and `thinking/` folders
 - Symlink `<project>/.opencode/skills/adk` → `<adk-root>/src/skills` (agent skills)
 - Write `<project>/.ai/adk/adk.ini` with the project name variable
+- Install the **Graphify** git hook and OpenCode plugin in the project
+- Install the **session-capture** OpenCode plugin in the project (auto-captures before compaction)
 
 After this, when `opencode` starts in the project, it automatically loads the ADK context and skills.
 
@@ -276,7 +309,7 @@ The agent automatically:
 - Searches Ogham before repeating known work: `ogham search "<topic>"`
 - Searches the codebase semantically via the codebase-index MCP
 - Queries Graphify for architectural context: `graphify query "<question>"`
-- Searches past sessions when needed: `cass search "<topic>"`
+- Searches past sessions when needed: `cass search --robot "<topic>"`
 - Reads `brain/NorthStar.md` to stay aligned with goals
 
 ---
@@ -292,6 +325,8 @@ The agent saves to **both** Ogham (fast semantic recall) and Obsidian `brain/` (
 | Pattern established | `ogham store "pattern: <desc>"` | Append to `brain/Patterns.md` |
 | Session ends | `ogham hooks inscribe` | Archive completed `work/active/` notes |
 
+The **session-capture plugin** handles this automatically before every compaction. On explicit wrap-up it also presents a summary of what was saved.
+
 ---
 
 ### 7. Wrap-up
@@ -301,6 +336,8 @@ When you say *"wrap up"* the agent will:
 2. Archive completed `work/active/` notes to `work/archive/YYYY/`
 3. Run `ogham hooks inscribe` to save the session summary
 4. Report what was saved
+
+> This also runs automatically before every context compaction via the session-capture plugin.
 
 ---
 
@@ -348,7 +385,7 @@ The Obsidian API key comes from: *Obsidian → Settings → Community Plugins �
 
 ```
 bin/
-  init.sh                    # project initialiser (brain scaffold + symlinks)
+  init.sh                    # project initialiser (brain scaffold + symlinks + plugins)
   install.sh                 # orchestrator: --pre-docker, --post-docker phases
   update.sh                  # upgrades all ADK-managed tools to latest versions
   doctor.sh                  # comprehensive health check (connectivity, config, secrets)
@@ -362,16 +399,56 @@ src/
     obsidian.md              # how to use the Obsidian vault
     codebase-index.md        # how to use the codebase index
   skills/
-    graphify/SKILL.md        # codebase knowledge graph skill
-    memory-stack/SKILL.md    # session-start memory bootstrap skill
-    obsidian-vault/          # vault skill + vault scaffold template
-      SKILL.md
-      _tmpl/                 # full vault template (copied per project on make init)
-        bootstrap/           # always-on context files (loaded like AGENTS.md)
-        brain/               # memories, key_decisions, patterns, gotchas
-        work/active|archive|incidents/
-        reference/
-        thinking/
+    memory/
+      memory-stack/SKILL.md  # session-start memory bootstrap skill
+      session-capture/SKILL.md  # pre-compaction + wrap-up memory capture skill
+      cass/SKILL.md          # cass usage skill (downloaded from upstream on install/update)
+      graphify/SKILL.md      # codebase knowledge graph skill
+      obsidian-vault/        # vault skill + vault scaffold template
+        SKILL.md
+        _tmpl/               # full vault template (copied per project on make init)
+          bootstrap/         # always-on context files (loaded like AGENTS.md)
+          brain/             # memories, key_decisions, patterns, gotchas
+          work/active|archive|incidents/
+          reference/
+          thinking/
+    dev/                     # agentic workflow skills
+      agent-communication/   # inter-agent communication protocol
+      caveman/SKILL.md       # token-efficient communication mode (downloaded from upstream)
+      changeset-review/      # code review against a plan
+      codebase-audit/        # holistic codebase health review
+      create-adr/            # architecture decision records
+      create-use-case/       # CQRS command/handler generation
+      evaluation/            # post-iteration quality assessment
+      exception-handling/    # structured error recovery for agent failures
+      implementation-planning/
+      memory-management/
+      optimize-instructions/
+      plan-execution/
+      plan-review/
+      plan-summary/
+      test-reporting/
+      ui-specification/
+      ux-design/
+      workflow.implement-story/
+      workflow.plan-story/
+    addyosmani/              # general engineering skills (from addyosmani/agent-skills)
+      api-and-interface-design/
+      browser-testing-with-devtools/
+      ci-cd-and-automation/
+      code-review-and-quality/
+      code-simplification/
+      debugging-and-error-recovery/
+      frontend-ui-engineering/
+      git-workflow-and-versioning/
+      incremental-implementation/
+      performance-optimization/
+      planning-and-task-breakdown/
+      security-and-hardening/
+      shipping-and-launch/
+      spec-driven-development/
+      test-driven-development/
+      ... (and more)
   install/
     functions/               # shared bash library (colors, stdout, state, os, apt, opencode)
     homebrew/install.sh
@@ -379,15 +456,15 @@ src/
     python/install.sh        # installs uv
     nodejs/install.sh
     ogham/                   # ogham binary + config + FlashRank reranking
-    graphify/                # graphify binary + per-project git hook setup
-    cass/                    # cass binary
+    graphify/                # graphify binary + per-project git hook + opencode plugin
+    cass/                    # cass binary + skill download
+    caveman/                 # caveman skill download (no binary)
     rtk/                     # RTK binary + opencode plugin wiring
     opencode/                # opencode binary + shared storage/opencode.jsonc template
     codebase-index/          # MCP registration + per-project codebase-index.json
     obsidian/                # Obsidian binary install + MCP registration
+    session-capture/         # session-capture opencode plugin + init-project.sh
     shell/write-env.sh       # shell profile PATH additions
-  docker/
-    initdb/ogham-schema.sql  # Postgres schema (applied automatically on first start)
 
 storage/                     # runtime data — git-ignored except opencode.jsonc
   opencode.jsonc             # shared opencode config (tracked); projects symlink to this
@@ -409,8 +486,10 @@ docker-compose.yml           # postgres, ollama, ollama-init
 .env.dist                    # template for .env (POSTGRES_PASSWORD, OBSIDIAN_API_KEY)
 Makefile                     # up, down, purge, restart, status, doctor, update, init, test
 ```
+
 ## Acknowledgements and References
 
+- [Caveman](https://github.com/JuliusBrussee/caveman)
 - [Obsidian Mind](https://github.com/breferrari/obsidian-mind?tab=readme-ov-file)
 - [Cass](https://github.com/dicklesworthstone/coding_agent_session_search)
 - [Addy Osmani Skills](https://github.com/addyosmani/agent-skills)
