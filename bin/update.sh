@@ -140,6 +140,17 @@ else
   _skip_tool "cass"
 fi
 
+# ── caveman ────────────────────────────────────────────────────────────────────
+header "caveman"
+
+step "Updating caveman skill → src/skills/dev/caveman/SKILL.md ..."
+CAVEMAN_SKILL_URL="https://raw.githubusercontent.com/JuliusBrussee/caveman/main/caveman/SKILL.md"
+CAVEMAN_SKILL_FILE="${ADK_ROOT}/src/skills/dev/caveman/SKILL.md"
+mkdir -p "$(dirname "${CAVEMAN_SKILL_FILE}")"
+curl -fsSL "${CAVEMAN_SKILL_URL}" -o "${CAVEMAN_SKILL_FILE}" 2>/dev/null \
+  && log "caveman skill updated" \
+  || warn "caveman skill update failed — run manually: curl -fsSL ${CAVEMAN_SKILL_URL} -o ${CAVEMAN_SKILL_FILE}"
+
 # ── RTK ───────────────────────────────────────────────────────────────────────
 header "RTK"
 
