@@ -20,9 +20,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 header "Session Capture"
 
 PLUGIN_SRC="${SCRIPT_DIR}/session-capture.js"
-PLUGIN_DEST=".opencode/plugins/session-capture.js"
+PLUGIN_DEST="src/plugins/session-capture.js"
 
-mkdir -p ".opencode/plugins"
+mkdir -p "src/plugins"
 if [[ -f "${PLUGIN_DEST}" ]]; then
   skip "${PLUGIN_DEST} (already exists)"
 else

@@ -6,7 +6,7 @@
 # to <adk-root>/storage/graphify via a symlink so all output is centralised
 # and never scattered across the project tree.
 #
-# The plugin entry (".opencode/plugins/graphify.js") is already present in
+# The plugin entry ("src/plugins/graphify.js") is already present in
 # storage/opencode.jsonc (added by graphify/install.sh during `make up`).
 # For projects with their own opencode config it flows in via merge-config.py
 # in bin/init.sh. No separate opencode.json is written here.
@@ -51,9 +51,9 @@ fi
 
 # ── Copy plugin JS into project ───────────────────────────────────────────────
 PLUGIN_SRC="${SCRIPT_DIR}/graphify.js"
-PLUGIN_DEST=".opencode/plugins/graphify.js"
+PLUGIN_DEST="src/plugins/graphify.js"
 
-mkdir -p ".opencode/plugins"
+mkdir -p "src/plugins"
 if [[ -f "${PLUGIN_DEST}" ]]; then
   skip "${PLUGIN_DEST} (already exists)"
 else
