@@ -2,9 +2,19 @@ tmp/
 __pycache__/
 storage/*
 .env
-.ai/
+
+###> ai ###
+.ai
+graphify-out
 graphify-out/
+*opencode*
+*claude*
+*codex*
+*junie*
+!opencode.dist.json
+AGENTS.md
+CLAUDE.md
+mcp.json
+###< ai ###
 
 !storage/.gitkeep
-!storage/opencode.jsonc
-
