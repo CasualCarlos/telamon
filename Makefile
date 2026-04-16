@@ -107,6 +107,18 @@ up: ## Start Telamon: install host tools, then bring docker compose services up
 	docker compose up -d --no-recreate
 	echo -e "\n\033[1m\033[34m━━━ Installing remaining tools (requires containers)... ━━━\033[0m"
 	bash bin/install.sh --post-docker
+	echo -e "\n\033[1m\033[34m━━━ Starting Obsidian... ━━━\033[0m"
+	@if pgrep -x obsidian >/dev/null 2>&1; then \
+		echo "  ✓ Obsidian already running"; \
+	elif command -v obsidian >/dev/null 2>&1; then \
+		nohup obsidian >/dev/null 2>&1 & \
+		echo "  ✓ Obsidian launched"; \
+	elif [ "$$(uname -s)" = "Darwin" ] && [ -d "/Applications/Obsidian.app" ]; then \
+		open -a Obsidian; \
+		echo "  ✓ Obsidian launched"; \
+	else \
+		echo "  ⚠ Obsidian not found — install it or run 'make up' after installing"; \
+	fi
 	echo -e "\n\033[1m\033[34m━━━ Telamon is up. ━━━\033[0m\n"
 
 down: ## Shut down Telamon services
