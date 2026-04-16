@@ -203,27 +203,23 @@ print_summary() {
 # ── Installation phases ────────────────────────────────────────────────────────
 # Phase 1: tools that must exist BEFORE docker compose up (package managers,
 #           docker itself). Called by `make up` before booting containers.
-pre_docker() {
-  bash "${INSTALL_PATH}/homebrew/install.sh"
-  bash "${INSTALL_PATH}/docker/install.sh"
-}
+PRE_DOCKER_APPS=(homebrew docker)
 
 # Phase 2: tools that require the containers to already be running (ogham needs
 #           Postgres; nomic-embed-text model must be in Ollama). Called by
 #           `make up` after docker compose up.
-post_docker() {
-  bash "${INSTALL_PATH}/python/install.sh"
-  bash "${INSTALL_PATH}/nodejs/install.sh"
-  bash "${INSTALL_PATH}/opencode/install.sh"   # installs binary + creates base opencode.json
-  bash "${INSTALL_PATH}/ogham/install.sh"       # installs binary + registers MCP block
-  bash "${INSTALL_PATH}/codebase-index/install.sh"  # registers MCP block
-  bash "${INSTALL_PATH}/obsidian/install.sh"    # registers MCP block
-  bash "${INSTALL_PATH}/graphify/install.sh"
-  bash "${INSTALL_PATH}/cass/install.sh"
-  bash "${INSTALL_PATH}/rtk/install.sh"
+POST_DOCKER_APPS=(python nodejs opencode ogham codebase-index obsidian graphify cass rtk caveman shell)
 
-  # ── Config files ─────────────────────────────────────────────────────────
-  bash "${INSTALL_PATH}/shell/write-env.sh"
+pre_docker() {
+  for _app in "${PRE_DOCKER_APPS[@]}"; do
+    bash "${INSTALL_PATH}/${_app}/install.sh"
+  done
+}
+
+post_docker() {
+  for _app in "${POST_DOCKER_APPS[@]}"; do
+    bash "${INSTALL_PATH}/${_app}/install.sh"
+  done
 }
 
 # ── main ──────────────────────────────────────────────────────────────────────

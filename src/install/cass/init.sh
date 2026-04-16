@@ -29,7 +29,7 @@ fi
 HOOK_FILE=".git/hooks/post-commit"
 HOOK_BLOCK='# cass-hook-start
 # Incrementally updates the cass session search index after each commit.
-# Installed by: ADK cass/init-project.sh
+# Installed by: ADK cass/init.sh
 if command -v cass >/dev/null 2>&1; then
     cass index >/dev/null 2>&1 &
 fi
