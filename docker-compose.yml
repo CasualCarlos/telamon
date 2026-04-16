@@ -20,6 +20,8 @@ services:
       timeout: 5s
       retries: 12
 
+  # NOTE: Official Ollama image runs as root. Files in storage/ollama/ are
+  # root-owned; `make purge` uses `sudo rm` for cleanup.
   ollama:
     image: ollama/ollama:latest
     container_name: adk-ollama

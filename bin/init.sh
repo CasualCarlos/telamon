@@ -44,7 +44,7 @@ export ADK_ROOT INSTALL_PATH PROJ PROJECT_NAME
 header "ADK init — ${PROJECT_NAME}"
 
 # ── Run per-app init scripts ──────────────────────────────────────────────────
-INIT_APPS=(obsidian opencode codebase-index graphify cass qmd)
+INIT_APPS=(obsidian opencode codebase-index graphify cass qmd session-capture)
 
 for _app in "${INIT_APPS[@]}"; do
   _script="${INSTALL_PATH}/${_app}/init.sh"
