@@ -214,11 +214,9 @@ fi
 header "Skills & context"
 
 [[ -d "${ADK_ROOT}/src/skills" ]]   && _pass "src/skills/ present"  || _fail "src/skills/ missing"
-[[ -d "${ADK_ROOT}/src/context" ]]  && _pass "src/context/ present" || _fail "src/context/ missing"
 
 skill_count=$(find "${ADK_ROOT}/src/skills" -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
-context_count=$(find "${ADK_ROOT}/src/context" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
-_info "${skill_count} skill(s) in src/skills/,  ${context_count} context doc(s) in src/context/"
+_info "${skill_count} skill(s) in src/skills/"
 
 # ── 8. .env ────────────────────────────────────────────────────────────────────
 header ".env configuration"
