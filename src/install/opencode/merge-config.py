@@ -107,7 +107,10 @@ def merge(project: dict, adk: dict) -> dict:
             merged_mcp = dict(proj_val) if isinstance(proj_val, dict) else {}
             if isinstance(adk_val, dict):
                 for server, block in adk_val.items():
-                    merged_mcp[server] = block
+                    if server in merged_mcp:
+                        print(f"  Keeping project MCP entry: {server}")
+                    else:
+                        merged_mcp[server] = block
             result[key] = merged_mcp
 
         elif key in ("instructions", "plugin") and isinstance(adk_val, list):
@@ -121,7 +124,9 @@ def merge(project: dict, adk: dict) -> dict:
             merged_watcher = dict(proj_watcher)
             if "ignore" in adk_watcher:
                 base_ignore = proj_watcher.get("ignore", [])
-                merged_watcher["ignore"] = union_list(base_ignore, adk_watcher["ignore"])
+                merged_watcher["ignore"] = union_list(
+                    base_ignore, adk_watcher["ignore"]
+                )
             for k, v in adk_watcher.items():
                 if k != "ignore":
                     merged_watcher.setdefault(k, v)
