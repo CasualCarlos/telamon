@@ -19,49 +19,11 @@ and .jsonc files are handled.
 """
 
 import json
+import os
 import sys
 
-
-def strip_jsonc_comments(text: str) -> str:
-    """
-    Remove // line comments and /* */ block comments from a JSONC string.
-
-    Uses a character-by-character tokenizer so that comment markers inside
-    string literals are correctly preserved.
-    """
-    result: list[str] = []
-    i = 0
-    n = len(text)
-    while i < n:
-        if text[i] == '"':
-            # Consume string literal verbatim (including escape sequences)
-            j = i + 1
-            while j < n:
-                if text[j] == "\\":
-                    j += 2
-                elif text[j] == '"':
-                    j += 1
-                    break
-                else:
-                    j += 1
-            result.append(text[i:j])
-            i = j
-        elif text[i : i + 2] == "//":
-            # Skip line comment; preserve the newline so line numbers stay intact
-            j = text.find("\n", i)
-            if j == -1:
-                break
-            i = j
-        elif text[i : i + 2] == "/*":
-            # Skip block comment
-            j = text.find("*/", i + 2)
-            if j == -1:
-                break
-            i = j + 2
-        else:
-            result.append(text[i])
-            i += 1
-    return "".join(result)
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "functions"))
+from strip_jsonc import strip_jsonc_comments
 
 
 def load_jsonc(path: str) -> dict:

@@ -40,31 +40,12 @@ opencode.upsert_mcp() {
     return 0
   fi
 
-  python3 - "${config_file}" "${server_name}" "${server_json}" <<'PYEOF'
+  python3 - "${INSTALL_PATH}/functions/strip_jsonc.py" "${config_file}" "${server_name}" "${server_json}" <<'PYEOF'
 import json, sys
 
-def strip_jsonc_comments(text):
-    result = []
-    i, n = 0, len(text)
-    while i < n:
-        if text[i] == '"':
-            j = i + 1
-            while j < n:
-                if text[j] == '\\': j += 2
-                elif text[j] == '"': j += 1; break
-                else: j += 1
-            result.append(text[i:j]); i = j
-        elif text[i:i+2] == '//':
-            j = text.find('\n', i)
-            i = j if j != -1 else n
-        elif text[i:i+2] == '/*':
-            j = text.find('*/', i+2)
-            i = j + 2 if j != -1 else n
-        else:
-            result.append(text[i]); i += 1
-    return ''.join(result)
+exec(open(sys.argv[1]).read())
 
-config_file, server_name, server_json = sys.argv[1], sys.argv[2], sys.argv[3]
+config_file, server_name, server_json = sys.argv[2], sys.argv[3], sys.argv[4]
 
 with open(config_file) as f:
     config = json.loads(strip_jsonc_comments(f.read()))
@@ -97,31 +78,12 @@ opencode.upsert_plugin() {
     return 0
   fi
 
-  python3 - "${config_file}" "${plugin_path}" <<'PYEOF'
+  python3 - "${INSTALL_PATH}/functions/strip_jsonc.py" "${config_file}" "${plugin_path}" <<'PYEOF'
 import json, sys
 
-def strip_jsonc_comments(text):
-    result = []
-    i, n = 0, len(text)
-    while i < n:
-        if text[i] == '"':
-            j = i + 1
-            while j < n:
-                if text[j] == '\\': j += 2
-                elif text[j] == '"': j += 1; break
-                else: j += 1
-            result.append(text[i:j]); i = j
-        elif text[i:i+2] == '//':
-            j = text.find('\n', i)
-            i = j if j != -1 else n
-        elif text[i:i+2] == '/*':
-            j = text.find('*/', i+2)
-            i = j + 2 if j != -1 else n
-        else:
-            result.append(text[i]); i += 1
-    return ''.join(result)
+exec(open(sys.argv[1]).read())
 
-config_file, plugin_path = sys.argv[1], sys.argv[2]
+config_file, plugin_path = sys.argv[2], sys.argv[3]
 
 with open(config_file) as f:
     config = json.loads(strip_jsonc_comments(f.read()))
@@ -153,31 +115,12 @@ opencode.set_mcp_env() {
     return 0
   fi
 
-  python3 - "${config_file}" "${server_name}" "${env_key}" "${env_val}" <<'PYEOF'
+  python3 - "${INSTALL_PATH}/functions/strip_jsonc.py" "${config_file}" "${server_name}" "${env_key}" "${env_val}" <<'PYEOF'
 import json, sys
 
-def strip_jsonc_comments(text):
-    result = []
-    i, n = 0, len(text)
-    while i < n:
-        if text[i] == '"':
-            j = i + 1
-            while j < n:
-                if text[j] == '\\': j += 2
-                elif text[j] == '"': j += 1; break
-                else: j += 1
-            result.append(text[i:j]); i = j
-        elif text[i:i+2] == '//':
-            j = text.find('\n', i)
-            i = j if j != -1 else n
-        elif text[i:i+2] == '/*':
-            j = text.find('*/', i+2)
-            i = j + 2 if j != -1 else n
-        else:
-            result.append(text[i]); i += 1
-    return ''.join(result)
+exec(open(sys.argv[1]).read())
 
-config_file, server_name, env_key, env_val = sys.argv[1:]
+config_file, server_name, env_key, env_val = sys.argv[2:]
 
 with open(config_file) as f:
     config = json.loads(strip_jsonc_comments(f.read()))

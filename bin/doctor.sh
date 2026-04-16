@@ -116,6 +116,18 @@ fi
 # ── 4. opencode config ────────────────────────────────────────────────────────
 header "opencode config"
 
+# Check root symlink
+ROOT_CONFIG="${ADK_ROOT}/opencode.jsonc"
+if [[ -L "${ROOT_CONFIG}" && ! -e "${ROOT_CONFIG}" ]]; then
+  _warn "opencode.jsonc is a dangling symlink — run: make up"
+elif [[ -L "${ROOT_CONFIG}" ]]; then
+  _pass "opencode.jsonc symlink"
+elif [[ -f "${ROOT_CONFIG}" ]]; then
+  _warn "opencode.jsonc is a regular file (expected symlink to storage/opencode.jsonc)"
+else
+  _fail "opencode.jsonc missing"
+fi
+
 STORAGE_CONFIG="${ADK_ROOT}/storage/opencode.jsonc"
 if [[ -f "${STORAGE_CONFIG}" ]]; then
   _pass "storage/opencode.jsonc present"
@@ -123,31 +135,12 @@ if [[ -f "${STORAGE_CONFIG}" ]]; then
   # Check key MCP servers are registered (use proper JSONC tokenizer — not regex)
   _check_mcp() {
     local name="$1"
-    if python3 - "${STORAGE_CONFIG}" "${name}" <<'PYEOF' 2>/dev/null
+    if python3 - "${ADK_ROOT}/src/install/functions/strip_jsonc.py" "${STORAGE_CONFIG}" "${name}" <<'PYEOF' 2>/dev/null
 import sys, json
 
-def strip_jsonc_comments(text):
-    result = []
-    i, n = 0, len(text)
-    while i < n:
-        if text[i] == '"':
-            j = i + 1
-            while j < n:
-                if text[j] == '\\': j += 2
-                elif text[j] == '"': j += 1; break
-                else: j += 1
-            result.append(text[i:j]); i = j
-        elif text[i:i+2] == '//':
-            j = text.find('\n', i)
-            i = j if j != -1 else n
-        elif text[i:i+2] == '/*':
-            j = text.find('*/', i+2)
-            i = j + 2 if j != -1 else n
-        else:
-            result.append(text[i]); i += 1
-    return ''.join(result)
+exec(open(sys.argv[1]).read())
 
-config_file, server_name = sys.argv[1], sys.argv[2]
+config_file, server_name = sys.argv[2], sys.argv[3]
 with open(config_file) as f:
     data = json.loads(strip_jsonc_comments(f.read()))
 assert server_name in data.get('mcp', {}), f"'{server_name}' not in mcp"
