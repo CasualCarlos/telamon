@@ -9,14 +9,16 @@ As you work, capture knowledge the moment it arises. Do not defer to end of sess
 
 ## What to save and where
 
-| What happened | Ogham (use `telamon.ogham` skill) | Brain/ file |
-|---|---|---|
-| Decision made (architectural or product) | Store as decision | Append to `brain/key_decisions.md` |
-| Human stakeholder answers a question | Store as decision | Append to `brain/key_decisions.md` |
-| New rule given by stakeholder | Store as rule | Append to `brain/key_decisions.md` |
-| Bug fixed (non-trivial) | Store as bug | Append to `brain/gotchas.md` if recurring |
-| Pattern established | Store as pattern | Append to `brain/patterns.md` |
-| Graphiti enabled? | Also save via Graphiti `add_episode` | -- |
+| What happened | Ogham (use `telamon.ogham` skill) |
+|---|---|
+| Decision made (architectural or product) | Store as decision |
+| Human stakeholder answers a question | Store as decision |
+| New rule given by stakeholder | Store as rule |
+| Bug fixed (non-trivial) | Store as bug |
+| Pattern established | Store as pattern |
+| Graphiti enabled? | Also save via Graphiti `add_episode` |
+
+For vault routing (which brain/ file to append to), see the `telamon.memory_management` skill (section 2).
 
 ## What NOT to save
 

@@ -1,18 +1,18 @@
 ---
 name: telamon.memory_management
-description: "Canonical rules for the .ai/telamon/memory/ vault: folder structure, routing, retrieval, writing, entry format, thinking/ lifecycle, pruning. Use when reading, writing, or organizing vault .md files. Triggers: any vault operation, 'check the docs', 'update the wiki', referencing structure, routing, or quality rules."
+description: "Canonical rules for the .ai/telamon/memory/ vault: folder structure, routing, retrieval, writing constraints, entry format, thinking/ lifecycle, pruning, brain note quality, wrap-up. Use when deciding where to save knowledge, formatting entries, or auditing vault structure."
 ---
 
 # Memory Management — Vault Structure & Rules
 
-Canonical reference for all `.ai/telamon/memory/` vault operations. Other memory skills reference this skill for structure, routing, and quality rules.
+Canonical reference for all `.ai/telamon/memory/` vault operations. Other memory skills reference this skill for structure, routing, and quality rules. For Obsidian MCP tool usage (search, read, write, link), load the `telamon.obsidian` skill.
 
 ## When to Apply
 
-- When reading, writing, or organizing files in `.ai/telamon/memory/`
+- Deciding where to save a piece of knowledge
+- Formatting memory entries
+- Auditing vault structure or brain note quality
 - When another memory skill references vault rules
-- When auditing vault structure or brain note quality
-- When resolving where to save a piece of knowledge
 
 ## 1. Vault Structure
 
@@ -20,7 +20,7 @@ Canonical reference for all `.ai/telamon/memory/` vault operations. Other memory
 .ai/telamon/memory/
   bootstrap/                 <- always-on context (loaded like AGENTS.md)
   brain/
-    memories.md              <- knowledge index -- READ THIS FIRST
+    memories.md              <- knowledge index -- READ FIRST
     key_decisions.md         <- architectural + product decisions, stakeholder answers
     patterns.md              <- established codebase patterns
     gotchas.md               <- known traps and constraints
@@ -42,12 +42,12 @@ Canonical reference for all `.ai/telamon/memory/` vault operations. Other memory
 | New rule from stakeholder | `brain/key_decisions.md` |
 | Established codebase pattern | `brain/patterns.md` |
 | Trap, constraint, or recurring bug | `brain/gotchas.md` |
-| Categorized lesson learned | `brain/memories.md` (M-XXX-NNN format, see section 5) |
+| Categorized lesson learned | `brain/memories.md` (M-XXX-NNN format, see section 6) |
 | In-progress work note | `work/active/` |
 | Completed work note | `work/archive/YYYY/` |
 | Incident doc | `work/incidents/YYYY-MM-DD-<slug>.md` |
 | Architecture map or flow doc | `reference/` |
-| Draft or reasoning scratchpad | `thinking/` (promote or delete, see section 6) |
+| Draft or reasoning scratchpad | `thinking/` (promote or delete, see section 7) |
 | Partial-progress checkpoint | `thinking/YYYY-MM-DD-HH:MM:SS-<task>-partial.md` |
 
 **Routing rules:**
@@ -58,54 +58,34 @@ Canonical reference for all `.ai/telamon/memory/` vault operations. Other memory
 
 ## 3. Retrieval Rules
 
-### R1 -- bootstrap/ is always in context
-Files in `bootstrap/` load automatically at session start. Do not search or re-read them.
+- bootstrap/ loads automatically at session start -- do not re-read
+- brain/ files are small and always relevant -- read directly, no search needed:
+  - `brain/memories.md` -- read at session start
+  - `brain/key_decisions.md` -- read before architecture work or stakeholder answer lookup
+  - `brain/patterns.md` -- read before writing new code
+  - `brain/gotchas.md` -- read before touching known problem areas
+- All other files: search before read; max 3 non-brain notes per task; discard results with relevance score < 0.6
+- For search and read tool usage, load the `telamon.obsidian` skill
 
-### R2 -- Direct reads for brain/ files
-brain/ files are small and always relevant -- read directly, no search needed:
-- `brain/memories.md` -- read at session start
-- `brain/key_decisions.md` -- read before architecture work or stakeholder answer lookup
-- `brain/patterns.md` -- read before writing new code
-- `brain/gotchas.md` -- read before touching known problem areas
+## 4. Writing Constraints
 
-### R3 -- Search before read (non-brain files)
-Never call `read_note` or `list_files` without searching first. Exception: user explicitly names a file.
-```
-OK  search_vault("auth migration", path="my-project/")
-BAD list_files("/")
-BAD read_note("index.md")
-```
+- Every note must link to at least one existing note via `[[wikilink]]` -- an orphan note is a bug
+- Never write: secrets, API keys, passwords
+- Never write: content duplicating what is already in Ogham
+- Never write: files in the vault root (only subfolders)
+- Never write: agent instructions outside `bootstrap/` expecting auto-load
+- For note creation and update tool usage, load the `telamon.obsidian` skill
 
-### R4 -- Max 3 non-brain notes per task
-Pick top 3 by relevance. Tell the user if truncated ("Found 7 notes, reading top 3").
+## 5. Brain Note Quality Criteria
 
-### R5 -- Scope searches to project
-```
-OK  search_vault("auth migration", path="my-project/")
-BAD search_vault("auth migration")
-```
+| File | Good entry has |
+|---|---|
+| `key_decisions.md` | Decision + rationale (not just the decision) |
+| `patterns.md` | Actionable, specific pattern with when to apply |
+| `gotchas.md` | Reproducible problem + fix or workaround |
+| `memories.md` | M-XXX-NNN format, recent context reflects last sessions |
 
-### R6 -- Score threshold
-Discard results with relevance score < 0.6. Say "No relevant notes found" and use Ogham instead.
-
-## 4. Writing Rules
-
-### Creating notes
-1. Use YAML frontmatter: `date`, `description` (~150 chars), `tags`, `status`, `project`
-2. Place in the correct subfolder per the routing table (section 2)
-3. Link to at least one existing note via `[[wikilink]]` -- an orphan note is a bug
-
-### Updating existing notes
-- Use `patch_note` (not `write_note`) to preserve frontmatter
-- Add `updated: <date>` to frontmatter
-
-### Never write
-- Secrets, API keys, passwords
-- Content duplicating what is already in Ogham
-- Files in the vault root (only subfolders)
-- Agent instructions outside `bootstrap/` expecting auto-load
-
-## 5. Memory Entry Format (memories.md)
+## 6. Memory Entry Format (memories.md)
 
 ### Entry template
 
@@ -141,7 +121,7 @@ Number sequentially within each category. Check existing entries first.
 - Review entries older than 6 months for continued relevance
 - Only the PO or human stakeholder may remove entries
 
-## 6. Thinking/ Lifecycle
+## 7. Thinking/ Lifecycle
 
 ### Promote or discard
 For each file in `thinking/`:
@@ -156,16 +136,15 @@ For each file in `thinking/`:
 ### Watermark
 Session capture tracks progress via `.ai/telamon/memory/thinking/.last-capture-<worktree-dirname>.json`. Only content after the watermark timestamp needs processing.
 
-## 7. Brain Note Quality Criteria
+## 8. Wrap-Up (on "wrap up" / "wrapping up")
 
-| File | Good entry has |
-|---|---|
-| `key_decisions.md` | Decision + rationale (not just the decision) |
-| `patterns.md` | Actionable, specific pattern with when to apply |
-| `gotchas.md` | Reproducible problem + fix or workaround |
-| `memories.md` | M-XXX-NNN format, recent context reflects last sessions |
+1. Promote session learnings to the appropriate `brain/` note
+2. Archive completed `work/active/` notes -> `work/archive/YYYY/`
+3. Save to Ogham -- capture significant decisions, patterns, and bugs
+4. Verify every new vault note has at least one `[[wikilink]]`
+5. Tell the user what was promoted and saved
 
-## 8. Memory Tiers (reference)
+## 9. Memory Tiers (reference)
 
 | Tier | Store | Content | Writer |
 |---|---|---|---|

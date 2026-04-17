@@ -15,11 +15,7 @@ Use the `telamon.ogham` skill to switch to the project profile.
 
 Use the `telamon.ogham` skill to search for relevant prior work.
 
-Read brain/notes directly:
-- `.ai/telamon/memory/brain/key_decisions.md` — architectural and product decisions
-- `.ai/telamon/memory/brain/patterns.md` — established patterns and best practices
-- `.ai/telamon/memory/brain/gotchas.md` — known traps and constraints
-- `.ai/telamon/memory/brain/memories.md` — categorized lessons learned
+Read brain/ notes directly — see the `telamon.memory_management` skill (Retrieval Rules, R2) for the list and when to read each file.
 
 ## 3. Update vault index
 

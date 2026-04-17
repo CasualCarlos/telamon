@@ -28,4 +28,4 @@ After the task completes or the session ends:
 2. **Delete**: Remove files that add no lasting value.
 3. **Flag**: Any `thinking/` file older than 7 days should be reviewed -- promote or delete.
 
-See the `telamon.memory_management` skill (section 6) for full lifecycle rules.
+See the `telamon.memory_management` skill (section 7) for full lifecycle rules.

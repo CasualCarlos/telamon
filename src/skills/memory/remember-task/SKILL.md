@@ -19,7 +19,7 @@ Ask yourself:
 
 Append new lessons to `.ai/telamon/memory/brain/memories.md`. One entry per lesson — do not bundle multiple takeaways.
 
-Use the M-XXX-NNN entry format, categories, and quality rules from the `telamon.memory_management` skill (section 5).
+Use the M-XXX-NNN entry format, categories, and quality rules from the `telamon.memory_management` skill (section 6).
 
 ## 3. Store in Ogham
 
@@ -27,4 +27,4 @@ Use the `telamon.ogham` skill to store the lesson.
 
 ## 4. Pruning
 
-When memories.md exceeds 100 entries, follow the pruning rules in the `telamon.memory_management` skill (section 5).
+When memories.md exceeds 100 entries, follow the pruning rules in the `telamon.memory_management` skill (section 6).

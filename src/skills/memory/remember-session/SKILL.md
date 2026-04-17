@@ -31,23 +31,11 @@ Also check:
 
 ## 2. Route to brain notes
 
-Append new entries to the appropriate brain/ file. Follow the routing table and routing rules in the `telamon.memory_management` skill (section 2).
-
-| Content                           | Destination                                                                                            |
-|-----------------------------------|--------------------------------------------------------------------------------------------------------|
-| Architectural or product decision | `.ai/telamon/memory/brain/key_decisions.md`                                                            |
-| Human stakeholder answer          | `.ai/telamon/memory/brain/key_decisions.md`                                                            |
-| Reusable pattern or best practice | `.ai/telamon/memory/brain/patterns.md`                                                                 |
-| Bug, trap, or known constraint    | `.ai/telamon/memory/brain/gotchas.md`                                                                  |
-| General project knowledge         | `.ai/telamon/memory/brain/memories.md` (using M-XXX-NNN format from the `telamon.memory_management` skill, section 5) |
-| Active work note                  | `.ai/telamon/memory/work/active/<name>.md`                                                             |
-| Completed work note               | `.ai/telamon/memory/work/archive/YYYY/<name>.md`                                                       |
-| Incident                          | `.ai/telamon/memory/work/incidents/<YYYY-MM-DD>-<slug>.md`                                             |
-| Ephemeral draft still needed      | `.ai/telamon/memory/thinking/<descriptive-name>.md`                                                    |
+Append new entries to the appropriate brain/ file. Follow the routing table in the `telamon.memory_management` skill (section 2). Use the M-XXX-NNN entry format from the `telamon.memory_management` skill (section 6) for `brain/memories.md`.
 
 ## 3. Promote or discard thinking notes
 
-Follow the thinking/ lifecycle rules in the `telamon.memory_management` skill (section 6).
+Follow the thinking/ lifecycle rules in the `telamon.memory_management` skill (section 7).
 
 ## 4. Update Ogham
 
