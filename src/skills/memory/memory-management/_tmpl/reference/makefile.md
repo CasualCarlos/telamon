@@ -1,3 +1,8 @@
+---
+tags: [reference, makefile]
+description: Makefile lifecycle commands
+---
+
 # MAKEFILE
 
 Never bypass the Makefile. Extend it if lifecycle changes are required.
@@ -8,3 +13,7 @@ Never bypass the Makefile. Extend it if lifecycle changes are required.
 
 - `make up`: Start the development environment
 - `make down`: Stop the development environment
+
+## See also
+
+- [[testing]]

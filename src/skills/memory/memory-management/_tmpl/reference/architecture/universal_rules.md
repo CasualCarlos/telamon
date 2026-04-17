@@ -1,3 +1,8 @@
+---
+tags: [reference, architecture]
+description: Architecture priority order, security, forbidden patterns
+---
+
 # ARCHITECTURE UNIVERSAL RULES
 
 Architecture: Explicit Architecture (DDD + Hexagonal + CQRS), modular monolith
@@ -64,3 +69,8 @@ UUID v7, generated in Domain. Never use auto-increment IDs in Domain logic.
 ## Defaults When Uncertain
 
 Prefer: stricter layer separation, Value Objects over primitives, explicit modeling, Domain purity.
+
+## See also
+
+- [[architecture/explicit_architecture|Explicit Architecture]]
+- [[api/rest_conventions|REST Conventions]]

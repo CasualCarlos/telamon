@@ -1,3 +1,8 @@
+---
+tags: [bootstrap, cass]
+description: cass session history search — robot mode, quick reference
+---
+
 ## cass — Agent Session History Search
 
 cass indexes past agent session conversations and makes them searchable across
@@ -30,3 +35,7 @@ cass expand /path/to/session.jsonl -n 42 -C 5 --json
 ### Retrieve:
 - Past session conversations: `cass search "<topic>" --robot --workspace "$(pwd)"`
 - Self-documenting API: `cass robot-docs guide`
+
+## See also
+
+- [[session]]

@@ -1,3 +1,8 @@
+---
+tags: [reference, php, laravel]
+description: Laravel conventions, configuration, database, testing
+---
+
 # Laravel
 
 ## Foundational Context
@@ -76,3 +81,9 @@ This project upgraded from Laravel 10 without migrating to the new file structur
 
 - Create verification scripts or tinker when tests cover that functionality
 - Change application dependencies without approval
+
+## See also
+
+- [[php/universal_rules|PHP Rules]]
+- [[php/message_bus|Message Bus]]
+- [[testing]]

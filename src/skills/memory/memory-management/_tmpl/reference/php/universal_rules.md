@@ -1,3 +1,8 @@
+---
+tags: [reference, php]
+description: PHP strict typing, constructors, enums, PHPDoc
+---
+
 # PHP UNIVERSAL RULES
 
 ## Strict Typing
@@ -38,3 +43,7 @@ protected function isAccessible(User $user, ?string $path = null): bool
 - Array shapes used in several places: define as local phpstan type
 - Array shapes used across files: define as custom phpstan type in owner class, import where needed
 - Array shapes crossing module boundaries: convert to DTO
+
+## See also
+
+- [[php/laravel|Laravel]]

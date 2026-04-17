@@ -1,3 +1,8 @@
+---
+tags: [bootstrap, obsidian]
+description: Obsidian vault structure, routing, retrieval, and wrap-up rules
+---
+
 ## Obsidian — Curated Knowledge Vault
 
 Obsidian holds the project's curated knowledge: architectural decisions, patterns, gotchas, and in-progress work notes. It is the source of truth for long-lived human-readable knowledge.
@@ -38,3 +43,10 @@ Read `.ai/telamon/memory/brain/memories.md` — this is the index of all knowled
 3. Save to Ogham via `ogham store_memory` (or the `ogham store` CLI) -- capture significant decisions, patterns, and bugs
 4. Verify every new vault note has at least one `[[wikilink]]`
 5. Tell the user what was promoted and saved
+
+## See also
+
+- [[memories]]
+- [[key_decisions]]
+- [[patterns]]
+- [[gotchas]]

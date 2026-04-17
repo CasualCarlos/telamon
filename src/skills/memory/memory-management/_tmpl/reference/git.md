@@ -1,3 +1,8 @@
+---
+tags: [reference, git]
+description: Git commit conventions
+---
+
 # GIT
 
 - Files or folders under a path ignored by git, mut NEVER be commited, unless if explicitly 

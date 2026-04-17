@@ -1,3 +1,8 @@
+---
+tags: [bootstrap, mcp]
+description: MCP server tool selection and Laravel Boost usage guide
+---
+
 # MCP Servers
 
 ## Tool Selection

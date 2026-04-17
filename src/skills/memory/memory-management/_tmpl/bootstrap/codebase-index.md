@@ -1,3 +1,8 @@
+---
+tags: [bootstrap, codebase-index]
+description: Semantic codebase index — initialization and retrieval
+---
+
 ## Codebase Index — Semantic Code Search
 
 The codebase index enables semantic search over the project's source code using Ollama embeddings. It is built once and maintained automatically by a file watcher.
@@ -10,3 +15,8 @@ The codebase index enables semantic search over the project's source code using 
 ### Retrieve:
 - Ask naturally in plain English — e.g. "find the authentication logic"
 - Results are ranked by semantic similarity to the query
+
+## See also
+
+- [[session]]
+- [[graphify]]

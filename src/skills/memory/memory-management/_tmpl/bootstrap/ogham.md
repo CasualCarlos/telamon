@@ -1,3 +1,8 @@
+---
+tags: [bootstrap, ogham]
+description: Ogham semantic memory — profile switching, storing, retrieving
+---
+
 ## Ogham — Semantic Agent Memory
 
 Ogham stores and retrieves decisions, bugs, and patterns across sessions using semantic search backed by a local Postgres + pgvector database and Ollama embeddings.
@@ -23,3 +28,10 @@ ogham search "<current task or recent topic>"
 - `ogham search "<keywords>"` — past decisions, bugs, patterns for this project
 
 ### Never save: routine commands (ls/git status/cat), secrets, trivial single-line edits
+
+## See also
+
+- [[key_decisions]]
+- [[patterns]]
+- [[gotchas]]
+- [[session]]

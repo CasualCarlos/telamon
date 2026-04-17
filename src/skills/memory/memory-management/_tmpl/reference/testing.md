@@ -1,3 +1,8 @@
+---
+tags: [reference, testing]
+description: Test commands, strategy, and conventions
+---
+
 # TESTING
 
 ## Test Commands
@@ -87,3 +92,7 @@ Method names describe the scenario, not the implementation:
 - Allow warnings, notices, or deprecation notices — use `make ut-debug` to diagnose and fix
 - Use mocks unless strictly necessary
 - Use anonymous classes for test doubles — extract named fakes (e.g. `InMemoryFooRepository`) in `tests/Support/`
+
+## See also
+
+- [[makefile]]

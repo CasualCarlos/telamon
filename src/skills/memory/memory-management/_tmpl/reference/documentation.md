@@ -1,3 +1,8 @@
+---
+tags: [reference, documentation]
+description: Repository documentation conventions
+---
+
 # REPOSITORY DOCUMENTATION
 
 - Text docs should be organized in `.md` files

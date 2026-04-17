@@ -1,3 +1,8 @@
+---
+tags: [bootstrap, session]
+description: Session start sequence — memory recall, tool initialization, retrieval priority
+---
+
 ## Session Rules — Memory & Knowledge Stack
 
 ### Every session start (mandatory, do this first):
@@ -40,3 +45,12 @@ Search Ogham via `ogham hybrid_search` (or the `ogham search` CLI) — recall pa
 ogham search "<current task or recent topic>"
 ```
 Then read `.ai/telamon/memory/brain/memories.md` and run the self-initialize checks above.
+
+## See also
+
+- [[memories]]
+- [[key_decisions]]
+- [[patterns]]
+- [[gotchas]]
+- [[obsidian]]
+- [[ogham]]

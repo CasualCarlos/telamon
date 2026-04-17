@@ -1,3 +1,8 @@
+---
+tags: [reference, architecture]
+description: DDD + Hexagonal + CQRS directory structure and dependency rules
+---
+
 # EXPLICIT ARCHITECTURE
 
 In this document:
@@ -44,3 +49,7 @@ Presentation -> Application -> Port <- Infrastructure
                     |           |          |
                 language-overlay (treated as the language runtime)
 ```
+
+## See also
+
+- [[architecture/universal_rules|Architecture Rules]]

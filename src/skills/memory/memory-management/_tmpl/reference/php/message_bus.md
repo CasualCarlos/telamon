@@ -1,3 +1,8 @@
+---
+tags: [reference, php, message-bus]
+description: PHP message bus integration and handler testing
+---
+
 # PHP MESSAGE BUS
 
 ## MUST
@@ -14,3 +19,8 @@
     - **Query handlers**: `dispatchQuery($query)`, assert returned read model
 - Nested messages (dispatched by handler under test) are logged but not executed — assert with `assertDispatched()`, `assertDispatchedAsync()`, `assertNotDispatched()`
 - Use `\GetE\MessageBus\Port\Context\MessageBusContext` when a `Context` implementation is needed in tests
+
+## See also
+
+- [[php/laravel|Laravel]]
+- [[php/universal_rules|PHP Rules]]

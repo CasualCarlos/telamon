@@ -1,3 +1,8 @@
+---
+tags: [reference, api]
+description: RESTful API URL structure, methods, errors, pagination
+---
+
 # RESTful API Conventions
 
 Status: Accepted | Date: April 3, 2026
@@ -161,3 +166,7 @@ GET /api/v1/transfer-bookings?filter[search][custom-fields]=airport&filter[statu
 ## YAGNI
 
 Build APIs per these conventions, but only implement what is needed when it is needed. Not every endpoint requires all features described here.
+
+## See also
+
+- [[architecture/universal_rules|Architecture Rules]]
