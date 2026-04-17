@@ -63,9 +63,9 @@ make doctor    # comprehensive health check (connectivity, secrets, config)
 
 ---
 
-## 4. Every agent session: Memory bootstrap
+## 4. Every agent session: Automatic memory bootstrap
 
-At the start of every session the agent (via the `memory-stack` skill) will:
+At the start of every session (via the `memory-stack` skill) **the agent will automatically**:
 
 ```bash
 ogham use <project-name>     # activate this project's memory profile

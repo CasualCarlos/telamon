@@ -9,7 +9,7 @@ All tools run locally. No data leaves your machine.
 
 ---
 
-## Features & Tools
+## Features
 
 Telamon is a **local infrastructure kit** that installs, wires up, and manages a suite of AI-augmentation
 tools for software development. It provides:
@@ -21,6 +21,48 @@ tools for software development. It provides:
 - **Automatic session capture** — learnings are promoted to memory before context is compacted
 - **Token efficiency** — automatic compression of context sent to the LLM
 - **Multi-agent workflow** — structured skills for planning, implementing, reviewing, and shipping software
+
+---
+
+## Quick Start
+
+| Requirement | Notes |
+|---|---|
+| **Linux** (Ubuntu/Debian/Mint) or **macOS** | Apple Silicon and Intel both supported |
+
+> `make up` installs **everything** — Docker, Node.js, Python, [opencode](https://opencode.ai), Obsidian, Ogham, Graphify, cass, RTK, QMD, Codebase Index, and Caveman.
+> The only manual step: after Obsidian is installed, the installer pauses and walks you through enabling the *Local REST API* plugin.
+
+```bash
+# 1. Clone and install (one-time)
+git clone <this-repo> ~/telamon
+cd ~/telamon
+make up
+
+# 2. Initialise a project (one-time per project)
+make init PROJ=path/to/your-project
+
+# 3. Start working — open the project in opencode
+cd path/to/your-project
+opencode
+```
+
+See [Developer Workflow](docs/developer-workflow.md) for the full day-to-day guide.
+
+---
+
+## Documentation
+
+| Document | Contents |
+|---|---|
+| [Tools](docs/tools.md) | Detailed description of every tool — what it does, how it works, priority guide |
+| [Developer Workflow](docs/developer-workflow.md) | Day-to-day usage: install, init, session lifecycle, saving knowledge, wrap-up |
+| [System Architecture](docs/system-architecture.md) | System flow diagram and what each tool provides at each stage |
+| [Configuration](docs/configuration.md) | Prerequisites, environment variables, Docker services |
+| [Make Targets](docs/make-targets.md) | All available `make` commands |
+| [Repository Layout](docs/repository-layout.md) | Full directory structure explained |
+
+## Tools
 
 ### Persistent Agent Memory
 
@@ -83,50 +125,6 @@ Structured skills for planning, implementing, reviewing, and shipping software.
 |---|---|
 | [Telamon workflow skills](docs/tools.md#specialized-agent-skills) | Plan stories, implement with tester->developer->reviewer cycles, review changesets, audit codebases |
 | [Addy Osmani skills](https://github.com/addyosmani/agent-skills) | General engineering skills — TDD, debugging, API design, security, CI/CD, and more |
-
----
-
-## Quick Start
-
-```bash
-# 1. Clone and install (one-time)
-git clone <this-repo> ~/telamon
-cd ~/telamon
-make up
-
-# 2. Initialise a project (one-time per project)
-make init PROJ=path/to/your-project
-
-# 3. Start working — open the project in opencode
-cd path/to/your-project
-opencode
-```
-
-See [Developer Workflow](docs/developer-workflow.md) for the full day-to-day guide.
-
----
-
-## Prerequisites
-
-| Requirement | Notes |
-|---|---|
-| **Linux** (Ubuntu/Debian/Mint) or **macOS** | Apple Silicon and Intel both supported |
-
-> `make up` installs **everything** — Docker, Node.js, Python, [opencode](https://opencode.ai), Obsidian, Ogham, Graphify, cass, RTK, QMD, Codebase Index, and Caveman.
-> The only manual step: after Obsidian is installed, the installer pauses and walks you through enabling the *Local REST API* plugin.
-
----
-
-## Documentation
-
-| Document | Contents |
-|---|---|
-| [Tools](docs/tools.md) | Detailed description of every tool — what it does, how it works, priority guide |
-| [Developer Workflow](docs/developer-workflow.md) | Day-to-day usage: install, init, session lifecycle, saving knowledge, wrap-up |
-| [System Architecture](docs/system-architecture.md) | System flow diagram and what each tool provides at each stage |
-| [Configuration](docs/configuration.md) | Prerequisites, environment variables, Docker services |
-| [Make Targets](docs/make-targets.md) | All available `make` commands |
-| [Repository Layout](docs/repository-layout.md) | Full directory structure explained |
 
 ---
 
