@@ -3,8 +3,7 @@
 # the upstream cass SKILL.md into src/skills/memory/cass/ so it is available
 # to all initialized projects via the .opencode/skills/telamon symlink.
 #
-# The initial index is NOT built here — it runs lazily on first `cass search`
-# or can be triggered manually with `cass index`.
+# The initial index is built after install (can take several minutes on first run).
 
 set -euo pipefail
 
@@ -48,4 +47,9 @@ if [[ -d "${HOME}/.agents/skills/cass" ]]; then
   log "Removed ~/.agents/skills/cass/"
 fi
 
-info "Run 'cass index' to build the session index (skipped here — can be slow)."
+step "Building initial cass index (this may take a few minutes)..."
+if command -v cass &>/dev/null; then
+  cass index || warn "cass index failed — you can retry with 'cass index' later"
+else
+  warn "cass not found — skipping index"
+fi
