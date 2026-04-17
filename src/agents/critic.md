@@ -54,7 +54,7 @@ The critic evaluates pattern consistency and architectural direction holisticall
 
 ## Scratch Files
 
-Any ephemeral notes, drafts, or WIP content produced during a session (not a formal artifact) must be saved to `<proj>/.ai/telamon/memory/thinking/`. Do not create ad-hoc files elsewhere.
+When you need to create a temporary file, use the `telamon.thinking` skill.
 
 ## MUST NOT
 

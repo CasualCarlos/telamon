@@ -22,7 +22,7 @@ Place all artifacts in a single `<issue-folder>` under `.ai/issue/`. Planning ar
 
 ### Scratch files
 
-Any ephemeral notes, drafts, or intermediate thinking produced during planning must be saved to `<proj>/.ai/telamon/memory/thinking/`. Promote any useful findings from `thinking/` to the appropriate brain file or issue artifact before closing the session. Delete scratch files that add no lasting value.
+When you need to create a temporary file, use the `telamon.thinking` skill. Promote any useful findings from `thinking/` to the appropriate brain file or issue artifact before closing the session.
 
 ### Folder naming
 

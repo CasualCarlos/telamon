@@ -8,5 +8,5 @@ follow the `telamon.workflow.plan-story` skill for each of the stories in the ep
 creating a `.ai/issue/<epic-folder>/<story-folder>/backlog.md` for each story, 
 and only after all of them are planned follow the `telamon.workflow.implement-story` skill for each of them: $1
 
-Any ephemeral scratch notes produced while working across stories must be saved to `<proj>/.ai/telamon/memory/thinking/`.
+When you need to create a temporary file, use the `telamon.thinking` skill.
 

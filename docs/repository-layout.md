@@ -26,6 +26,7 @@ src/
           reference/
           thinking/
       recall-memories/SKILL.md    # session-start memory bootstrap
+      thinking/SKILL.md           # scratch files, drafts, WIP content management
       remember-lessons-learned/SKILL.md  # continuous capture during work
       remember-task/SKILL.md      # post-task lesson capture
       remember-checkpoint/SKILL.md  # pre-compaction state preservation

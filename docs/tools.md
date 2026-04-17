@@ -166,6 +166,7 @@ Telamon ships a library of skills that guide the agent through structured workfl
 
 ### Memory & Context Skills
 - **memory-management** — vault structure, routing, retrieval, writing, and quality rules
+- **thinking** — scratch files, drafts, and WIP content management
 - **recall-memories** — session-start memory bootstrap (loads all memory tools)
 - **remember-lessons-learned** — continuous capture of decisions, patterns, bugs
 - **remember-task** — post-task lesson capture to memories.md

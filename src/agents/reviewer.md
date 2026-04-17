@@ -38,7 +38,7 @@ If the changeset exceeds 30 files or 1500 lines, request the developer break it 
 
 ## Scratch Files
 
-Any ephemeral notes, drafts, or WIP content produced during a session (not a formal artifact) must be saved to `<proj>/.ai/telamon/memory/thinking/`. Do not create ad-hoc files elsewhere.
+When you need to create a temporary file, use the `telamon.thinking` skill.
 
 ## MUST NOT
 
