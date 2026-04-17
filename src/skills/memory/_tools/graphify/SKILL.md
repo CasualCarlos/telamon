@@ -1,12 +1,27 @@
 ---
-name: graphify
-description: any input (code, docs, papers, images) → knowledge graph → clustered communities → HTML + JSON + audit report
+name: telamon.graphify
+description: "Codebase knowledge graph -- build, query, and maintain. Use when building a knowledge graph, querying architecture relationships, tracing paths between concepts, or initializing graphify at session start. Triggers: /graphify, 'graph query', 'god nodes', 'knowledge graph'."
 trigger: /graphify
 ---
 
 # /graphify
 
 Turn any folder of files into a navigable knowledge graph with community detection, an honest audit trail, and three outputs: interactive HTML, GraphRAG-ready JSON, and a plain-language GRAPH_REPORT.md.
+
+## When to Apply
+
+- Building or querying a codebase knowledge graph
+- Session-start initialization (check if graph exists, build if missing)
+- Answering architecture or relationship questions from the graph
+- Running `/graphify` pipeline commands
+
+## Session-Start Initialization
+
+Check at session start and build if missing:
+
+1. Check: does `graphify-out/GRAPH_REPORT.md` exist?
+2. If **NO**: run `graphify .` -- one-time build (follows the full pipeline below)
+3. If **YES**: read `graphify-out/GRAPH_REPORT.md` before touching architecture
 
 ## Usage
 

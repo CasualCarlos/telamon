@@ -171,9 +171,10 @@ Telamon ships a library of skills that guide the agent through structured workfl
 - **remember-task** — post-task lesson capture to memories.md
 - **remember-checkpoint** — pre-compaction state preservation
 - **remember-session** — end-of-session wrap-up and promotion
-- **qmd** — vault semantic search skill
-- **cass** — session history search skill
-- **graphify** — codebase knowledge graph skill
+- **qmd** — vault semantic search (initialization, querying, index maintenance)
+- **ogham** — semantic agent memory (profile switching, storing, searching)
+- **cass** — session history search
+- **graphify** — codebase knowledge graph
 
 ### Development Workflow Skills
 - **agent-communication** — inter-agent communication protocol

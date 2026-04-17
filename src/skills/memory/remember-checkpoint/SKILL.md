@@ -9,7 +9,7 @@ Triggers: repetition in responses, slow output, opencode warns of compaction.
 
 ## Procedure
 
-1. **Checkpoint**: `ogham store "checkpoint: <task> — done: <X> — next: <Y>"`
+1. **Checkpoint**: Use the `telamon.ogham` skill to store a checkpoint.
 2. **Promote**: Save any new learnings to the relevant brain/ note (key_decisions.md, patterns.md, gotchas.md, memories.md)
 3. **Compact**: Run `/compact` in opencode
-4. **Recall**: After compaction, search Ogham — `ogham search "checkpoint"` — and re-read relevant brain/ notes to re-anchor goals
+4. **Recall**: Use the `telamon.ogham` skill to search for the checkpoint, re-read relevant brain/ notes to re-anchor goals and use the `telamon-recall_memories` skill to gather relevant context.

@@ -23,9 +23,7 @@ Use the M-XXX-NNN entry format, categories, and quality rules from the `telamon.
 
 ## 3. Store in Ogham
 
-```
-ogham store "lesson: <one-line summary of what was learned>"
-```
+Use the `telamon.ogham` skill to store the lesson.
 
 ## 4. Pruning
 

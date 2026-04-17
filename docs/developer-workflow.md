@@ -78,7 +78,7 @@ Then check and build (once each, if missing):
 - Codebase index: `index_codebase` tool
 - cass index (first time only): `cass index --full`
 
-Then run QMD incremental refresh and surface recent context:
+Then run QMD vault index refresh and gather context (see the `telamon.qmd` skill for details):
 ```bash
 qmd update && qmd embed
 qmd query "what patterns and gotchas should I know" -n 5

@@ -30,9 +30,11 @@ src/
       remember-task/SKILL.md      # post-task lesson capture
       remember-checkpoint/SKILL.md  # pre-compaction state preservation
       remember-session/SKILL.md   # end-of-session wrap-up
-      cass/SKILL.md          # cass usage skill (downloaded from upstream on install/update)
-      qmd/SKILL.md           # QMD vault semantic search skill (downloaded or bundled)
-      graphify/SKILL.md      # codebase knowledge graph skill
+      _tools/
+        qmd/SKILL.md         # QMD vault semantic search (init, query, index maintenance)
+        ogham/SKILL.md       # Ogham semantic agent memory (profile switching, storing, searching)
+        cass/SKILL.md        # cass session history search (downloaded from upstream on install/update)
+        graphify/SKILL.md    # codebase knowledge graph (downloaded from upstream on install/update)
     dev/                     # agentic workflow skills
       agent-communication/   # inter-agent communication protocol
       caveman/SKILL.md       # token-efficient communication mode (downloaded from upstream)

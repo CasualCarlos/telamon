@@ -51,10 +51,7 @@ Follow the thinking/ lifecycle rules in the `telamon.memory_management` skill (s
 
 ## 4. Update Ogham
 
-Store anything important not yet captured:
-- `ogham store "decision: X over Y because Z"`
-- `ogham store "bug: <desc and fix>"`
-- `ogham store "pattern: <desc>"`
+Use the `telamon.ogham` skill to store anything important not yet captured (decisions, bugs, patterns).
 
 ## 5. Verify vault links
 

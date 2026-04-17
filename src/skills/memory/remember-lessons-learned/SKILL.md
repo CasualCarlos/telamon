@@ -9,14 +9,14 @@ As you work, capture knowledge the moment it arises. Do not defer to end of sess
 
 ## What to save and where
 
-| What happened | Ogham | Brain/ file |
+| What happened | Ogham (use `telamon.ogham` skill) | Brain/ file |
 |---|---|---|
-| Decision made (architectural or product) | `ogham store "decision: X over Y because Z"` | Append to `brain/key_decisions.md` |
-| Human stakeholder answers a question | `ogham store "decision: <Q> → <A>"` | Append to `brain/key_decisions.md` |
-| New rule given by stakeholder | `ogham store "rule: <rule>"` | Append to `brain/key_decisions.md` |
-| Bug fixed (non-trivial) | `ogham store "bug: <desc and fix>"` | Append to `brain/gotchas.md` if recurring |
-| Pattern established | `ogham store "pattern: <desc>"` | Append to `brain/patterns.md` |
-| Graphiti enabled? | Also save decisions and relationships via Graphiti `add_episode` | — |
+| Decision made (architectural or product) | Store as decision | Append to `brain/key_decisions.md` |
+| Human stakeholder answers a question | Store as decision | Append to `brain/key_decisions.md` |
+| New rule given by stakeholder | Store as rule | Append to `brain/key_decisions.md` |
+| Bug fixed (non-trivial) | Store as bug | Append to `brain/gotchas.md` if recurring |
+| Pattern established | Store as pattern | Append to `brain/patterns.md` |
+| Graphiti enabled? | Also save via Graphiti `add_episode` | -- |
 
 ## What NOT to save
 
