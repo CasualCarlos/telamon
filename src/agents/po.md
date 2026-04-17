@@ -95,7 +95,7 @@ Any ephemeral notes, drafts, or WIP content produced during a session (not a for
 
 ## MUST
 
-- Document global product decisions with rationale — follow the `telamon.remember_lessons_learned` skill for where and how.
+- Document global product decisions with rationale -- follow the `telamon.memory_management` skill (section 2) for routing and the `telamon.remember_lessons_learned` skill for when to save.
 - When the human stakeholder answers a project question, record it as a decision.
 - When given a new rule, record it as a decision.
 - Use business and domain language, not technical jargon.

@@ -65,7 +65,7 @@ make doctor    # comprehensive health check (connectivity, secrets, config)
 
 ## 4. Every agent session: Automatic memory bootstrap
 
-At the start of every session (via the `memory-stack` skill) **the agent will automatically**:
+At the start of every session (via the `telamon.recall_memories` skill) **the agent will automatically**:
 
 - Graphify plugin injects god nodes, communities, and surprising connections into the first tool call (no manual action needed)
 

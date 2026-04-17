@@ -28,7 +28,7 @@
 | Code by meaning ("find auth logic") | codebase-index (ask naturally) |
 | Past decisions/bugs this project | `ogham search "<keywords>"` |
 | Past session conversations | `cass search "<topic>"` |
-| Specs, ADRs, requirements | Obsidian vault search (follow obsidian-vault skill) |
+| Specs, ADRs, requirements | Obsidian vault search (follow telamon.memory_management skill) |
 
 ### Switching projects:
 Switch Ogham profile via `ogham switch_profile` (or the `ogham use` CLI):

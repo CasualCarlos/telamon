@@ -20,7 +20,7 @@ Search Ogham for relevant prior work:
 ogham search "<current task or recent topic>"
 ```
 
-Read brain/ notes directly:
+Read brain/notes directly:
 - `.ai/telamon/memory/brain/key_decisions.md` — architectural and product decisions
 - `.ai/telamon/memory/brain/patterns.md` — established patterns and best practices
 - `.ai/telamon/memory/brain/gotchas.md` — known traps and constraints
@@ -67,7 +67,7 @@ When you need information, use the right tool for the question type:
 | Code by meaning ("find auth logic") | codebase-index (ask naturally) |
 | Past decisions/bugs this project | `ogham search "<keywords>"` |
 | Past session conversations | `cass search "<topic>" --robot --workspace "$(pwd)"` |
-| Specs, ADRs, requirements | Obsidian vault search (follow `obsidian-vault` skill) |
+| Specs, ADRs, requirements | Obsidian vault search (follow `telamon.memory_management` skill for retrieval rules) |
 
 ## Switching projects
 

@@ -3,7 +3,7 @@
 # <project>/.ai/telamon/memory symlink that points into it.
 #
 # Vault layout:
-#   storage/obsidian/<project-name>/   — mirrored dir tree from src/skills/memory/obsidian-vault/_tmpl/
+#   storage/obsidian/<project-name>/   — mirrored dir tree from src/skills/memory/memory-management/_tmpl/
 #     Files with no placeholders  → symlink to _tmpl source (stays in sync)
 #     Files with PROJECT_NAME / DATE_PLACEHOLDER → real copy with substitutions
 #   <project>/.ai/telamon/memory           → symlink → storage/obsidian/<project-name>
@@ -26,7 +26,7 @@ PROJ="${PROJ:-$(pwd)}"
 PROJECT_NAME="${PROJECT_NAME:-$(basename "${PROJ}")}"
 
 VAULT_ROOT="${TELAMON_ROOT}/storage/obsidian/${PROJECT_NAME}"
-VAULT_TMPL="${TELAMON_ROOT}/src/skills/memory/obsidian-vault/_tmpl"
+VAULT_TMPL="${TELAMON_ROOT}/src/skills/memory/memory-management/_tmpl"
 MEMORY_LINK="${PROJ}/.ai/telamon/memory"
 TODAY="$(date +%Y-%m-%d)"
 

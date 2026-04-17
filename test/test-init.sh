@@ -171,7 +171,7 @@ echo -e "${BOLD}Project path: ${PROJ}${RESET}"
 _section "1. Vault scaffold (storage/obsidian/${PROJECT_NAME}/)"
 VAULT_ROOT="${TELAMON_ROOT}/storage/obsidian/${PROJECT_NAME}"
 BRAIN_DIR="${VAULT_ROOT}/brain"
-VAULT_TMPL="${TELAMON_ROOT}/src/skills/memory/obsidian-vault/_tmpl"
+VAULT_TMPL="${TELAMON_ROOT}/src/skills/memory/memory-management/_tmpl"
 
 # Dirs must be real directories (not symlinks)
 assert_dir "${VAULT_ROOT}"                     "storage/obsidian/${PROJECT_NAME}/"

@@ -20,14 +20,4 @@ As you work, capture knowledge the moment it arises. Do not defer to end of sess
 
 ## What NOT to save
 
-Never save: `ls`/`git status`/`cat`/`pwd` output, secrets, trivial single-line edits.
-
-## Memory tiers
-
-For reference — understand which tier you are writing to:
-
-| Tier | Store | What goes here | Who writes |
-|---|---|---|---|
-| **Working** | AGENTS.md + session context | Active goals, current task state, in-flight constraints | Human + agent at session start |
-| **Episodic** | Ogham + cass | Past actions, bugs fixed, patterns discovered, session logs | Agent automatically during/after sessions |
-| **Long-term** | Obsidian brain/ notes | Architectural decisions, domain knowledge, patterns, gotchas | Agent deliberately at wrap-up, human for strategy |
+See the `telamon.memory_management` skill, section 4 (Never write) for the full list. Key rule: never save secrets, command output, or trivial edits.

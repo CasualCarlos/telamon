@@ -32,11 +32,11 @@ Local search engine for markdown content.
 
 ### Query Types
 
-| Type | Method | Input |
-|------|--------|-------|
-| `lex` | BM25 | Keywords — exact terms, names, code |
-| `vec` | Vector | Question — natural language |
-| `hyde` | Vector | Answer — hypothetical result (50-100 words) |
+| Type   | Method   | Input                                       |
+|--------|----------|---------------------------------------------|
+| `lex`  | BM25     | Keywords — exact terms, names, code         |
+| `vec`  | Vector   | Question — natural language                 |
+| `hyde` | Vector   | Answer — hypothetical result (50-100 words) |
 
 ### Writing Good Queries
 

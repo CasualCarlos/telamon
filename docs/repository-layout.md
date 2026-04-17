@@ -17,12 +17,7 @@ src/
     codebase-index.md        # how to use the codebase index
   skills/
     memory/
-      memory-stack/SKILL.md  # session-start memory bootstrap skill
-      session-capture/SKILL.md  # pre-compaction + wrap-up memory capture skill
-      cass/SKILL.md          # cass usage skill (downloaded from upstream on install/update)
-      qmd/SKILL.md           # QMD vault semantic search skill (downloaded or bundled)
-      graphify/SKILL.md      # codebase knowledge graph skill
-      obsidian-vault/        # vault skill + vault scaffold template
+      memory-management/     # vault structure, routing, retrieval, writing, quality rules
         SKILL.md
         _tmpl/               # full vault template (copied per project on make init)
           bootstrap/         # always-on context files (loaded like AGENTS.md)
@@ -30,6 +25,14 @@ src/
           work/active|archive|incidents/
           reference/
           thinking/
+      recall-memories/SKILL.md    # session-start memory bootstrap
+      remember-lessons-learned/SKILL.md  # continuous capture during work
+      remember-task/SKILL.md      # post-task lesson capture
+      remember-checkpoint/SKILL.md  # pre-compaction state preservation
+      remember-session/SKILL.md   # end-of-session wrap-up
+      cass/SKILL.md          # cass usage skill (downloaded from upstream on install/update)
+      qmd/SKILL.md           # QMD vault semantic search skill (downloaded or bundled)
+      graphify/SKILL.md      # codebase knowledge graph skill
     dev/                     # agentic workflow skills
       agent-communication/   # inter-agent communication protocol
       caveman/SKILL.md       # token-efficient communication mode (downloaded from upstream)
@@ -40,7 +43,6 @@ src/
       evaluation/            # post-iteration quality assessment
       exception-handling/    # structured error recovery for agent failures
       implementation-planning/
-      memory-management/
       optimize-instructions/
       plan-execution/
       plan-review/

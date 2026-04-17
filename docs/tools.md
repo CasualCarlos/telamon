@@ -165,9 +165,12 @@ A skill that switches the agent into an ultra-compressed communication mode — 
 Telamon ships a library of skills that guide the agent through structured workflows:
 
 ### Memory & Context Skills
-- **memory-stack** — session-start memory bootstrap (loads all memory tools)
-- **session-capture** — pre-compaction + wrap-up memory capture
-- **obsidian-vault** — vault read/write protocol
+- **memory-management** — vault structure, routing, retrieval, writing, and quality rules
+- **recall-memories** — session-start memory bootstrap (loads all memory tools)
+- **remember-lessons-learned** — continuous capture of decisions, patterns, bugs
+- **remember-task** — post-task lesson capture to memories.md
+- **remember-checkpoint** — pre-compaction state preservation
+- **remember-session** — end-of-session wrap-up and promotion
 - **qmd** — vault semantic search skill
 - **cass** — session history search skill
 - **graphify** — codebase knowledge graph skill

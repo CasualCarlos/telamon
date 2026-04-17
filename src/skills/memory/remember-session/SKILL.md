@@ -31,7 +31,7 @@ Also check:
 
 ## 2. Route to brain notes
 
-Append new entries. Do not overwrite.
+Append new entries to the appropriate brain/ file. Follow the routing table and routing rules in the `telamon.memory_management` skill (section 2).
 
 | Content                           | Destination                                                                                            |
 |-----------------------------------|--------------------------------------------------------------------------------------------------------|
@@ -39,26 +39,15 @@ Append new entries. Do not overwrite.
 | Human stakeholder answer          | `.ai/telamon/memory/brain/key_decisions.md`                                                            |
 | Reusable pattern or best practice | `.ai/telamon/memory/brain/patterns.md`                                                                 |
 | Bug, trap, or known constraint    | `.ai/telamon/memory/brain/gotchas.md`                                                                  |
-| General project knowledge         | `.ai/telamon/memory/brain/memories.md` (using M-XXX-NNN format from the `telamon.remember_task` skill) |
+| General project knowledge         | `.ai/telamon/memory/brain/memories.md` (using M-XXX-NNN format from the `telamon.memory_management` skill, section 5) |
 | Active work note                  | `.ai/telamon/memory/work/active/<name>.md`                                                             |
-| Completed work note               | `.ai/telamon/memory/work/archive/YYYY-MM-DD/<name>.md`                                                 |
+| Completed work note               | `.ai/telamon/memory/work/archive/YYYY/<name>.md`                                                       |
 | Incident                          | `.ai/telamon/memory/work/incidents/<YYYY-MM-DD>-<slug>.md`                                             |
 | Ephemeral draft still needed      | `.ai/telamon/memory/thinking/<descriptive-name>.md`                                                    |
 
-**Routing rules:**
-- Append, don't replace
-- One entry per insight
-- Be specific — include dates
-- When writing to `brain/key_decisions.md` and Graphiti is enabled (`telamon-graphiti` container running): also create a Graphiti entity via `add_episode` with `name` (decision title), `episode_body` (decision + rationale), `source` ("session-capture")
-
 ## 3. Promote or discard thinking notes
 
-For each file in `.ai/telamon/memory/thinking/`:
-- Contains a reusable lesson? → promote to brain/, then **delete** the thinking note
-- Completed work? → **delete** (work is done)
-- Still live WIP? → keep; rename to `partial-<task>-YYYY-MM-DD.md` if not descriptive
-
-Flag any thinking/ file older than 7 days for user review.
+Follow the thinking/ lifecycle rules in the `telamon.memory_management` skill (section 6).
 
 ## 4. Update Ogham
 
@@ -69,7 +58,7 @@ Store anything important not yet captured:
 
 ## 5. Verify vault links
 
-New notes must link to at least one existing note via `[[wikilink]]`. An orphan note is a bug — link it or delete it.
+New notes must link to at least one existing note via `[[wikilink]]` (see `telamon.memory_management` skill, section 4).
 
 ## 6. Update watermark
 
