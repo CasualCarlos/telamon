@@ -68,8 +68,8 @@ if [[ ! -d "${VAULT}" ]]; then
 fi
 
 # ── Register collections ───────────────────────────────────────────────────────
-# `qmd collection add` is idempotent: re-running updates the path if it changed
-# but does not duplicate entries.
+# `qmd collection add` is NOT idempotent: it fails if the collection already
+# exists. We check first and skip if already registered.
 
 declare -A COLLECTIONS=(
   ["brain"]="memories, key decisions, patterns, and recurring gotchas for ${PROJECT_NAME}"
@@ -89,10 +89,14 @@ for section in brain work project-rules reference thinking; do
     continue
   fi
 
-  step "Registering QMD collection: ${name} ..."
-  qmd collection add "${dir}" --name "${name}" --mask "**/*.md" 2>/dev/null \
-    && log "Collection registered: ${name}" \
-    || warn "qmd collection add failed for ${name} — retry: qmd collection add ${dir} --name ${name} --mask '**/*.md'"
+  if qmd collection list 2>/dev/null | grep -q "^${name} "; then
+    skip "QMD collection already registered: ${name}"
+  else
+    step "Registering QMD collection: ${name} ..."
+    qmd collection add "${dir}" --name "${name}" --mask "**/*.md" 2>/dev/null \
+      && log "Collection registered: ${name}" \
+      || warn "qmd collection add failed for ${name} — retry: qmd collection add ${dir} --name ${name} --mask '**/*.md'"
+  fi
 
   step "Adding QMD context for ${name} ..."
   qmd context add "qmd://${name}" "${description}" 2>/dev/null || true

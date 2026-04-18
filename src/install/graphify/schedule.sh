@@ -46,7 +46,7 @@ Description=Graphify incremental update for ${PROJECT_NAME}
 
 [Service]
 Type=oneshot
-ExecStart=/bin/bash -c 'cd ${PROJ} && graphify . --update 2>/dev/null || graphify .'"
+ExecStart=/bin/bash -c 'cd ${PROJ} && graphify update .'"
 
   TIMER_CONTENT="[Unit]
 Description=Graphify update timer for ${PROJECT_NAME}
@@ -99,7 +99,7 @@ elif [[ "${OS}" == "Darwin" ]]; then
   <array>
     <string>/bin/bash</string>
     <string>-c</string>
-    <string>cd '"${PROJ}"' &amp;&amp; graphify . --update 2>/dev/null || graphify .</string>
+    <string>cd '"${PROJ}"' &amp;&amp; graphify update .</string>
   </array>
   <key>StartInterval</key>
   <integer>1800</integer>

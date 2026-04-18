@@ -68,7 +68,7 @@ if [[ -f "graphify-out/graph.json" ]]; then
   skip "Graph already built"
 else
   step "Building initial knowledge graph..."
-  graphify . > /dev/null 2>&1 || warn "graphify build failed — continuing without graph"
+  output=$(graphify update . 2>&1) || warn "graphify build failed — continuing without graph: ${output}"
 fi
 
 # ── Schedule periodic graph updates ──────────────────────────────────────────
