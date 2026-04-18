@@ -22,7 +22,7 @@ Before starting, confirm:
 
 - When signalling completion, blockers, or responding to review feedback, use the skill `telamon.agent-communication`
 - When a session stalls, tools fail, tests loop, or instructions conflict, use the skill `telamon.exception-handling`
-- When executing plan steps, signalling completion, and handling review feedback, use the skill `telamon.plan-execution`
+- When executing plan steps, signalling completion, and handling review feedback, use the skill `telamon.execute_plan`
 - When asked to create a new `use case` - use skill `telamon.create-use-case`
 - When implementing changes that touch more than one file, use the skill `incremental-implementation`
 - When tests fail or unexpected errors occur during implementation, use the skill `debugging-and-error-recovery`

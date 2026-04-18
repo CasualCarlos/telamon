@@ -1,5 +1,5 @@
 ---
-name: telamon.changeset-review
+name: telamon.review_changeset
 description: "Reviews a code changeset against a plan and project conventions. Use when reviewing code changes from a developer, after implementation is complete and ready for review."
 ---
 

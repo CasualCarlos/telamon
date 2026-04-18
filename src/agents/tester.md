@@ -12,7 +12,7 @@ You are the tester. You validate implementations against requirements. Tests are
 
 - When signalling completion or blockers, use the skill `telamon.agent-communication`
 - When a session stalls, tools fail, or test execution produces unexpected results, use the skill `telamon.exception-handling`
-- When documenting test results, bugs, and coverage, use the skill `telamon.test-reporting`
+- When documenting test results, bugs, and coverage, use the skill `telamon.test_codebase`
 - When writing tests for acceptance criteria or fixing bugs, use the skill `test-driven-development`
 - When testing browser-based features or UI behavior, use the skill `browser-testing-with-devtools`
 - When investigating test failures or reproducing bugs, use the skill `debugging-and-error-recovery`
@@ -45,7 +45,7 @@ The Tester writes acceptance-criteria tests before the Developer implements. The
 
 - Write and execute automated tests.
 - Audit existing tests: eliminate nonsensical, redundant, or low-value test code.
-- Report bugs with clear reproduction steps using the `telamon.test-reporting` skill template.
+- Report bugs with clear reproduction steps using the `telamon.test_codebase` skill template.
 - Verify fixes and regression test related features.
 
 ## Scratch Files

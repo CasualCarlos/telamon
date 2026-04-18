@@ -1,5 +1,5 @@
 ---
-name: telamon.plan-review
+name: telamon.review_plan
 description: "Reviews an architect's implementation plan for correctness, completeness, and architectural consistency. Use when evaluating a draft plan before code is written."
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: telamon.plan-execution
+name: telamon.execute_plan
 description: "Executes implementation plan steps systematically. Use when implementing an architect's plan step-by-step, signalling completion, and handling review feedback."
 ---
 

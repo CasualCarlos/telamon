@@ -1,5 +1,5 @@
 ---
-name: telamon.workflow.plan-story
+name: telamon.plan_story
 description: "Plans a user story by producing a backlog, architecture specification, and optional UI/UX specification. Use when a human stakeholder provides a story, feature request, or business initiative that needs planning before implementation."
 ---
 
@@ -78,13 +78,13 @@ Delegate to @critic for feedback on all documents produced so far.
 
 ### Step 5: Planning summary and approval
 
-Create `<issue-folder>/summary.md` by following the `telamon.plan-summary` skill.
+Create `<issue-folder>/summary.md` by following the `telamon.summarize_plan` skill.
 
 Output the summary to the human stakeholder and ask for final approval.
 
 ### Step 6: Transition
 
-On approval, proceed to implementation using the `telamon.workflow.implement-story` skill.
+On approval, proceed to implementation using the `telamon.implement_story` skill.
 
 ## Backlog Rules
 

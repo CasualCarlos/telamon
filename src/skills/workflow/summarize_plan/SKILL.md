@@ -1,5 +1,5 @@
 ---
-name: telamon.plan-summary
+name: telamon.summarize_plan
 description: "Produces a planning summary report after a planning stage completes. Use when a planning stage finishes and a summary must be written to <issue-folder>/summary.md and presented to the human stakeholder."
 ---
 
@@ -9,7 +9,7 @@ Produce a structured summary report at the end of a planning stage.
 
 ## When to Apply
 
-- When the `plan-story` workflow reaches its summary step
+- When the `plan_story` workflow reaches its summary step
 - When the orchestrator completes a planning stage and needs to summarize artifacts, decisions, and next steps
 
 ## Procedure

@@ -1,5 +1,5 @@
 ---
-name: telamon.implementation-planning
+name: telamon.plan_implementation
 description: "Creates implementation plans from a brief. Use when designing a technical plan that addresses all layers (domain, application, infrastructure, presentation, wiring, migrations, tests)."
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: telamon.codebase-audit
+name: telamon.audit_codebase
 description: "Audits a codebase for pattern drift, inconsistencies, and architectural erosion. Use when performing a holistic review of codebase health, not scoped to a single changeset."
 ---
 

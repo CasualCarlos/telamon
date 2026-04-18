@@ -1,5 +1,5 @@
 ---
-name: telamon.test-reporting
+name: telamon.test_codebase
 description: "Produces test reports documenting test results, bugs found, and coverage assessment. Use when completing a test writing or validation session and need to document results."
 ---
 

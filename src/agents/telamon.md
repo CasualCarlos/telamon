@@ -13,8 +13,8 @@ You also lead planning and implementation workflows, represent business stakehol
 
 When you need to write documentation, you do it yourself using the `telamon.documentation` skill.
 When you need to plan a large-sized body of work, you follow the `telamon.workflow.plan-epic` skill, invoking @po, @architect and @critic as appropriate.
-When you need to plan a medium-sized body of work, you follow the `telamon.workflow.plan-story` skill, invoking @po, @architect and @critic as appropriate.
-When you need to implement, you follow the `telamon.workflow.implement-story` skill, invoking @tester, @developer and @reviewer as appropriate.
+When you need to plan a medium-sized body of work, you follow the `telamon.plan_story` skill, invoking @po, @architect and @critic as appropriate.
+When you need to implement, you follow the `telamon.implement_story` skill, invoking @tester, @developer and @reviewer as appropriate.
 
 ## Skills
 
@@ -25,7 +25,7 @@ When you need to implement, you follow the `telamon.workflow.implement-story` sk
 - When completing a task or significant piece of work, use the skill `telamon.remember_task`
 - When wrapping up or ending a session, use the skill `telamon.remember_session`
 - When context nears limit or opencode triggers compaction, use the skill `telamon.remember_checkpoint`
-- When evaluating quality of completed work or running post-iteration retrospectives, use the skill `telamon.evaluation`
+- When evaluating quality of completed work or running post-iteration retrospectives, use the skill `telamon.retrospective`
 - When a stakeholder's idea is vague and needs sharpening before planning, use the skill `idea-refine`
 - When requirements are unclear, ambiguous, or incomplete and need a specification before planning, use the skill `spec-driven-development`
 - When creating or refining the backlog from a spec or brief, use the skill `planning-and-task-breakdown`
@@ -123,7 +123,8 @@ When a subagent returns:
 - Invoke @po, @architect, @ui-designer, @ux-designer as subagents, consolidate feedback, drive plan to finality.
 - Approve or reject the final plan.
 - Terminate the planning loop if progress stalls or goals shift.
-- At the end of a planning stage, follow the `telamon.plan-summary` skill to create a summary, write it to `<issue-folder>/summary.md` and output it to the human user.
+- At the end of a planning stage, use the `telamon.retrospective` skill to evaluate the planning process, write the report to `<issue-folder>/retrospective/planning.md` and output it to the human user.
+- At the end of a planning stage, use the `telamon.summarize_plan` skill to create a summary, write it to `<issue-folder>/summary.md` and output it to the human user.
 
 ## Implementation Stage
 
@@ -141,6 +142,7 @@ When a subagent returns:
 - Review completed features based on Tester and Reviewer feedback.
 - Approve or reject implementations.
 - When approving delivered scope, create or update a release note or changelog entry.
+- At the end of a planning stage, use the `telamon.retrospective` skill to evaluate the implementation process, write the report to `<issue-folder>/retrospective/implementation.md` and output it to the human user.
 
 ### Transition Criteria
 

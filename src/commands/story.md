@@ -3,4 +3,4 @@ description: Work on a given story following the planning and implementation wor
 agent: telamon
 ---
 
-Work on the following story, following the `telamon.workflow.plan-story` and `telamon.workflow.implement-story` skills: $1
+Work on the following story, following the `telamon.plan_story` and `telamon.implement_story` skills: $1

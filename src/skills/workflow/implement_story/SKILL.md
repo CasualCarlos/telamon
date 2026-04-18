@@ -1,6 +1,6 @@
 ---
-name: telamon.workflow.implement-story
-description: "Implements an approved plan by orchestrating Tester, Developer, and Reviewer in a structured cycle per task. Use after the human stakeholder approves the plan from the telamon.workflow.plan-story skill."
+name: telamon.implement_story
+description: "Implements an approved plan by orchestrating Tester, Developer, and Reviewer in a structured cycle per task. Use after the human stakeholder approves the plan from the telamon.plan_story skill."
 ---
 
 # Skill: Implement Plan
@@ -9,13 +9,13 @@ Implement an approved plan by orchestrating Tester, Developer, and Reviewer for 
 
 ## When to Apply
 
-- After the human stakeholder approves the plan from the `telamon.workflow.plan-story` skill
+- After the human stakeholder approves the plan from the `telamon.plan_story` skill
 - When the `/implement`, `/story`, or `/epic` command is invoked for implementation
 - When the `/test`, `/dev`, or `/review` command invokes a specific step
 
 ## Artifacts
 
-Place all artifacts in the `<issue-folder>` established during planning (see `telamon.workflow.plan-story` skill for naming conventions). Artifacts must not be committed to git.
+Place all artifacts in the `<issue-folder>` established during planning (see `telamon.plan_story` skill for naming conventions). Artifacts must not be committed to git.
 
 ### Scratch files
 
@@ -23,7 +23,7 @@ When you need to create a temporary file, use the `telamon.thinking` skill. Prom
 
 ### Pre-flight check
 
-Before creating any artifact, verify the issue folder already exists in `.ai/telamon/memory/work/active/`. If it does not, STOP — planning must be completed first via `telamon.workflow.plan-story`. If multiple folders exist for the same initiative, consolidate into the correctly-named one and delete the duplicate.
+Before creating any artifact, verify the issue folder already exists in `.ai/telamon/memory/work/active/`. If it does not, STOP — planning must be completed first via `telamon.plan_story`. If multiple folders exist for the same initiative, consolidate into the correctly-named one and delete the duplicate.
 
 ## Clarification Channels
 
@@ -78,7 +78,7 @@ For each task in the backlog:
 When all tasks are done:
 
 1. Verify test coverage has not regressed. If it has, create a follow-up task before approval.
-2. Produce a post-iteration retrospective using the `telamon.evaluation` skill.
+2. Produce a post-iteration retrospective using the `telamon.retrospective` skill.
 3. Approve or reject.
 4. When all tasks are done, follow the `telamon.remember_task` skill to capture lessons learned.
 5. Notify human stakeholder with completion report and recommended next actions.
