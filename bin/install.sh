@@ -41,6 +41,10 @@ export TELAMON_ROOT STATE_DIR SECRETS_DIR
 # ── PATH ──────────────────────────────────────────────────────────────────────
 export PATH="$HOME/.local/bin:$HOME/.cargo/bin:/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:/usr/local/bin:$PATH"
 
+# ── Git submodules ────────────────────────────────────────────────────────────
+# Ensure vendor skill repos are checked out (safe to re-run).
+git -C "${TELAMON_ROOT}" submodule update --init --recursive 2>/dev/null || true
+
 # ── load_saved_inputs ──────────────────────────────────────────────────────────
 # Sources the saved setup-inputs file and exports vars for child scripts.
 # Non-interactive — used by --post-docker where inputs were already collected.

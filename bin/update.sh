@@ -56,6 +56,14 @@ if [[ "${_STASHED}" -eq 1 && "${FAILED}" -eq 0 ]]; then
     || { echo -e "  ${TEXT_RED}✖${TEXT_CLEAR}  git stash pop failed — resolve conflicts manually"; FAILED=$((FAILED + 1)); }
 fi
 
+# ── Git submodules ────────────────────────────────────────────────────────────
+header "Git submodules"
+step "Updating vendor skill repos..."
+git -C "${TELAMON_ROOT}" submodule update --init --recursive \
+  && git -C "${TELAMON_ROOT}" submodule update --remote --merge \
+  && log "Submodules updated" \
+  || { echo -e "  ${TEXT_RED}✖${TEXT_CLEAR}  Submodule update failed"; FAILED=$((FAILED + 1)); }
+
 # ── Per-app updates ────────────────────────────────────────────────────────────
 # Each src/install/<app>/update.sh exits:
 #   0 — success
