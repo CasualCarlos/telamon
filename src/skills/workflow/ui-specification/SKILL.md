@@ -9,7 +9,7 @@ Produce implementation-ready UI specifications covering design tokens, screen-le
 
 ## When to Apply
 
-- When the PO requests visual design work
+- When the orchestrator requests visual design work
 - When the UX Designer hands off wireframes or interaction flows needing visual treatment
 - When specifying new UI components or visual patterns
 

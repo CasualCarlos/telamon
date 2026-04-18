@@ -11,11 +11,11 @@ Structured quality evaluation of completed work and post-iteration retrospective
 
 - After completing an implementation task (post-task evaluation)
 - After completing all tasks in a backlog (post-iteration retrospective)
-- When the PO needs to assess whether delivered work meets quality standards
+- When the orchestrator needs to assess whether delivered work meets quality standards
 
 ## Post-Task Quality Rubric
 
-After each task is implemented, reviewed, and committed, the PO evaluates it against this rubric:
+After each task is implemented, reviewed, and committed, the orchestrator evaluates it against this rubric:
 
 | Dimension | Question | Rating |
 |---|---|---|
@@ -33,7 +33,7 @@ After each task is implemented, reviewed, and committed, the PO evaluates it aga
 
 ## Post-Iteration Retrospective
 
-After all tasks in a backlog are completed (`telamon.workflow.implement-story` skill step 3), the PO produces a retrospective:
+After all tasks in a backlog are completed (`telamon.workflow.implement-story` skill step 3), the orchestrator produces a retrospective:
 
 ### Template
 
@@ -76,11 +76,11 @@ Save to `<issue-folder>/RETRO-YYYY-MM-DD.md`.
 
 ## Monitoring During Implementation
 
-The PO should track these signals during implementation (no formal report needed — just awareness):
+The orchestrator should track these signals during implementation (no formal report needed — just awareness):
 
 - **Iteration velocity** — Are later tasks taking longer than earlier ones? May indicate context overflow or growing complexity.
 - **Review rejection rate** — Are most reviews requesting changes? May indicate unclear plans or insufficient delegation context.
 - **Test failure rate** — Are developers spending most time fixing tests rather than implementing? May indicate tests were written with incorrect assumptions.
 - **Escalation frequency** — Are agents frequently escalating? May indicate plans need more detail.
 
-If any signal trends negatively across 3+ tasks, the PO should pause and address the root cause before continuing.
+If any signal trends negatively across 3+ tasks, the orchestrator should pause and address the root cause before continuing.

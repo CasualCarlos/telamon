@@ -6,7 +6,7 @@
     "AGENTS.md",
     ".ai/context*/*.md"
   ],
-  "default_agent": "developer",
+  "default_agent": "telamon",
   "plugin": [
     "opencode-scheduler",
     ".opencode/plugins/telamon/graphify.js",

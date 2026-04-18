@@ -15,7 +15,7 @@ Evaluate an architect's implementation plan for correctness, completeness, and a
 ## Inputs
 
 - Architect's plan
-- PO's brief
+- The brief
 - Architecture document
 - ADR log
 

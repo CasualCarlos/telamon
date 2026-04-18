@@ -1,6 +1,6 @@
 ---
 description: Developer step for implementation workflow
-agent: developer
+agent: telamon
 ---
 
 Follow `telamon.workflow.implement-story` skill developer step to implement: $1

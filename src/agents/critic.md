@@ -22,7 +22,7 @@ You are the critic. You evaluate plans and audit the codebase for inconsistencie
 ### Plan Review
 
 - **Trigger**: Architect sends a draft plan for review.
-- **Input**: Architect's plan, PO's brief, architecture document, ADR log.
+- **Input**: Architect's plan, the brief, architecture document, ADR log.
 - **Output**: Plan Review Report (follow the `telamon.plan-review` skill template).
 - **Goal**: Evaluate correctness, completeness, and architectural consistency before code is written.
 

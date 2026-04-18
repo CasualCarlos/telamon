@@ -9,7 +9,7 @@ Produce UX specifications defining user flows, screen interaction specs, and sta
 
 ## When to Apply
 
-- When the PO requests UX work or the Architect needs interaction specifications
+- When the orchestrator requests UX work or the Architect needs interaction specifications
 - When producing interaction guidance for the UI Designer and Developer
 - When validating an implemented feature against the original UX spec
 

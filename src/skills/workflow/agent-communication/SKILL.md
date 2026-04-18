@@ -9,7 +9,7 @@ Structured protocol for communication between agents in the multi-agent system. 
 
 ## When to Apply
 
-- When delegating work from one agent to another (PO to Architect, PO to Developer, etc.)
+- When delegating work from one agent to another (orchestrator to Architect, orchestrator to Developer, etc.)
 - When an agent completes work and reports back to the orchestrating agent
 - When an agent is blocked and needs input from another agent
 - When handing off artifacts between stages (planning to implementation, implementation to review)
@@ -25,7 +25,7 @@ Every agent must end its final message with exactly one of these signals on its 
 
 ## Delegation Format
 
-When delegating work (typically PO delegating to another agent), include these sections:
+When delegating work (typically the orchestrator delegating to a specialist), include these sections:
 
 ### Template
 
@@ -51,16 +51,16 @@ When delegating work (typically PO delegating to another agent), include these s
 
 Each transition between agents has a defined set of artifacts that must be passed:
 
-### PO to Architect
+### Orchestrator to Architect
 
-- PO's brief or backlog (`backlog.md`)
+- The brief or backlog (`backlog.md`)
 - Relevant context documents (architecture doc, ADRs)
 - Scope constraints and priorities
 
 ### Architect to Critic
 
 - Draft plan (`PLAN.md` or `ARCH-YYYY-MM-DD-NNN.md`)
-- PO's brief (for scope validation)
+- The brief (for scope validation)
 - Architecture document and ADR log
 
 ### Critic to Architect (feedback loop)
@@ -68,20 +68,20 @@ Each transition between agents has a defined set of artifacts that must be passe
 - Plan Review Report (`CRITIC-YYYY-MM-DD-NNN.md`)
 - Specific findings with file paths and recommendations
 
-### PO to Tester (pre-implementation)
+### Orchestrator to Tester (pre-implementation)
 
 - Task description from backlog with acceptance criteria
 - Architecture plan (for understanding structure)
 - Relevant existing test files (for convention alignment)
 
-### PO to Developer
+### Orchestrator to Developer
 
 - Task description from backlog with acceptance criteria
 - Architecture plan
 - Test files created by Tester
 - Concrete class signatures, constructor parameters, file paths from existing codebase
 
-### PO to Reviewer
+### Orchestrator to Reviewer
 
 - Task description from backlog
 - Architecture plan

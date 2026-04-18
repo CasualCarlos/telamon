@@ -43,9 +43,11 @@ Each epic or story MUST have exactly one folder. NEVER create a second folder fo
 
 ### Step 1: Create backlog
 
-Create `<issue-folder>/backlog.md` with prioritized tasks, requirements, and acceptance criteria.
+Delegate to @po to create `<issue-folder>/backlog.md` with prioritized tasks, requirements, and acceptance criteria.
 
-Apply the backlog rules below when writing tasks.
+- PO must apply the backlog rules below when writing tasks.
+- PO saves to `<issue-folder>/backlog.md`, signals FINISHED with the backlog.
+- If the PO signals NEEDS_INPUT, relay the question to the human stakeholder and re-delegate with the answer.
 
 ### Step 2: Architecture review
 
@@ -86,7 +88,7 @@ On approval, proceed to implementation using the `telamon.workflow.implement-sto
 
 ## Backlog Rules
 
-- Known bugs discovered during planning must have PO cost/benefit evaluation before being marked out of scope. Justify why incorrect output is acceptable, or include the bug in the backlog.
+- Known bugs discovered during planning must have product cost/benefit evaluation before being marked out of scope. Justify why incorrect output is acceptable, or include the bug in the backlog.
 - When an issue requires sorting a collection, specify the sort key and justify why it matches the algorithm's invariant.
 - When a use case returns data to presentation, specify an application-layer DTO — name the class and fields. Domain entities must not cross the application-to-presentation boundary.
 - For refactoring issues, include an acceptance criterion: "The refactored code must produce byte-identical output to the original for the same input."

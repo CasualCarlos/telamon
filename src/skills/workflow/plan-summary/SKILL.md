@@ -10,11 +10,11 @@ Produce a structured summary report at the end of a planning stage.
 ## When to Apply
 
 - When the `plan-story` workflow reaches its summary step
-- When the PO completes a planning stage and needs to summarize artifacts, decisions, and next steps
+- When the orchestrator completes a planning stage and needs to summarize artifacts, decisions, and next steps
 
 ## Procedure
 
-1. Read all artifacts in the `<issue-folder>` (backlog, architecture specs, critic reviews, UI/UX specs, PO decisions).
+1. Read all artifacts in the `<issue-folder>` (backlog, architecture specs, critic reviews, UI/UX specs, decisions).
 2. Fill in every section of the template below — do NOT invent a custom format.
 3. Write the result to `<issue-folder>/summary.md`.
 4. Output the summary to the human stakeholder, as properly formatted Markdown.

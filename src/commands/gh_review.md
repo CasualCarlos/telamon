@@ -1,6 +1,6 @@
 ---
 description: Address code review comments on a GitHub PR
-agent: developer
+agent: telamon
 ---
 
 Use the `github` MCP to read the comments on the PR $1.

@@ -28,7 +28,7 @@ Before creating any artifact, verify the issue folder already exists in `.ai/tel
 ## Clarification Channels
 
 If the developer needs:
-- Specification clarification: ask the PO
+- Specification clarification: consult the product owner (via the orchestrator)
 - Technical guidance: ask the architect first; if inconclusive, ask the human stakeholder
 
 ## Procedure
@@ -91,7 +91,7 @@ When all tasks are done:
 - Limit each developer delegation to at most 3 tasks.
 - Include concrete class signatures, constructor parameters, file paths, and dependency details from the existing codebase.
 - Include only context relevant to the specific task — not the entire project context. Summarize large files. Load one skill per delegation.
-- All code changes — including trivial review fixes — must be delegated to the Developer. PO must never apply code changes directly.
+- All code changes — including trivial review fixes — must be delegated to the Developer. The orchestrator must never apply code changes directly.
 
 ## Exception Handling
 
@@ -100,7 +100,7 @@ When all tasks are done:
   1. Inspect working directory for partial progress
   2. Re-delegate only incomplete work to a fresh session with explicit specifications (concrete class signatures, constructor parameters, test file locations)
   3. Never re-delegate already-completed work
-- PO may terminate early if requirements change or task is deprioritized.
+- The orchestrator may terminate early if requirements change or task is deprioritized.
 
 ## Parallelization
 

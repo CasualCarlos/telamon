@@ -26,7 +26,7 @@ Structured approach to identifying, classifying, and recovering from failures du
 1. Inspect working directory for partial progress.
 2. Save a partial progress note per the `telamon.thinking` skill (use partial-progress naming convention), summarising what is done and what remains.
 3. Signal `PARTIAL: <summary of what is done and what remains>`.
-4. PO re-delegates only incomplete work to a fresh session with explicit context.
+4. The orchestrator re-delegates only incomplete work to a fresh session with explicit context.
 5. Never re-delegate already-completed work.
 
 ### E2: Conflicting Instructions
@@ -36,8 +36,8 @@ Structured approach to identifying, classifying, and recovering from failures du
 **Recovery**:
 1. Identify the conflicting sources (file paths, line numbers).
 2. Signal `BLOCKED: Conflicting instructions` with the specifics.
-3. Do not guess which instruction takes precedence — escalate to the PO or human stakeholder.
-4. PO resolves the conflict and updates the authoritative source.
+3. Do not guess which instruction takes precedence — escalate to the orchestrator or human stakeholder.
+4. The orchestrator resolves the conflict and updates the authoritative source.
 
 ### E3: Tool Failure
 
@@ -59,7 +59,7 @@ Structured approach to identifying, classifying, and recovering from failures du
 2. Re-read the failing test(s) and the code under test from scratch.
 3. Identify whether the issue is in the test, the code, or the plan.
 4. If the plan seems wrong, escalate to the Architect.
-5. If the test seems wrong, escalate to the Tester (or PO if acting as orchestrator).
+5. If the test seems wrong, escalate to the Tester (or the orchestrator).
 6. Never apply a fourth fix attempt without a fresh analysis.
 
 ### E5: Context Overflow
@@ -69,7 +69,7 @@ Structured approach to identifying, classifying, and recovering from failures du
 **Recovery**:
 1. Signal `PARTIAL: Context limit approaching`.
 2. Summarize progress and remaining work.
-3. PO re-delegates with only the essential context for remaining work.
+3. The orchestrator re-delegates with only the essential context for remaining work.
 4. Do not attempt to continue with degraded output quality.
 
 ### E6: Scope Creep
@@ -80,7 +80,7 @@ Structured approach to identifying, classifying, and recovering from failures du
 1. Stop the unplanned work.
 2. Complete only what the plan specifies.
 3. Document the potential improvement as a follow-up suggestion in the task report.
-4. Escalate to PO for prioritization if the unplanned work seems important.
+4. Escalate to the orchestrator for prioritization if the unplanned work seems important.
 
 ### E7: Missing Precedent
 
@@ -89,7 +89,7 @@ Structured approach to identifying, classifying, and recovering from failures du
 **Recovery**:
 1. Search sibling directories and files for the closest analog.
 2. If no analog exists, signal `NEEDS_INPUT: No existing precedent for <what>. How should this be structured?`
-3. Wait for guidance from the Architect or PO before proceeding.
+3. Wait for guidance from the Architect or orchestrator before proceeding.
 
 ## Recovery Decision Tree
 

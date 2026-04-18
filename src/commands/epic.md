@@ -1,6 +1,6 @@
 ---
 description: Work on a given list of stories following the planning and implementation workflows for each of them
-agent: po
+agent: telamon
 ---
 
 Work on the following epic, create a folder and backlog for the epic in `.ai/telamon/memory/work/active/<epic-folder>/backlog.md`, 

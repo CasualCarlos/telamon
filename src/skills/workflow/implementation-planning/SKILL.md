@@ -1,15 +1,15 @@
 ---
 name: telamon.implementation-planning
-description: "Creates implementation plans from a PO brief. Use when designing a technical plan that addresses all layers (domain, application, infrastructure, presentation, wiring, migrations, tests)."
+description: "Creates implementation plans from a brief. Use when designing a technical plan that addresses all layers (domain, application, infrastructure, presentation, wiring, migrations, tests)."
 ---
 
 # Skill: Implementation Planning
 
-Create a detailed, step-by-step implementation plan from a PO's brief that a developer can follow without making design decisions.
+Create a detailed, step-by-step implementation plan from a brief that a developer can follow without making design decisions.
 
 ## When to Apply
 
-- When the PO provides an approved backlog and requests a technical plan
+- When the orchestrator provides an approved backlog and requests a technical plan
 - When creating or revising an implementation plan for a feature or change
 
 ## Design Principles
@@ -34,7 +34,7 @@ Save to `<issue-folder>/PLAN.md`.
 
 > # Implementation Plan
 >
-> **Brief**: Reference to the PO's brief or task ID.
+> **Brief**: Reference to the brief or task ID.
 > **Status**: DRAFT | IN REVIEW | FINAL
 >
 > ## Key Architect Decisions
@@ -44,7 +44,7 @@ Save to `<issue-folder>/PLAN.md`.
 >
 > ## Acceptance Criteria
 >
-> Restate the PO's acceptance criteria. Flag gaps or ambiguities back to the PO.
+> Restate the acceptance criteria. Flag gaps or ambiguities back to the orchestrator.
 >
 > ## Steps
 >

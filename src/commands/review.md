@@ -1,6 +1,6 @@
 ---
 description: Review the current changeset
-agent: reviewer
+agent: telamon
 ---
 
 Review the current changeset against the default branch (main, master, or develop)

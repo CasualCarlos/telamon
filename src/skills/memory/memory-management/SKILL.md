@@ -119,7 +119,7 @@ Number sequentially within each category. Check existing entries first.
 - Mark entries as `SUPERSEDED by M-XXX-NNN` when a newer entry replaces them
 - Keep superseded entries for one more session before removing
 - Review entries older than 6 months for continued relevance
-- Only the PO or human stakeholder may remove entries
+- Only the orchestrator or human stakeholder may remove entries
 
 ## 7. Thinking/ Lifecycle
 
