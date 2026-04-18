@@ -38,7 +38,6 @@ src/
         graphify/SKILL.md    # codebase knowledge graph (downloaded from upstream on install/update)
     dev/                     # agentic workflow skills
       agent-communication/   # inter-agent communication protocol
-      caveman/SKILL.md       # token-efficient communication mode (downloaded from upstream)
       changeset-review/      # code review against a plan
       codebase-audit/        # holistic codebase health review
       create-adr/            # architecture decision records
@@ -55,6 +54,8 @@ src/
       ux-design/
       workflow.implement-story/
       workflow.plan-story/
+    workflow/                # workflow skills
+      caveman/SKILL.md       # token-efficient communication mode (downloaded from upstream)
     addyosmani/              # general engineering skills (from addyosmani/agent-skills)
       api-and-interface-design/
       browser-testing-with-devtools/

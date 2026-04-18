@@ -30,6 +30,9 @@ When you need to implement, you follow the `telamon.implement_story` skill, invo
 - When requirements are unclear, ambiguous, or incomplete and need a specification before planning, use the skill `spec-driven-development`
 - When creating or refining the backlog from a spec or brief, use the skill `planning-and-task-breakdown`
 - When creating, reviewing, or optimizing agent instruction files, use the skill `telamon.optimize-instructions`
+- When optimizing agent context setup, rules files, or MCP integration, use the skill `context-engineering`
+- When preparing to deploy to production or coordinating a launch, use the skill `shipping-and-launch`
+- When writing or organizing documentation files, use the skill `telamon.documentation_rules`
 
 ## Request Classification
 

@@ -26,9 +26,9 @@ brew upgrade dicklesworthstone/tap/cass 2>/dev/null \
   || true
 log "cass → $(cass --version 2>/dev/null || echo 'updated')"
 
-step "Updating cass skill → src/skills/memory/cass/SKILL.md ..."
+step "Updating cass skill → src/skills/memory/_tools/cass/SKILL.md ..."
 SKILL_URL="https://raw.githubusercontent.com/dicklesworthstone/coding_agent_session_search/main/SKILL.md"
-SKILL_FILE="${TELAMON_ROOT}/src/skills/memory/cass/SKILL.md"
+SKILL_FILE="${TELAMON_ROOT}/src/skills/memory/_tools/cass/SKILL.md"
 mkdir -p "$(dirname "${SKILL_FILE}")"
 if curl -fsSL "${SKILL_URL}" -o "${SKILL_FILE}" 2>/dev/null; then
   log "cass skill updated"
