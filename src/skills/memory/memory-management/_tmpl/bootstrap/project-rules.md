@@ -7,4 +7,4 @@ description: Mandatory project rules — agents must read all project-rules file
 
 Read all files matching `.ai/telamon/memory/project-rules/**/*.md` before starting any work.
 
-These files contain project specific rules and instructions.
+These files contain project specific rules and instructions, created and curated by the project owner.
