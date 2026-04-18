@@ -18,7 +18,7 @@ Produce a plan for a user story composed of:
 
 ## Artifacts
 
-Place all artifacts in a single `<issue-folder>` under `.ai/issue/`. Planning artifacts must not be committed to git.
+Place all artifacts in a single `<issue-folder>` under `.ai/telamon/memory/work/active/`. Planning artifacts must not be committed to git.
 
 ### Scratch files
 
@@ -26,20 +26,20 @@ When you need to create a temporary file, use the `telamon.thinking` skill. Prom
 
 ### Folder naming
 
-`.ai/issue/NN-<title_slug>/`
+`.ai/telamon/memory/work/active/NN-<title_slug>/`
 
-`NN` is a zero-padded sequential number. Check existing folders in `.ai/issue/` and use the next available number.
+`NN` is a zero-padded sequential number. Check existing folders in `.ai/telamon/memory/work/active/` and use the next available number.
 
 ### One folder per initiative — MUST
 
-Each epic or story MUST have exactly one folder. NEVER create a second folder for the same initiative. Sub-story artifacts within an epic go in sub-folders of the epic folder (e.g., `.ai/issue/01-helm-migration/03-openbao/`).
+Each epic or story MUST have exactly one folder. NEVER create a second folder for the same initiative. Sub-story artifacts within an epic go in sub-folders of the epic folder (e.g., `.ai/telamon/memory/work/active/01-helm-migration/03-openbao/`).
 
 ## Procedure
 
 ### Step 0: Pre-flight
 
 1. Read brain/ notes per the `telamon.recall_memories` skill. Identify entries relevant to the current scope. Include applicable lessons in all delegations.
-2. **Check for existing issue folder**: List `.ai/issue/` and look for a folder that matches the current initiative (by slug or topic). If one exists, reuse it — do NOT create a new folder. If multiple folders exist for the same initiative, consolidate into the correctly-named one and delete the duplicate.
+2. **Check for existing issue folder**: List `.ai/telamon/memory/work/active/` and look for a folder that matches the current initiative (by slug or topic). If one exists, reuse it — do NOT create a new folder. If multiple folders exist for the same initiative, consolidate into the correctly-named one and delete the duplicate.
 
 ### Step 1: Create backlog
 

@@ -23,7 +23,7 @@ When you need to create a temporary file, use the `telamon.thinking` skill. Prom
 
 ### Pre-flight check
 
-Before creating any artifact, verify the issue folder already exists in `.ai/issue/`. If it does not, STOP — planning must be completed first via `telamon.workflow.plan-story`. If multiple folders exist for the same initiative, consolidate into the correctly-named one and delete the duplicate.
+Before creating any artifact, verify the issue folder already exists in `.ai/telamon/memory/work/active/`. If it does not, STOP — planning must be completed first via `telamon.workflow.plan-story`. If multiple folders exist for the same initiative, consolidate into the correctly-named one and delete the duplicate.
 
 ## Clarification Channels
 
@@ -82,7 +82,8 @@ When all tasks are done:
 3. Approve or reject.
 4. When all tasks are done, follow the `telamon.remember_task` skill to capture lessons learned.
 5. Notify human stakeholder with completion report and recommended next actions.
-6. Proceed with non-destructive closure actions immediately without asking permission.
+6. Archive the issue folder: move the `<issue-folder>` from `.ai/telamon/memory/work/active/` to `.ai/telamon/memory/work/archive/`, preserving its name.
+7. Proceed with non-destructive closure actions immediately without asking permission.
 
 ## Delegation Rules
 

@@ -38,7 +38,7 @@ Flag any thinking/ file older than 7 days for user review.
 
 ## 4. Check Issue Folder Consistency
 
-For each folder in `.ai/issue/`:
+For each folder in `.ai/telamon/memory/work/active/`:
 - Does `backlog.md` exist and have accurate task statuses?
 - Are there orphaned artifacts (e.g., `DONE.md` with no corresponding task)?
 - Are there duplicate issue folders for the same initiative?

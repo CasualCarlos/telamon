@@ -12,7 +12,7 @@ Find the file in `.ai/telamon/memory/work/active/` matching the argument (by nam
 
 Before archiving:
 - Confirm the note has a clear resolution or outcome recorded
-- Check that any related `.ai/issue/` folder has a `DONE.md` for its completed tasks
+- Check that any related `.ai/telamon/memory/work/active/` folder has a `DONE.md` for its completed tasks
 - Confirm no open action items remain (unchecked `- [ ]` items)
 
 If there are unresolved items, list them and ask the user before proceeding.
@@ -29,7 +29,7 @@ Add an `**Archived**: <YYYY-MM-DD>` line to the top of the file under the title.
 
 Check if any other vault file links to this note:
 - Search `.ai/telamon/memory/brain/` for the filename
-- Search `.ai/issue/` for the filename
+- Search `.ai/telamon/memory/work/active/` and `.ai/telamon/memory/work/archive/` for the filename
 
 For each reference found, update the link path from `work/active/` to `work/archive/`.
 
