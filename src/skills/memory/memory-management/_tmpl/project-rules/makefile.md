@@ -1,5 +1,5 @@
 ---
-tags: [reference, makefile]
+tags: [project-rules, makefile]
 description: Makefile lifecycle commands
 ---
 

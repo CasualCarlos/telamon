@@ -1,5 +1,5 @@
 ---
-tags: [reference, php, message-bus]
+tags: [project-rules, php, message-bus]
 description: PHP message bus integration and handler testing
 ---
 

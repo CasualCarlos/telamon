@@ -1,5 +1,5 @@
 ---
-tags: [reference, architecture]
+tags: [project-rules, architecture]
 description: DDD + Hexagonal + CQRS directory structure and dependency rules
 ---
 

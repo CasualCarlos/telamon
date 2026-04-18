@@ -1,5 +1,5 @@
 ---
-tags: [reference, php]
+tags: [project-rules, php]
 description: PHP strict typing, constructors, enums, PHPDoc
 ---
 

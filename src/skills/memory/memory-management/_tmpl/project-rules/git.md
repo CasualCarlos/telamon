@@ -1,5 +1,5 @@
 ---
-tags: [reference, git]
+tags: [project-rules, git]
 description: Git commit conventions
 ---
 

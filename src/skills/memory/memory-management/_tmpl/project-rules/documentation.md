@@ -1,5 +1,5 @@
 ---
-tags: [reference, documentation]
+tags: [project-rules, documentation]
 description: Repository documentation conventions
 ---
 

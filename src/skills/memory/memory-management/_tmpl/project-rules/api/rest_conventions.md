@@ -1,5 +1,5 @@
 ---
-tags: [reference, api]
+tags: [project-rules, api]
 description: RESTful API URL structure, methods, errors, pagination
 ---
 

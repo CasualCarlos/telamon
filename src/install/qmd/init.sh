@@ -10,10 +10,11 @@
 # One collection is registered per vault section so the agent can query a
 # specific area without noise from unrelated content:
 #
-#   <project>-brain      brain/        — memories, decisions, patterns, gotchas
-#   <project>-work       work/         — active tasks, archive, incidents
-#   <project>-reference  reference/    — architecture maps, flow docs
-#   <project>-thinking   thinking/     — scratchpad drafts
+#   <project>-brain          brain/         — memories, decisions, patterns, gotchas
+#   <project>-work           work/          — active tasks, archive, incidents
+#   <project>-project-rules  project-rules/ — coding rules, architecture standards, conventions
+#   <project>-reference      reference/     — architecture maps, flow docs
+#   <project>-thinking       thinking/      — scratchpad drafts
 #
 # Collections are registered in Telamon-managed index at
 # <telamon-root>/storage/qmd/index.sqlite (XDG_CACHE_HOME override).
@@ -73,11 +74,12 @@ fi
 declare -A COLLECTIONS=(
   ["brain"]="memories, key decisions, patterns, and recurring gotchas for ${PROJECT_NAME}"
   ["work"]="active tasks, archived work, and incidents for ${PROJECT_NAME}"
+  ["project-rules"]="coding rules, architecture standards, and conventions for ${PROJECT_NAME}"
   ["reference"]="architecture maps, flow docs, and reference material for ${PROJECT_NAME}"
   ["thinking"]="scratchpad drafts and exploratory notes for ${PROJECT_NAME}"
 )
 
-for section in brain work reference thinking; do
+for section in brain work project-rules reference thinking; do
   dir="${VAULT}/${section}"
   name="${PROJECT_NAME}-${section}"
   description="${COLLECTIONS[$section]}"

@@ -7,7 +7,7 @@ status: active
 
 # Memories — PROJECT_NAME
 
-> Index of knowledge topics. Each section points to where the detail lives — either in a brain note below or in the `work/`, `reference/`, or `thinking/` folders.
+> Index of knowledge topics. Each section points to where the detail lives — either in a brain note below or in the `work/`, `project-rules/`, `reference/`, or `thinking/` folders.
 
 ## Brain notes
 

@@ -1,5 +1,5 @@
 ---
-tags: [reference, php, laravel]
+tags: [project-rules, php, laravel]
 description: Laravel conventions, configuration, database, testing
 ---
 

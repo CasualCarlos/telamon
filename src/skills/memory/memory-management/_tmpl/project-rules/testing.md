@@ -1,5 +1,5 @@
 ---
-tags: [reference, testing]
+tags: [project-rules, testing]
 description: Test commands, strategy, and conventions
 ---
 

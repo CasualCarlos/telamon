@@ -1,5 +1,5 @@
 ---
-tags: [reference, architecture]
+tags: [project-rules, architecture]
 description: Architecture priority order, security, forbidden patterns
 ---
 
