@@ -38,7 +38,7 @@ When you need information, use the right tool for the question type:
 
 | Question type                                      | Tool                                                                                 |
 |----------------------------------------------------|--------------------------------------------------------------------------------------|
-| Lessons learned (categorized)                      | Read `brain/memories.md` directly                                                    |
+| Lessons learned (categorized)                      | Search Ogham or QMD (`brain/memories.md`)                                            |
 | Architectural decisions + stakeholder answers      | Read `brain/key_decisions.md` directly                                               |
 | Codebase patterns                                  | Read `brain/patterns.md` directly                                                    |
 | Known traps and constraints                        | Read `brain/gotchas.md` directly                                                     |

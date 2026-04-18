@@ -35,7 +35,7 @@ If the developer needs:
 
 ### Step 0: Pre-flight
 
-Read `.ai/telamon/memory/brain/memories.md` (if it exists) per the `telamon.recall_memories` skill. Identify entries relevant to the current scope. Include applicable lessons in delegations to Developer, Tester, and Reviewer.
+Read brain/ notes per the `telamon.recall_memories` skill. Identify entries relevant to the current scope. Include applicable lessons in delegations to Developer, Tester, and Reviewer.
 
 ### Step 1: Provide the plan
 

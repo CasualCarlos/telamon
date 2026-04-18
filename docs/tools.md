@@ -71,7 +71,7 @@ Each project gets its own vault subfolder. Files in `bootstrap/` are **always lo
 ```
 <project>/bootstrap/       <- always-on context (treated as part of AGENTS.md)
 <project>/brain/
-  memories.md      <- index of memory topics
+  memories.md      <- categorized lessons learned
   key_decisions.md <- architectural decisions with rationale
   patterns.md      <- established codebase conventions
   gotchas.md       <- traps, constraints, known issues
@@ -190,7 +190,7 @@ Telamon ships a library of skills that guide the agent through structured workfl
 - **create-use-case** — CQRS command/handler generation
 - **evaluation** — post-iteration quality assessment
 - **exception-handling** — structured error recovery for agent failures
-- **memory-management** — project memories.md management
+- **memory-management** — vault structure, routing, retrieval, writing, and quality rules
 - **optimize-instructions** — agent instruction file optimization
 - **test-reporting** — test result documentation
 

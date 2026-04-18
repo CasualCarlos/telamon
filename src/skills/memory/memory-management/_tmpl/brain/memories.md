@@ -1,26 +1,24 @@
 ---
 date: DATE_PLACEHOLDER
-description: Index of memory topics and knowledge areas for PROJECT_NAME
+description: Categorized lessons learned for PROJECT_NAME
 tags: [brain, memories]
 status: active
 ---
 
 # Memories — PROJECT_NAME
 
-> Index of knowledge topics. Each section points to where the detail lives — either in a brain note below or in the `work/`, `project-rules/`, `reference/`, or `thinking/` folders.
+Categorized lessons learned from working on this project. Each entry follows the M-XXX-NNN format.
 
-## Brain notes
-
-- [[key_decisions]] — architectural decisions with rationale
-- [[patterns]] — established codebase conventions
-- [[gotchas]] — known traps and constraints
-
-## Memory topics
-
-<!-- Add entries as knowledge accumulates.
+<!-- Add entries as lessons are learned.
 Format:
-### <Topic>
-Brief summary of what is known. See [[<note_title>]] for detail. -->
+### M-<CATEGORY>-NNN: <title>
+- **Date**: YYYY-MM-DD
+- **Context**: What triggered this lesson.
+- **Lesson**: The reusable takeaway.
+- **Scope**: Where this applies.
+- **Status**: ACTIVE
+
+Categories: M-ARCH, M-TEST, M-DOMAIN, M-ANTI, M-FLOW -->
 
 ## See also
 

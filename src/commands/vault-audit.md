@@ -22,7 +22,7 @@ Verify the vault matches the expected layout:
 For each file in `brain/`:
 - Is the content current? Flag stale or contradictory entries.
 - Are entries organised by section with clear headings?
-- `memories.md` — does Recent Context reflect the last few sessions?
+- `memories.md` — are entries using M-XXX-NNN format with context and scope?
 - `key_decisions.md` — do entries have rationale, not just the decision?
 - `patterns.md` — are patterns actionable and specific?
 - `gotchas.md` — are gotchas reproducible and with a fix or workaround?

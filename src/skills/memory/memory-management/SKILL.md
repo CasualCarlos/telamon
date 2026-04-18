@@ -20,7 +20,7 @@ Canonical reference for all `.ai/telamon/memory/` vault operations. Other memory
 .ai/telamon/memory/
   bootstrap/                 <- always-on context (loaded like AGENTS.md)
   brain/
-    memories.md              <- knowledge index -- READ FIRST
+    memories.md              <- categorized lessons learned (M-XXX-NNN format)
     key_decisions.md         <- architectural + product decisions, stakeholder answers
     patterns.md              <- established codebase patterns
     gotchas.md               <- known traps and constraints
@@ -62,10 +62,10 @@ Canonical reference for all `.ai/telamon/memory/` vault operations. Other memory
 
 - bootstrap/ loads automatically at session start -- do not re-read
 - brain/ files are small and always relevant -- read directly, no search needed:
-  - `brain/memories.md` -- read at session start
   - `brain/key_decisions.md` -- read before architecture work or stakeholder answer lookup
   - `brain/patterns.md` -- read before writing new code
   - `brain/gotchas.md` -- read before touching known problem areas
+  - `brain/memories.md` -- search via Ogham or QMD when you need past lessons; do NOT read at session start
 - All other files: search before read; max 3 non-brain notes per task; discard results with relevance score < 0.6
 - For search and read tool usage, load the `telamon.obsidian` skill
 
@@ -85,7 +85,7 @@ Canonical reference for all `.ai/telamon/memory/` vault operations. Other memory
 | `key_decisions.md` | Decision + rationale (not just the decision) |
 | `patterns.md` | Actionable, specific pattern with when to apply |
 | `gotchas.md` | Reproducible problem + fix or workaround |
-| `memories.md` | M-XXX-NNN format, recent context reflects last sessions |
+| `memories.md` | M-XXX-NNN format per section 6 |
 
 ## 6. Memory Entry Format (memories.md)
 
