@@ -13,7 +13,7 @@ header "Graphify"
 
 if ! command -v graphify &>/dev/null; then
   step "Installing graphifyy via uv..."
-  uv tool install graphifyy
+  uv tool install graphifyy --with mcp
   export PATH="$HOME/.local/bin:$PATH"
   log "Graphify installed"
 
