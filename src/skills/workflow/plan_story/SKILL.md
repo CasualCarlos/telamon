@@ -84,7 +84,9 @@ Output the summary to the human stakeholder and ask for final approval.
 
 ### Step 6: Transition
 
-On approval, proceed to implementation using the `telamon.implement_story` skill.
+On approval:
+1. Produce a post-planning retrospective using the `telamon.retrospective` skill.
+2. Proceed to implementation using the `telamon.implement_story` skill.
 
 ## Backlog Rules
 
