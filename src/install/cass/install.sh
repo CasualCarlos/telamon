@@ -49,9 +49,15 @@ fi
 
 step "Building initial cass index (this may take a few minutes)..."
 if command -v cass &>/dev/null; then
-  CODING_AGENT_SEARCH_NO_UPDATE_PROMPT=1 cass index --json \
-    && log "cass index built" \
-    || warn "cass index failed — retry with 'cass index' later"
+  _cass_out=$(CODING_AGENT_SEARCH_NO_UPDATE_PROMPT=1 cass index --json 2>&1)
+  _cass_exit=$?
+  if [[ $_cass_exit -eq 0 ]]; then
+    log "cass index built"
+  elif echo "$_cass_out" | grep -q '"kind":"index_busy"\|"kind": "index_busy"'; then
+    skip "cass index already in progress (scheduled job) — skipping redundant build"
+  else
+    warn "cass index failed — retry with 'cass index' later"
+  fi
 else
   warn "cass not found — skipping index"
 fi
