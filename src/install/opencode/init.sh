@@ -10,7 +10,7 @@
 #   6. Symlink .ai/telamon/secrets → <telamon-root>/storage/secrets
 #   7. Symlink opencode.jsonc → <telamon-root>/storage/opencode.jsonc
 #      (or merge Telamon settings into an existing project config)
-#   8. Write or merge AGENTS.md from src/AGENTS.md
+#   8. AGENTS.md — copy dist to storage, symlink from project root
 #
 # Expected environment (exported by bin/init.sh):
 #   PROJ          — absolute path to the project root
@@ -139,27 +139,32 @@ if [[ "${OPENCODE_LINK}" != "__skip__" ]]; then
   fi
 fi
 
-# ── 8. Write or merge AGENTS.md ──────────────────────────────────────────────
-# If the project has no AGENTS.md, copy ours. If it does, append any lines from
-# src/AGENTS.md that are not already present (line-by-line dedup).
-TELAMON_AGENTS_SRC="${TELAMON_ROOT}/src/AGENTS.md"
+# ── 8. AGENTS.md — copy dist to storage, symlink from project root ───────────
+TELAMON_AGENTS_SRC="${TELAMON_ROOT}/src/AGENTS.dist.md"
+AGENTS_STORAGE="${TELAMON_ROOT}/storage/AGENTS.shared.md"
 PROJ_AGENTS="${PROJ}/AGENTS.md"
 
 step "Configuring AGENTS.md..."
-if [[ ! -f "${PROJ_AGENTS}" ]]; then
-  cp "${TELAMON_AGENTS_SRC}" "${PROJ_AGENTS}"
-  log "Created AGENTS.md"
-else
+if [[ -L "${PROJ_AGENTS}" ]]; then
+  skip "AGENTS.md symlink (already exists)"
+elif [[ -f "${PROJ_AGENTS}" ]]; then
+  # Project has its own AGENTS.md — move to storage, symlink, then merge dist lines
+  cp "${PROJ_AGENTS}" "${AGENTS_STORAGE}"
+  rm "${PROJ_AGENTS}"
+  ln -s "${AGENTS_STORAGE}" "${PROJ_AGENTS}"
   ADDED=0
   while IFS= read -r line; do
-    if ! grep -qF "${line}" "${PROJ_AGENTS}"; then
-      echo "${line}" >> "${PROJ_AGENTS}"
+    if ! grep -qF "${line}" "${AGENTS_STORAGE}"; then
+      echo "${line}" >> "${AGENTS_STORAGE}"
       ADDED=$((ADDED + 1))
     fi
   done < "${TELAMON_AGENTS_SRC}"
-  if [[ "${ADDED}" -gt 0 ]]; then
-    log "Merged ${ADDED} line(s) into existing AGENTS.md"
-  else
-    skip "AGENTS.md (all Telamon lines already present)"
+  log "Moved existing AGENTS.md to storage and symlinked"
+else
+  # Nothing exists — copy dist to storage (preserve if re-running), then symlink
+  if [[ ! -f "${AGENTS_STORAGE}" ]]; then
+    cp "${TELAMON_AGENTS_SRC}" "${AGENTS_STORAGE}"
   fi
+  ln -s "${AGENTS_STORAGE}" "${PROJ_AGENTS}"
+  log "Created AGENTS.md (storage/AGENTS.shared.md)"
 fi

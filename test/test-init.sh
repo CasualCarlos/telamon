@@ -268,9 +268,10 @@ assert_json_key "${INDEX_JSON}" "indexing.autoIndex" "True" \
 
 # ── 8. AGENTS.md ──────────────────────────────────────────────────────────────
 _section "8. AGENTS.md"
-assert_file "${PROJ}/AGENTS.md" "AGENTS.md"
-assert_file_contains "${PROJ}/AGENTS.md" "MANDATORY START SEQUENCE" \
-  "AGENTS.md contains Telamon bootstrap instructions"
+assert_symlink "${PROJ}/AGENTS.md" "storage/AGENTS.shared.md" \
+  "AGENTS.md → storage/AGENTS.shared.md"
+assert_file "${TELAMON_ROOT}/storage/AGENTS.shared.md" \
+  "storage/AGENTS.shared.md (storage copy)"
 
 # ── Summary ───────────────────────────────────────────────────────────────────
 echo
