@@ -36,6 +36,14 @@ else
   log "Ogham extras verified (installed)"
 fi
 
+# ── Install prefab-ui (dashboard dependency, not an ogham extras group) ───────
+# prefab_ui is required by show_profile_health, show_decay_chart, show_audit_log.
+# It is not bundled as an ogham extras group, so we inject it with --with.
+step "Ensuring prefab-ui is installed (dashboard dependency)..."
+uv tool install "ogham-mcp[postgres,rerank]" --with prefab-ui 2>/dev/null \
+  || warn "Could not install prefab-ui — dashboard tools (show_profile_health etc.) may fail"
+log "prefab-ui verified (installed)"
+
 # ── Write global config env (~/.ogham/config.env) ─────────────────────────────
 # ogham uses pydantic-settings: reads ~/.ogham/config.env as global fallback.
 # Field names are uppercased: database_backend → DATABASE_BACKEND, etc.
