@@ -1,5 +1,6 @@
 ---
 description: "Software Architect — designs technical plans and ADRs, does not write production code"
+mode: subagent
 temperature: 0.2
 model: github-copilot/claude-opus-4.6
 permission:

@@ -1,5 +1,6 @@
 ---
 description: "Developer — implements the architect's plan into production code, follows plans precisely"
+mode: subagent
 temperature: 0.4
 model: github-copilot/claude-sonnet-4.6
 permission:

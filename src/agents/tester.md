@@ -1,5 +1,6 @@
 ---
 description: "Tester — validates implementations against requirements, writes and executes automated tests"
+mode: subagent
 temperature: 0.4
 model: github-copilot/claude-sonnet-4.6
 permission:

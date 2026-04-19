@@ -16,7 +16,7 @@
     "AGENTS.md",
     ".ai/context*/*.md"
   ],
-  "default_agent": "developer",
+  "default_agent": "telamon/telamon",
   //  "agent": {
   //    "po": {
   //      "model": "opencode/minimax-m2.5-free"

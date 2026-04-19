@@ -1,5 +1,6 @@
 ---
 description: "Product Owner — product domain expert, owns backlog grooming, answers business and requirements questions"
+mode: subagent
 temperature: 0.2
 model: github-copilot/claude-opus-4.6
 permission:
