@@ -23,7 +23,7 @@ During the adk → telamon rename, the following were intentionally NOT changed:
 - `tmp/` — gitignored test artifacts
 - `.ai/issues/` — historical issue notes (runtime, gitignored)
 - `no-vcs` files — per bootstrap rules, never touched
-Only tracked source files under `src/`, `bin/`, `test/`, `Makefile`, `docker-compose.yml`, `storage/opencode.jsonc`, and `.ai/context/` were renamed.
+Only tracked source files under `src/`, `bin/`, `test/`, `Makefile`, `docker-compose.yml`, and `.ai/context/` were renamed. (`storage/opencode.jsonc` was tracked at the time but has since been removed from git — it is now generated per-machine.)
 
 ---
 
@@ -125,6 +125,10 @@ All container presence checks in the `--status` block must use `docker ps --form
 
 ## opencode / JSONC config
 
+### `storage/opencode.jsonc` MUST NOT be tracked in git
+**Date**: 2026-04-19
+This file is generated per-machine by the installer (`src/install/opencode/install.sh`). It contains OS-specific Docker networking flags (e.g. `--network host` on Linux vs `host.docker.internal` on macOS) and absolute paths injected via `{file:...}` secret references. Tracking it causes merge conflicts between machines and leaks local environment details. The `storage/*` gitignore rule covers it; do NOT add a `!storage/opencode.jsonc` whitelist exception.
+
 ### `storage/opencode.jsonc` contains `//` comments — never use `json.load`
 **Date**: 2026-04-12
 Any Python script that reads `storage/opencode.jsonc` must strip JSONC comments first. Use the inline `strip_jsonc_comments()` tokenizer (character-by-character parser handling strings, `//` line comments, `/* */` block comments). Both `opencode.upsert_mcp` and `opencode.set_mcp_env` in `functions/opencode.sh` already do this. Do not regress to `json.load`.
@@ -152,15 +156,15 @@ All runtime data, secrets, state, and cache must be under `storage/` in the Tela
 - `storage/ollama/` — Ollama model cache
 - `storage/secrets/` — one plain-text file per secret (git-ignored)
 - `storage/state/` — installer state (`setup-inputs`, `.setup-state`)
-- `storage/opencode.jsonc` — shared opencode config (tracked in git)
+- `storage/opencode.jsonc` — shared opencode config (generated per-machine, NOT tracked in git)
 Legacy root-level `pgdata/` and `ollama/` dirs are obsolete.
 
 ### `.gitignore` pattern for `storage/`
-**Date**: 2026-04-12
+**Date**: 2026-04-19
 Correct pattern:
 ```
 storage/*
+# storage/opencode.jsonc is generated per-machine by the installer — MUST NOT be tracked
 !storage/.gitkeep
-!storage/opencode.jsonc
 ```
-`storage/secrets/` does **not** need a separate exclusion line because `storage/*` already ignores everything; the `!` exceptions whitelist only what should be tracked.
+`storage/secrets/` does **not** need a separate exclusion line because `storage/*` already ignores everything; the `!` exceptions whitelist only what should be tracked. `storage/opencode.jsonc` must NOT be whitelisted — it is machine-specific.
