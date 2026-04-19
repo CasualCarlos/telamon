@@ -48,3 +48,14 @@ opencode.upsert_mcp "graphify" '{
   },
   "enabled": true
 }'
+
+# ── Rebuild missing graphs for initialized projects ──────────────────────────
+for storage_dir in "${TELAMON_ROOT}/storage/graphify"/*/; do
+  [[ -d "${storage_dir}" ]] || continue
+  [[ -f "${storage_dir}graph.json" ]] && continue
+  [[ -f "${storage_dir}.project-path" ]] || continue
+  proj="$(cat "${storage_dir}.project-path")"
+  [[ -d "${proj}" ]] || { warn "Project directory not found: ${proj} — skipping graph build"; continue; }
+  step "Building missing graph for ${proj}..."
+  (cd "${proj}" && graphify update . 2>&1) || warn "graphify build failed for ${proj} — continuing"
+done

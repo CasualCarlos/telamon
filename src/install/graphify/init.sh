@@ -41,6 +41,7 @@ if [[ -f "${TELAMON_ROOT}/storage/graphify/graph.json" ]]; then
 fi
 
 mkdir -p "${GRAPHIFY_STORAGE}"
+echo -n "$(pwd)" > "${GRAPHIFY_STORAGE}/.project-path"
 
 if [[ -L "graphify-out" ]]; then
   skip "graphify-out symlink (already exists)"
