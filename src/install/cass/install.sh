@@ -49,7 +49,9 @@ fi
 
 step "Building initial cass index (this may take a few minutes)..."
 if command -v cass &>/dev/null; then
-  cass index || warn "cass index failed — you can retry with 'cass index' later"
+  CODING_AGENT_SEARCH_NO_UPDATE_PROMPT=1 cass index --json \
+    && log "cass index built" \
+    || warn "cass index failed — retry with 'cass index' later"
 else
   warn "cass not found — skipping index"
 fi
