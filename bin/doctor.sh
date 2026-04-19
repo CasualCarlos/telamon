@@ -253,10 +253,10 @@ if [[ -z "${OBSIDIAN_API_KEY_VAL}" || "${OBSIDIAN_API_KEY_VAL}" == "REPLACE_WITH
   _info "  6. Copy the API Key shown on that page."
   _info "  7. Run: make up  (or edit .env and set OBSIDIAN_API_KEY=<your-key>)"
 else
-  # Try HTTP request to Obsidian Local REST API
-  if curl -sf --max-time 5 --connect-timeout 3 \
+  # Try HTTPS request to Obsidian Local REST API (self-signed cert → -k)
+  if curl -sfk --max-time 5 --connect-timeout 3 \
     -H "Authorization: Bearer ${OBSIDIAN_API_KEY_VAL}" \
-    "http://127.0.0.1:27124/" >/dev/null 2>&1; then
+    "https://127.0.0.1:27124/" >/dev/null 2>&1; then
     _pass "Obsidian Local REST API: reachable and authenticated"
   else
     _fail "Obsidian Local REST API: not reachable — ensure Obsidian is running with Local REST API plugin enabled"
@@ -297,18 +297,43 @@ else
   _warn "Codebase index config missing (.opencode/codebase-index.json) — run: bin/init.sh <project>"
 fi
 
-# Check if index data exists (look for common index storage locations)
+# Check if index data exists
+# The codebase-index MCP stores data at <project>/.opencode/index/ (project scope)
+# or ~/.opencode/global-index/ (global scope). Also check legacy locations.
 INDEX_DATA_FOUND=false
-for idx_dir in "${TELAMON_ROOT}/.codebase-index" "${TELAMON_ROOT}/.opencode/codebase-index"; do
+for idx_dir in \
+  "${TELAMON_ROOT}/.opencode/index" \
+  "${TELAMON_ROOT}/.codebase-index" \
+  "${TELAMON_ROOT}/.opencode/codebase-index" \
+  "${HOME}/.opencode/global-index"; do
   if [[ -d "${idx_dir}" ]]; then
     idx_file_count=$(find "${idx_dir}" -type f 2>/dev/null | wc -l | tr -d ' ')
     if [[ "${idx_file_count}" -gt 0 ]]; then
-      _pass "Codebase index data present (${idx_file_count} files in $(basename "${idx_dir}")/)"
+      _pass "Codebase index data present (${idx_file_count} files in ${idx_dir})"
       INDEX_DATA_FOUND=true
       break
     fi
   fi
 done
+
+# Also check initialized projects
+if [[ "${INDEX_DATA_FOUND}" == "false" ]]; then
+  for proj_idx in "${TELAMON_ROOT}"/storage/graphify/*/; do
+    [[ -d "${proj_idx}" ]] || continue
+    proj_path_file="${proj_idx}.project-path"
+    [[ -f "${proj_path_file}" ]] || continue
+    proj_path="$(cat "${proj_path_file}")"
+    if [[ -d "${proj_path}/.opencode/index" ]]; then
+      idx_file_count=$(find "${proj_path}/.opencode/index" -type f 2>/dev/null | wc -l | tr -d ' ')
+      if [[ "${idx_file_count}" -gt 0 ]]; then
+        _pass "Codebase index data present (${idx_file_count} files in ${proj_path}/.opencode/index/)"
+        INDEX_DATA_FOUND=true
+        break
+      fi
+    fi
+  done
+fi
+
 if [[ "${INDEX_DATA_FOUND}" == "false" ]]; then
   _warn "Codebase index not built — run index_codebase tool from an agent session"
 fi
