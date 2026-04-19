@@ -88,7 +88,7 @@ if env.is_enabled LANGFUSE_ENABLED; then
   if docker ps --format '{{.Names}}' 2>/dev/null | grep -q "^telamon-langfuse-web$"; then
     _pass "Langfuse web container running (telamon-langfuse-web)"
     # HTTP health check — use _warn since the service may still be starting
-    if wget -qO- http://localhost:4000/api/public/health &>/dev/null 2>&1; then
+    if wget -qO- --timeout=5 http://localhost:4000/api/public/health &>/dev/null 2>&1; then
       _pass "Langfuse HTTP health: http://localhost:4000/api/public/health"
     else
       _warn "Langfuse HTTP health check failed — service may still be starting"
@@ -129,7 +129,7 @@ if env.is_enabled GRAPHITI_ENABLED; then
   if docker ps --format '{{.Names}}' 2>/dev/null | grep -q "^telamon-graphiti$"; then
     _pass "Graphiti container running (telamon-graphiti)"
     # HTTP health check — use _warn since the service may still be starting
-    if wget -qO- http://localhost:8001/healthcheck &>/dev/null 2>&1; then
+    if wget -qO- --timeout=5 http://localhost:8001/healthcheck &>/dev/null 2>&1; then
       _pass "Graphiti HTTP health: http://localhost:8001/healthcheck"
     else
       _warn "Graphiti HTTP health check failed — service may still be starting"
@@ -188,7 +188,260 @@ else
   _fail "ogham not installed — run: make up"
 fi
 
-# ── 4. opencode config ────────────────────────────────────────────────────────
+# Test hybrid_search_memories function exists in Postgres
+if docker exec ogham-postgres psql -U ogham -d ogham -tAc \
+  "SELECT proname FROM pg_proc WHERE proname = 'hybrid_search_memories';" 2>/dev/null | grep -q "hybrid_search"; then
+  _pass "Ogham hybrid_search_memories DB function exists"
+else
+  _fail "Ogham hybrid_search_memories DB function missing — run: ogham migrate or uv tool upgrade ogham-mcp"
+fi
+
+# Test Ogham has memories
+ogham_count=$(docker exec ogham-postgres psql -U ogham -d ogham -tAc \
+  "SELECT count(*) FROM memories;" 2>/dev/null || echo "0")
+ogham_count=$(echo "${ogham_count}" | tr -d '[:space:]')
+if [[ "${ogham_count}" -gt 0 ]] 2>/dev/null; then
+  _pass "Ogham memories: ${ogham_count} stored"
+else
+  _warn "Ogham memories: empty (no memories stored yet)"
+fi
+
+# ── 4. QMD (vault semantic search) ────────────────────────────────────────────
+header "QMD (vault semantic search)"
+
+if command -v qmd &>/dev/null; then
+  _pass "QMD binary installed"
+
+  # Check QMD index exists
+  QMD_INDEX_DIR="${TELAMON_ROOT}/storage/qmd"
+  if [[ -d "${QMD_INDEX_DIR}" ]]; then
+    qmd_doc_count=$(find "${QMD_INDEX_DIR}" -name "*.json" -type f 2>/dev/null | wc -l | tr -d ' ')
+    _pass "QMD index directory present (${qmd_doc_count} files)"
+  else
+    _warn "QMD index directory missing — run: bin/init.sh <project>"
+  fi
+
+  # Check QMD collections exist
+  for collection_dir in "${TELAMON_ROOT}/storage/obsidian"/*/brain; do
+    if [[ -d "${collection_dir}" ]]; then
+      collection_name="$(basename "$(dirname "${collection_dir}")")-brain"
+      doc_count=$(find "${collection_dir}" -name "*.md" -type f 2>/dev/null | wc -l | tr -d ' ')
+      _pass "QMD collection source: ${collection_name} (${doc_count} docs)"
+    fi
+  done
+else
+  _fail "QMD binary not found — run: make up"
+fi
+
+# ── 5. Obsidian MCP ────────────────────────────────────────────────────────────
+header "Obsidian MCP"
+
+# Check if Obsidian REST API is reachable
+OBSIDIAN_API_KEY_VAL=""
+if [[ -f "${TELAMON_ROOT}/.env" ]]; then
+  OBSIDIAN_API_KEY_VAL="$(grep -E "^OBSIDIAN_API_KEY=" "${TELAMON_ROOT}/.env" | head -1 | cut -d= -f2- | tr -d "\"' " || true)"
+fi
+
+if [[ -z "${OBSIDIAN_API_KEY_VAL}" || "${OBSIDIAN_API_KEY_VAL}" == "REPLACE_WITH"* ]]; then
+  _fail "Obsidian API key not configured in .env"
+  _info "  To set up the Obsidian Local REST API plugin:"
+  _info "  1. Launch Obsidian and open (or create) a vault."
+  _info "  2. Open Settings (gear icon, bottom-left)."
+  _info "  3. Go to Community plugins → turn off Safe mode if prompted."
+  _info "  4. Click Browse → search for 'Local REST API' → Install → Enable."
+  _info "  5. Still in Settings, click 'Local REST API' (left sidebar)."
+  _info "  6. Copy the API Key shown on that page."
+  _info "  7. Run: make up  (or edit .env and set OBSIDIAN_API_KEY=<your-key>)"
+else
+  # Try HTTP request to Obsidian Local REST API
+  if curl -sf --max-time 5 --connect-timeout 3 \
+    -H "Authorization: Bearer ${OBSIDIAN_API_KEY_VAL}" \
+    "http://127.0.0.1:27124/" >/dev/null 2>&1; then
+    _pass "Obsidian Local REST API: reachable and authenticated"
+  else
+    _fail "Obsidian Local REST API: not reachable — ensure Obsidian is running with Local REST API plugin enabled"
+  fi
+fi
+
+# Check secret file consistency
+OBSIDIAN_SECRET_FILE="${TELAMON_ROOT}/storage/secrets/obsidian-api-key"
+if [[ -f "${OBSIDIAN_SECRET_FILE}" ]]; then
+  secret_val="$(tr -d "\"' " < "${OBSIDIAN_SECRET_FILE}" || true)"
+  if [[ -z "${secret_val}" || "${secret_val}" == "REPLACE_WITH"* ]]; then
+    if [[ -n "${OBSIDIAN_API_KEY_VAL}" && "${OBSIDIAN_API_KEY_VAL}" != "REPLACE_WITH"* ]]; then
+      _warn "Secret file storage/secrets/obsidian-api-key is stale — run: make up  to sync"
+    else
+      _warn "Secret file storage/secrets/obsidian-api-key contains placeholder value"
+    fi
+  else
+    _pass "Secret file storage/secrets/obsidian-api-key present and populated"
+  fi
+else
+  _warn "Secret file storage/secrets/obsidian-api-key not found — run: make up  to create it"
+fi
+
+# Check Obsidian MCP Docker image
+if docker image inspect oleksandrkucherenko/obsidian-mcp:latest &>/dev/null; then
+  _pass "Obsidian MCP Docker image present"
+else
+  _warn "Obsidian MCP Docker image not found — run: make up  to pull it"
+fi
+
+# ── 6. Codebase Index ──────────────────────────────────────────────────────────
+header "Codebase Index"
+
+CODEBASE_INDEX_CONFIG="${TELAMON_ROOT}/.opencode/codebase-index.json"
+if [[ -f "${CODEBASE_INDEX_CONFIG}" ]]; then
+  _pass "Codebase index config present"
+else
+  _warn "Codebase index config missing (.opencode/codebase-index.json) — run: bin/init.sh <project>"
+fi
+
+# Check if index data exists (look for common index storage locations)
+INDEX_DATA_FOUND=false
+for idx_dir in "${TELAMON_ROOT}/.codebase-index" "${TELAMON_ROOT}/.opencode/codebase-index"; do
+  if [[ -d "${idx_dir}" ]]; then
+    idx_file_count=$(find "${idx_dir}" -type f 2>/dev/null | wc -l | tr -d ' ')
+    if [[ "${idx_file_count}" -gt 0 ]]; then
+      _pass "Codebase index data present (${idx_file_count} files in $(basename "${idx_dir}")/)"
+      INDEX_DATA_FOUND=true
+      break
+    fi
+  fi
+done
+if [[ "${INDEX_DATA_FOUND}" == "false" ]]; then
+  _warn "Codebase index not built — run index_codebase tool from an agent session"
+fi
+
+# ── 7. Graphify (knowledge graph) ─────────────────────────────────────────────
+header "Graphify (knowledge graph)"
+
+if command -v graphify &>/dev/null; then
+  _pass "Graphify binary installed ($(graphify --version 2>/dev/null || echo '?'))"
+else
+  _fail "Graphify binary not found — run: make up"
+fi
+
+# Check graphify Python path stored
+if [[ -f "${TELAMON_ROOT}/storage/secrets/graphify-python" ]]; then
+  GRAPHIFY_PY="$(cat "${TELAMON_ROOT}/storage/secrets/graphify-python")"
+  if [[ -x "${GRAPHIFY_PY}" ]]; then
+    _pass "Graphify Python interpreter: ${GRAPHIFY_PY}"
+  else
+    _warn "Graphify Python interpreter not executable: ${GRAPHIFY_PY}"
+  fi
+else
+  _warn "Graphify Python path not stored — run: make up"
+fi
+
+# Check graphify-out symlink
+if [[ -L "${TELAMON_ROOT}/graphify-out" ]]; then
+  _pass "graphify-out → $(readlink "${TELAMON_ROOT}/graphify-out")"
+else
+  _warn "graphify-out symlink missing — run: bin/init.sh <project>"
+fi
+
+# Check for built graphs across all initialized projects
+GRAPH_BUILT=0
+GRAPH_MISSING=0
+for storage_dir in "${TELAMON_ROOT}/storage/graphify"/*/; do
+  [[ -d "${storage_dir}" ]] || continue
+  project_name="$(basename "${storage_dir}")"
+  if [[ -f "${storage_dir}graph.json" ]]; then
+    node_count=""
+    if command -v python3 &>/dev/null; then
+      node_count=$(python3 -c "import json; d=json.load(open('${storage_dir}graph.json')); print(len(d.get('nodes',[])))" 2>/dev/null || echo "?")
+    fi
+    _pass "Graph built: ${project_name} (${node_count} nodes)"
+    GRAPH_BUILT=$((GRAPH_BUILT + 1))
+  else
+    _warn "Graph missing: ${project_name} — run: bin/init.sh <project> or graphify update ."
+    GRAPH_MISSING=$((GRAPH_MISSING + 1))
+  fi
+  # Check .project-path marker
+  if [[ -f "${storage_dir}.project-path" ]]; then
+    proj_path="$(cat "${storage_dir}.project-path")"
+    if [[ -d "${proj_path}" ]]; then
+      _pass "Project path valid: ${project_name} → ${proj_path}"
+    else
+      _warn "Project path stale: ${project_name} → ${proj_path} (directory not found)"
+    fi
+  else
+    _warn "Project path marker missing: ${project_name}/.project-path"
+  fi
+done
+if [[ "${GRAPH_BUILT}" -eq 0 && "${GRAPH_MISSING}" -eq 0 ]]; then
+  _warn "No graphify projects initialized — run: bin/init.sh <project>"
+fi
+
+# Check MCP serve wrapper
+if [[ -f "${TELAMON_ROOT}/.opencode/graphify-serve.sh" ]]; then
+  _pass "Graphify MCP serve wrapper present"
+else
+  _warn "Graphify MCP serve wrapper missing (.opencode/graphify-serve.sh) — run: bin/init.sh <project>"
+fi
+
+# ── 8. Scheduled jobs ─────────────────────────────────────────────────────────
+header "Scheduled jobs"
+
+OS="$(uname -s)"
+JOBS_FOUND=0
+
+if [[ "${OS}" == "Linux" ]]; then
+  # Check systemd user timers for graphify
+  for timer in "${HOME}/.config/systemd/user"/graphify-update-*.timer; do
+    [[ -f "${timer}" ]] || continue
+    timer_name="$(basename "${timer}" .timer)"
+    if systemctl --user is-active "${timer_name}.timer" &>/dev/null 2>&1; then
+      _pass "Timer active: ${timer_name}"
+    else
+      _warn "Timer inactive: ${timer_name} — run: systemctl --user enable --now ${timer_name}.timer"
+    fi
+    JOBS_FOUND=$((JOBS_FOUND + 1))
+  done
+
+  # Check for cass index timer
+  for timer in "${HOME}/.config/systemd/user"/cass-index-*.timer; do
+    [[ -f "${timer}" ]] || continue
+    timer_name="$(basename "${timer}" .timer)"
+    if systemctl --user is-active "${timer_name}.timer" &>/dev/null 2>&1; then
+      _pass "Timer active: ${timer_name}"
+    else
+      _warn "Timer inactive: ${timer_name}"
+    fi
+    JOBS_FOUND=$((JOBS_FOUND + 1))
+  done
+
+elif [[ "${OS}" == "Darwin" ]]; then
+  # Check launchd agents for graphify
+  for plist in "${HOME}/Library/LaunchAgents"/com.telamon.graphify-update-*.plist; do
+    [[ -f "${plist}" ]] || continue
+    job_name="$(basename "${plist}" .plist)"
+    if launchctl list 2>/dev/null | grep -q "${job_name}"; then
+      _pass "LaunchAgent active: ${job_name}"
+    else
+      _warn "LaunchAgent inactive: ${job_name}"
+    fi
+    JOBS_FOUND=$((JOBS_FOUND + 1))
+  done
+
+  for plist in "${HOME}/Library/LaunchAgents"/com.telamon.cass-index-*.plist; do
+    [[ -f "${plist}" ]] || continue
+    job_name="$(basename "${plist}" .plist)"
+    if launchctl list 2>/dev/null | grep -q "${job_name}"; then
+      _pass "LaunchAgent active: ${job_name}"
+    else
+      _warn "LaunchAgent inactive: ${job_name}"
+    fi
+    JOBS_FOUND=$((JOBS_FOUND + 1))
+  done
+fi
+
+if [[ "${JOBS_FOUND}" -eq 0 ]]; then
+  _warn "No scheduled jobs found — run: bin/init.sh <project> to set up graph update timers"
+fi
+
+# ── 9. opencode config ────────────────────────────────────────────────────────
 header "opencode config"
 
 # Check root symlink
@@ -242,7 +495,7 @@ else
   _fail "storage/opencode.jsonc missing — run: make up"
 fi
 
-# ── 5. Secrets ─────────────────────────────────────────────────────────────────
+# ── 10. Secrets ────────────────────────────────────────────────────────────────
 header "Secrets"
 
 SECRETS_DIR="${TELAMON_ROOT}/storage/secrets"
@@ -259,7 +512,7 @@ else
   _fail "storage/secrets/ not found — run: make up"
 fi
 
-# ── 6. Telamon storage layout ──────────────────────────────────────────────────────
+# ── 11. Telamon storage layout ─────────────────────────────────────────────────
 header "Storage layout"
 
 for d in "storage" "storage/state"; do
@@ -270,19 +523,13 @@ for d in "storage" "storage/state"; do
   fi
 done
 
-if [[ -L "${TELAMON_ROOT}/graphify-out" ]]; then
-  _pass "graphify-out → $(readlink "${TELAMON_ROOT}/graphify-out")"
-else
-  _warn "graphify-out symlink missing (graphify not yet run in this repo)"
-fi
-
 if [[ -L "${TELAMON_ROOT}/.ai/telamon/secrets" ]]; then
   _pass ".ai/telamon/secrets → $(readlink "${TELAMON_ROOT}/.ai/telamon/secrets")"
 else
   _warn ".ai/telamon/secrets symlink missing"
 fi
 
-# ── 7. Telamon skills & context ───────────────────────────────────────────────────
+# ── 12. Telamon skills & context ──────────────────────────────────────────────
 header "Skills & context"
 
 [[ -d "${TELAMON_ROOT}/src/skills" ]]   && _pass "src/skills/ present"  || _fail "src/skills/ missing"
@@ -290,7 +537,7 @@ header "Skills & context"
 skill_count=$(find "${TELAMON_ROOT}/src/skills" -name "SKILL.md" 2>/dev/null | wc -l | tr -d ' ')
 _info "${skill_count} skill(s) in src/skills/"
 
-# ── 8. .env ────────────────────────────────────────────────────────────────────
+# ── 13. .env ──────────────────────────────────────────────────────────────────
 header ".env configuration"
 
 ENV_FILE="${TELAMON_ROOT}/.env"
@@ -308,7 +555,7 @@ if [[ -f "${ENV_FILE}" ]]; then
   if [[ -n "${obsidian_key}" && "${obsidian_key}" != "REPLACE_WITH"* ]]; then
     _pass "OBSIDIAN_API_KEY is set"
   else
-    _warn "OBSIDIAN_API_KEY not set — obsidian MCP will be disabled until key is provided"
+    _warn "OBSIDIAN_API_KEY not set — run: make up  (installer will guide you through Obsidian Local REST API setup)"
   fi
 
   # Optional service secrets (only checked when service is enabled)
