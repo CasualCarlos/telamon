@@ -19,7 +19,7 @@ mcp.json
 ###< ai ###
 
 # ── Vendor submodules ─────────────────────────────────────────────────────────
-!vendor/
-!vendor/**
+vendor/
+vendor/**
 
 !storage/.gitkeep
