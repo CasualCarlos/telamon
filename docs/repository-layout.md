@@ -39,6 +39,7 @@ src/
     rtk.ts                   # RTK token compression integration
     rtk-dedupe.ts            # deduplicates RTK output
     session-capture.js       # auto-captures learnings before compaction
+    diff-context.js          # injects git change summary on first bash call
   docker/
     initdb/                  # Postgres init scripts (run on first container start)
   context/                   # (reserved for future use)
@@ -143,6 +144,7 @@ src/
     repomix/                 # Repomix MCP installer, init, update, doctor scripts
     promptfoo/               # promptfoo eval framework installer, init, update scripts
     session-capture/         # session-capture opencode plugin + init.sh
+    diff-context/            # diff-context opencode plugin registration
     shell/write-env.sh       # shell profile PATH additions
 
 scripts/

@@ -171,6 +171,19 @@ It promotes session learnings to the vault's `brain/` notes and Ogham automatica
 
 ---
 
+## Diff Context — Session-Aware Git Change Summary
+
+An OpenCode plugin that injects a summary of recent git changes (commits + diffstat) on the first bash tool call of each session.
+
+- **Automatic**: fires on the first bash call — no manual steps
+- **Watermark-aware**: reads the session-capture watermark to know which changes are new since the last session
+- **Fallback**: when no watermark exists (first session), shows the last 10 commits
+- **Budget-capped**: max 30 commit lines + 20 diffstat lines (50 total), ensuring diffstat always gets space
+- **Improvement over graphify pattern**: sets `injected=true` even on no-op, preventing retries on every bash call
+- **Data flow**: session-capture writes watermark → diff-context reads it → injects summary on first bash call
+
+---
+
 ## RTK — Token Compression Proxy
 
 [rtk](https://github.com/rtk-ai/rtk)

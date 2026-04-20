@@ -42,7 +42,7 @@ How Telamon's tools connect and what each provides at each stage of a session.
 |                                                                       |
 |  +---------------------------------------------------------------+    |
 |  |              OpenCode Plugins (always-on)                     |    |
-|  |  session-capture  .  graphify  .  rtk-dedupe  .  scheduler    |    |
+|  |  session-capture . graphify . rtk-dedupe . diff-context . scheduler |  |
 |  +---------------------------------------------------------------+    |
 |                                                                       |
 |  +---------------------------------------------------------------+    |
@@ -69,6 +69,7 @@ How Telamon's tools connect and what each provides at each stage of a session.
 | **Session start** | Obsidian `brain/` | Loads goals, decisions, patterns, and known gotchas |
 | **Session start** | QMD | Semantic vault search — surfaces related context before diving in |
 | **Session start** | Graphify plugin | Injects god nodes, communities, and surprising connections into the first tool call |
+| **Session start** | Diff-context plugin | Injects git change summary (commits + diffstat) since last session into the first bash call |
 | **Understanding code** | Graphify MCP | Structural map: layers, god nodes, module relationships |
 | **Finding code** | Codebase Index | Semantic search: *"where is the auth logic?"* |
 | **Reading many files** | Repomix | Packs directory into compressed context (~70% token reduction) |
