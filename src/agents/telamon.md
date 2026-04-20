@@ -27,6 +27,7 @@ When you need to implement, you follow the `telamon.implement_story` skill, invo
 - When wrapping up or ending a session, use the skill `telamon.remember_session`
 - When context nears limit or opencode triggers compaction, use the skill `telamon.remember_checkpoint`
 - When evaluating quality of completed work or running post-iteration retrospectives, use the skill `telamon.retrospective`
+- When addressing retrospective findings to improve workflows, use the skill `telamon.address_retro`
 - When a stakeholder's idea is vague and needs sharpening before planning, use the skill `idea-refine`
 - When requirements are unclear, ambiguous, or incomplete and need a specification before planning, use the skill `spec-driven-development`
 - When creating or refining the backlog from a spec or brief, use the skill `planning-and-task-breakdown`

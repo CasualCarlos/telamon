@@ -76,11 +76,12 @@ When all tasks are done:
 
 1. Verify test coverage has not regressed. If it has, create a follow-up task before approval.
 2. Produce a post-iteration retrospective using the `telamon.retrospective` skill.
-3. Approve or reject.
-4. When all tasks are done, follow the `telamon.remember_task` skill to capture lessons learned.
-5. Notify human stakeholder with completion report and recommended next actions.
-6. Archive the issue folder: move the `<issue-folder>` from `.ai/telamon/memory/work/active/` to `.ai/telamon/memory/work/archive/`, preserving its name.
-7. Proceed with non-destructive closure actions immediately without asking permission.
+3. Address retrospective findings using the `telamon.address_retro` skill — pass the retro file path.
+4. Approve or reject.
+5. When all tasks are done, follow the `telamon.remember_task` skill to capture lessons learned.
+6. Notify human stakeholder with completion report and recommended next actions.
+7. Archive the issue folder: move the `<issue-folder>` from `.ai/telamon/memory/work/active/` to `.ai/telamon/memory/work/archive/`, preserving its name.
+8. Proceed with non-destructive closure actions immediately without asking permission.
 
 ## Delegation Rules
 

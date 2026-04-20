@@ -90,9 +90,10 @@ When all stories are implemented:
 
 1. Run the full test suite to verify cross-story integration.
 2. Produce a post-epic retrospective using the `telamon.retrospective` skill. Save to `<epic-folder>/retrospective.md`.
-3. Notify human stakeholder with a completion report covering all stories and recommended next actions.
-4. Follow the `telamon.remember_task` skill to capture lessons learned from the epic.
-5. Archive the epic folder: move `<epic-folder>` from `.ai/telamon/memory/work/active/` to `.ai/telamon/memory/work/archive/`, preserving its name.
+3. Address retrospective findings using the `telamon.address_retro` skill — pass the retro file path.
+4. Notify human stakeholder with a completion report covering all stories and recommended next actions.
+5. Follow the `telamon.remember_task` skill to capture lessons learned from the epic.
+6. Archive the epic folder: move `<epic-folder>` from `.ai/telamon/memory/work/active/` to `.ai/telamon/memory/work/archive/`, preserving its name.
 
 ## Story Ordering
 

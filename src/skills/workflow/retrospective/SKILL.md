@@ -84,3 +84,7 @@ The orchestrator should track these signals during implementation (no formal rep
 - **Escalation frequency** — Are agents frequently escalating? May indicate plans need more detail.
 
 If any signal trends negatively across 3+ tasks, the orchestrator should pause and address the root cause before continuing.
+
+## Follow-Up: Address Retrospective
+
+After producing a retrospective, follow up with the `telamon.address_retro` skill to turn improvement items into concrete workflow changes. Pass the retro file path as input. This can also be triggered manually via `/address-retro <path-to-retro-file>`.
