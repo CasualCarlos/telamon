@@ -7,6 +7,10 @@ description: "Record what was learned after completing a task. Review discoverie
 
 Run after finishing a task, fixing a non-trivial bug, completing a planning round, or delivering any meaningful output — whether part of a formal workflow or standalone.
 
+## 0. Commit check (mandatory)
+
+Before recording lessons, verify all file changes are committed. Run `git status` — if uncommitted changes exist, stage specific files (`git add <files>`, never `git add -A`), verify with `git diff --staged --stat`, and commit with a descriptive message. Do not proceed to step 1 until the working tree is clean.
+
 ## 1. Review what was learned
 
 Ask yourself:
