@@ -53,25 +53,22 @@ For each task in the backlog:
 2. **Implement** — When Tester is finished, delegate to @developer:
    - Implement the task following the plan
    - Ensure tests pass before considering the task complete
+   - **Commit the changeset** before signalling FINISHED — use `git add <specific-files>` (never `git add -A` or `git add .`), verify `git diff --staged --stat`, then commit with a clear message
    - Signal FINISHED
 
 3. **Review** — When Developer is finished, delegate to @reviewer:
    - Save Review Report to task folder, signal FINISHED
 
-4. **Address findings** — When Reviewer is finished, delegate to @developer to address issues. Iterate from step 2.3 until no remaining issues.
+4. **Address findings** — When Reviewer is finished, delegate to @developer to address issues. Developer must commit fixes before signalling FINISHED. Iterate from step 2.3 until no remaining issues.
 
-5. **Commit** — Developer creates one commit per task before starting the next:
-   - Use `git add <specific-files>` — never `git add -A` or `git add .` from repository root
-   - Verify `git diff --staged --stat` before committing
+5. **Mark done** — Set task title in _strikethrough_ in `backlog.md`.
 
-6. **Mark done** — Set task title in _strikethrough_ in `backlog.md`.
-
-7. **Progress report** — Output to human stakeholder:
+6. **Progress report** — Output to human stakeholder:
    > **Progress**: \<completed\>/\<total\> tasks done | \<blocked\> blocked | \<remaining\> remaining
 
-8. **Capture lessons** — When a task is complete, follow the `telamon.remember_task` skill immediately. Do not defer to end of session.
+7. **Capture lessons** — When a task is complete, follow the `telamon.remember_task` skill immediately. Do not defer to end of session.
 
-9. Move to the next task from step 2.1.
+8. Move to the next task from step 2.1.
 
 ### Step 3: Completion
 
@@ -117,7 +114,7 @@ By default, tasks execute sequentially (Tester -> Developer -> Reviewer per task
 
 1. Identify eligible parallel tasks from the backlog.
 2. Delegate each task to a separate Developer session simultaneously, each with its own Tester and Reviewer cycle.
-3. Each parallel track follows the full task cycle (step 2.1–2.5) independently.
+3. Each parallel track follows the full task cycle (step 2.1–2.4) independently.
 4. After all parallel tracks complete, run the full test suite to verify no integration conflicts.
 5. If conflicts arise, create a follow-up task to resolve them sequentially.
 

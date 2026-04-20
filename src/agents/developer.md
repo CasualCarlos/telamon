@@ -81,6 +81,7 @@ When you need to create a temporary file, use the `telamon.thinking` skill.
 - Before starting any task, explicitly list your assumptions about requirements, architecture, and scope. Present them and wait for confirmation before proceeding. The most common failure mode is making wrong assumptions and running with them unchecked.
 - If a plan step has a clear problem, point it out directly with a concrete, quantified downside ("this adds ~200ms latency", not "this might be slower"), propose an alternative, and escalate via NEEDS_INPUT. Do not silently implement something you believe is wrong.
 - Before marking a task complete, verify simplicity: can this be done in fewer lines? Are these abstractions earning their complexity? Prefer the boring, obvious solution.
+- **Commit after every completed task** — when all changes for a task are done and tests pass (or no tests apply), commit before signalling FINISHED. Use `git add <specific-files>` (never `git add -A` or `git add .` from repository root), verify `git diff --staged --stat`, then commit with a clear message referencing the task. A task is not finished until it is committed.
 
 ## MUST NOT
 

@@ -19,7 +19,7 @@ Complete the plan one step at a time:
 1. **Find precedent** — Before writing new code, find and follow the closest existing implementation.
 2. **Implement** — Write the code specified in the plan step.
 3. **Test** — Run the test suite. Fix failures introduced by this step before moving on.
-4. **Commit** — Only after tests pass. Reference the task and step (e.g. `[TASK-123] Step 3: Add CreateOrder command handler`).
+4. **Commit** — Only after tests pass (or no tests apply). Use `git add <specific-files>` (never `git add -A` or `git add .` from repository root), verify `git diff --staged --stat`, then commit referencing the task and step (e.g. `[TASK-123] Step 3: Add CreateOrder command handler`). **A task is not finished until it is committed.**
 
 If a step fails in a way suggesting the plan is wrong (not a coding mistake), do not redesign. Escalate.
 
