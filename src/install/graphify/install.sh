@@ -44,7 +44,7 @@ opencode.upsert_mcp "graphify" '{
   "type": "local",
   "command": ["bash", ".opencode/graphify-serve.sh", "graphify-out/graph.json"],
   "environment": {
-    "TELAMON_ROOT": "{file:storage/secrets/telamon-root}"
+    "TELAMON_ROOT": "{file:.ai/telamon/secrets/telamon-root}"
   },
   "enabled": true
 }'
