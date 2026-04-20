@@ -138,7 +138,7 @@
     },
     "git": {
       "type": "local",
-      "command": ["docker", "run", "--rm", "-i", "-v", "./:/repo", "mcp/git"],
+      "command": ["uvx", "mcp-server-git"],
       "enabled": true
     },
     "github": {
