@@ -75,6 +75,7 @@ For each approved suggestion:
 1. Apply the change to the target file(s).
 2. If the change affects a skill referenced by agent roles, verify the reference is still valid.
 3. Record the change as a decision using the `telamon.remember_lessons_learned` skill.
+4. **Commit the changeset** — use `git add <specific-files>` (never `git add -A` or `git add .`), verify `git diff --staged --stat`, then commit with a descriptive message.
 
 ### Step 5: Summary
 

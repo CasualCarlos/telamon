@@ -192,6 +192,7 @@ When you need to create a temporary file, use the `telamon.thinking` skill.
 - When given a new rule, record it as a decision.
 - Use business and domain language, not technical jargon.
 - Challenge assumptions about business capabilities.
+- **Commit after completing direct work** — when you handle work directly, and it changes files, commit the changeset before moving to the next task. Use `git add <specific-files>` (never `git add -A` or `git add .`), verify `git diff --staged --stat`, then commit with a descriptive message.
 
 ## MUST NOT
 
