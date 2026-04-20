@@ -338,6 +338,23 @@ if [[ "${INDEX_DATA_FOUND}" == "false" ]]; then
   _warn "Codebase index not built — run index_codebase tool from an agent session"
 fi
 
+# ── 6b. Repomix ────────────────────────────────────────────────────────────
+header "Repomix"
+
+repomix_ver=$(npx -y repomix --version 2>/dev/null) || true
+if [[ -n "${repomix_ver}" ]]; then
+  _pass "Repomix installed (${repomix_ver})"
+else
+  _fail "Repomix: npx -y repomix --version failed"
+fi
+
+REPOMIX_CONFIG="$(pwd)/repomix.config.json"
+if [[ -f "${REPOMIX_CONFIG}" ]]; then
+  _pass "Repomix config present (repomix.config.json)"
+else
+  _warn "Repomix config missing (repomix.config.json) — run: bin/init.sh <project>"
+fi
+
 # ── 7. Graphify (knowledge graph) ─────────────────────────────────────────────
 header "Graphify (knowledge graph)"
 
@@ -512,6 +529,7 @@ PYEOF
   _check_mcp "context7"
   _check_mcp "ast-grep"
   _check_mcp "git"
+  _check_mcp "repomix"
   # Optional: Graphiti MCP (only when enabled)
   if env.is_enabled GRAPHITI_ENABLED; then
     _check_mcp "graphiti"

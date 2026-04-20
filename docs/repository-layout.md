@@ -63,6 +63,7 @@ src/
         obsidian/SKILL.md    # Obsidian MCP vault interaction
         cass/SKILL.md        # cass session history search (downloaded from upstream on install/update)
         graphify/SKILL.md    # codebase knowledge graph (downloaded from upstream on install/update)
+        repomix/SKILL.md     # repomix directory context packer (agent usage guidance)
     dev/                     # development convention skills
       api/
         rest-conventions/    # RESTful API conventions (URL structure, errors, pagination)
@@ -137,6 +138,7 @@ src/
     opencode/                # opencode binary + shared storage/opencode.jsonc template
     codebase-index/          # MCP registration + per-project codebase-index.json
     obsidian/                # Obsidian binary install + MCP registration
+    repomix/                 # Repomix MCP installer, init, update, doctor scripts
     session-capture/         # session-capture opencode plugin + init.sh
     shell/write-env.sh       # shell profile PATH additions
 
@@ -175,6 +177,7 @@ storage/                     # runtime data — git-ignored except opencode.json
 graphify-out/                # Graphify output for the Telamon project itself
 docker-compose.yml           # postgres, ollama, ollama-init + optional: langfuse, graphiti
 opencode.jsonc               # root opencode config for working on Telamon itself
+repomix.config.json          # per-project Repomix config (project root, created by init.sh)
 .env.dist                    # template for .env (passwords, API keys, optional service flags)
 Makefile                     # up, down, purge, restart, status, doctor, update, init, test
 ```

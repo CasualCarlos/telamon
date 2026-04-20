@@ -14,6 +14,7 @@ description: MCP server tool selection and Laravel Boost usage guide
 - **github**: Interact with GitHub repositories, pull requests, issues, and code reviews
 - **grep**: Search code across public GitHub repositories
 - **playwright**: Interact with a browser or test web pages
+- **repomix**: Pack directory contents into compressed context. Use when reading 5+ files from same area. Replaces multi-file reads with single structured dump. Do not combine with codebase-index for the same files.
 - **exa**: Search the web
 - **laravel-boost**: Run Laravel Artisan commands, manage migrations, scaffold Laravel components
 

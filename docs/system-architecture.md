@@ -24,6 +24,10 @@ How Telamon's tools connect and what each provides at each stage of a session.
 |       |           |  |  git  | | ast-grep | |context7 |              ||
 |       |           |  |  MCP  | |   MCP    | |   MCP   |              ||
 |       |           |  +---+---+ +-----+----+ +----+----+              ||
+|       |           |  +-------+                                        ||
+|       |           |  |repomix|                                        ||
+|       |           |  |  MCP  |                                        ||
+|       |           |  +---+---+                                        ||
 |       |           +------+------------+----------+-------------------+|
 |       |                  |            |          |                    |
 |       |          +-------v------+  +--v----+  +--v--------+          |
@@ -67,6 +71,7 @@ How Telamon's tools connect and what each provides at each stage of a session.
 | **Session start** | Graphify plugin | Injects god nodes, communities, and surprising connections into the first tool call |
 | **Understanding code** | Graphify MCP | Structural map: layers, god nodes, module relationships |
 | **Finding code** | Codebase Index | Semantic search: *"where is the auth logic?"* |
+| **Reading many files** | Repomix | Packs directory into compressed context (~70% token reduction) |
 | **Finding code** | ast-grep | Structural search: find code by AST pattern |
 | **Finding vault notes** | QMD | Semantic vault search: *"did we ever deal with X?"* |
 | **Recovering past context** | cass | Searches previous agent session transcripts |

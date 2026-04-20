@@ -60,6 +60,24 @@ Complements Graphify: Graphify tells you the structure, codebase-index lets you 
 
 ---
 
+## Repomix — Directory Context Packer
+
+[repomix](https://github.com/yamadashy/repomix)
+
+Packs directory contents into a single compressed context dump using Tree-sitter-aware chunking.
+Reduces token consumption by ~70% compared to reading files individually.
+Exposed to the agent via an MCP server (`npx -y repomix --mcp`).
+
+- **Batch reading**: replaces 5+ individual file reads with a single structured dump
+- **Tree-sitter compression**: language-aware chunking preserves code structure while reducing size
+- **Security scanning**: detects secrets and sensitive patterns before context is sent to the model
+- **Per-project config**: behaviour controlled by `repomix.config.json` at the project root (created by `init.sh`)
+
+Use when exploring an unfamiliar directory, reading a module's full source, or gathering context across related files.
+Do **not** combine with codebase-index for the same files — redundant context wastes tokens.
+
+---
+
 ## Obsidian MCP — Curated Knowledge Vault
 
 [obsidian-mcp](https://github.com/oleksandrkucherenko/obsidian-mcp)
@@ -202,6 +220,7 @@ Beyond Telamon-managed tools, the shared `storage/opencode.jsonc` registers seve
 | **grep.app** | Code search across public GitHub repositories |
 | **laravel-boost** | Laravel Artisan commands, migrations, database queries, doc search |
 | **playwright** | Browser automation and testing |
+| **repomix** | Pack directory contents into compressed context (~70% token reduction) |
 | **exa** | Web search |
 
 These are configured in `storage/opencode.jsonc` and symlinked into each project by `make init`.
@@ -347,6 +366,7 @@ Enabled by setting `GRAPHITI_ENABLED=true` in `.env`.
 ### Tier 2 — High value, worth the setup cost
 - **Graphify** — Fully automatic codebase knowledge graph. Particularly valuable for large legacy codebases where nobody has a complete mental model anymore.
 - **RTK** — Highest ROI for token efficiency — zero config, immediate, compounds with all other tools.
+- **Repomix** — ~70% token reduction when reading multiple files from the same area. Use instead of individual file reads for 5+ files.
 - **Codebase Index** — Complements Graphify. Find code by meaning, not just by name.
 
 ### Tier 3 — Useful
