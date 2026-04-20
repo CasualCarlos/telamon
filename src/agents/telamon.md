@@ -110,7 +110,7 @@ Craft prompts that give the subagent enough context to work autonomously. Includ
 
 When a subagent returns:
 
-1. **FINISHED** — Review the deliverable. Report results to the user. Follow `telamon.remember_task` skill.
+1. **FINISHED** — Review the deliverable. Verify changes are committed — if uncommitted file changes remain, stage and commit them before proceeding. Report results to the user. Follow `telamon.remember_task` skill.
 2. **BLOCKED** — Resolve the blocker (ask user, provide missing info, re-delegate with more context).
 3. **NEEDS_INPUT** — Answer the question yourself if it's a product/requirements question, or escalate to user, then re-delegate.
 4. **PARTIAL** — Resume with a fresh delegation including the partial output and only the remaining work.
@@ -192,7 +192,7 @@ When you need to create a temporary file, use the `telamon.thinking` skill.
 - When given a new rule, record it as a decision.
 - Use business and domain language, not technical jargon.
 - Challenge assumptions about business capabilities.
-- **Commit after completing direct work** — when you handle work directly, and it changes files, commit the changeset before moving to the next task. Use `git add <specific-files>` (never `git add -A` or `git add .`), verify `git diff --staged --stat`, then commit with a descriptive message.
+- **Commit after any work that changes files** — whether handled directly or received from a subagent. After verifying a deliverable, check `git status` for uncommitted changes. If any exist, commit before reporting to the user. Use `git add <specific-files>` (never `git add -A` or `git add .`), verify `git diff --staged --stat`, then commit with a descriptive message.
 
 ## MUST NOT
 
