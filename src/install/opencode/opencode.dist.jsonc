@@ -63,7 +63,8 @@
     "opencode-scheduler",
     ".opencode/plugins/telamon/graphify.js",
     ".opencode/plugins/telamon/rtk-dedupe.ts",
-    ".opencode/plugins/telamon/diff-context.js"
+    ".opencode/plugins/telamon/diff-context.js",
+    ".opencode/plugins/telamon/script-runner.js"
   ],
   "permission": {
     "edit": "allow",
