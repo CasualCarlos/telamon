@@ -13,9 +13,9 @@ title: Telamon
       All tools run locally. No data leaves your machine.
     </p>
     <div class="hero-install">
-      <span class="prompt">$</span> git clone https://github.com/hgraca/telamon ~/telamon<br>
-      <span class="prompt">$</span> cd ~/telamon && make up<br>
-      <span class="prompt">$</span> telamon init path/to/your-project
+      <span class="prompt">$</span> curl -fsSL https://raw.githubusercontent.com/hgraca/telamon/main/install.sh | bash<br>
+      <span class="prompt">$</span> telamon init path/to/your-project<br>
+      <span class="prompt">$</span> cd path/to/your-project && opencode
     </div>
     <div class="hero-actions">
       <a href="{{ '/developer-workflow' | relative_url }}" class="btn btn-primary">Read the docs</a>
@@ -76,7 +76,7 @@ title: Telamon
     <ul class="highlight-list">
       <li>
         <span class="check">&#x2713;</span>
-        <span><strong>Install once, use everywhere</strong> &mdash; one <code>make up</code> installs the entire stack. Init any project in seconds.</span>
+        <span><strong>Install once, use everywhere</strong> &mdash; one <code>curl</code> installs the entire stack. Init any project in seconds.</span>
       </li>
       <li>
         <span class="check">&#x2713;</span>
@@ -112,9 +112,9 @@ title: Telamon
       <div class="install-step">
         <span class="step-number">1</span>
         <div>
-          <h3>Clone and install</h3>
+          <h3>Install</h3>
           <p>One command installs everything &mdash; Docker, Node.js, Python, opencode, Obsidian, all memory tools, and the global <code>telamon</code> CLI.</p>
-          <code>git clone https://github.com/hgraca/telamon ~/telamon && cd ~/telamon && make up</code>
+          <code>curl -fsSL https://raw.githubusercontent.com/hgraca/telamon/main/install.sh | bash</code>
         </div>
       </div>
       <div class="install-step">

@@ -34,14 +34,12 @@ tools for software development. It provides:
 |---|---|
 | **Linux** (Ubuntu/Debian/Mint) or **macOS** | Apple Silicon and Intel both supported |
 
-> `make up` installs **everything** — Docker, Node.js, Python, [opencode](https://opencode.ai), Obsidian, Ogham, Graphify, cass, RTK, QMD, Codebase Index, Caveman, and the global `telamon` CLI.
+> The installer clones Telamon to `~/.telamon` and runs `make up`, which installs **everything** — Docker, Node.js, Python, [opencode](https://opencode.ai), Obsidian, Ogham, Graphify, cass, RTK, QMD, Codebase Index, Caveman, and the global `telamon` CLI.
 > The only manual step: after Obsidian is installed, the installer pauses and walks you through enabling the *Local REST API* plugin.
 
 ```bash
-# 1. Clone and install (one-time)
-git clone <this-repo> ~/telamon
-cd ~/telamon
-make up
+# 1. Install (one-time)
+curl -fsSL https://raw.githubusercontent.com/hgraca/telamon/main/install.sh | bash
 
 # 2. Initialise a project (one-time per project — from anywhere)
 telamon init path/to/your-project

@@ -9,15 +9,13 @@ Step-by-step guide to using Telamon day-to-day.
 
 ---
 
-## 1. One-time: Clone and start Telamon
+## 1. One-time: Install Telamon
 
 ```bash
-git clone <this-repo> ~/telamon
-cd ~/telamon
-make up
+curl -fsSL https://raw.githubusercontent.com/hgraca/telamon/main/install.sh | bash
 ```
 
-`make up` will:
+This clones the repository to `~/.telamon` and runs `make up`, which will:
 1. Copy `.env.dist` -> `.env` (if not present)
 2. Install prerequisite host tools (Homebrew, Docker) — `--pre-docker` phase
 3. Start Docker services (`postgres`, `ollama`)
