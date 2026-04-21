@@ -140,10 +140,19 @@ down: ## Shut down Telamon services
 	echo -e "\n\033[1m\033[34m━━━ Shutting down Telamon services... ━━━\033[0m"
 	docker compose $(COMPOSE_PROFILES) down --remove-orphans
 
-purge: ## Remove all containers and volumes
-	echo -e "\n\033[1m\033[34m━━━ Purging all containers and volumes... ━━━\033[0m"
-	docker compose $(COMPOSE_PROFILES) down -v --remove-orphans
-	sudo rm -rf storage/pgdata storage/ollama storage/graphify storage/langfuse-pgdata storage/langfuse-clickhouse storage/neo4j-data
+reset: ## Remove project-side wiring created by init, keep storage data  (usage: make reset PROJ=path/to/project)
+	@if [ -z "$(PROJ)" ]; then echo "Usage: make reset PROJ=path/to/project"; exit 1; fi
+	echo -e "\n\033[1m\033[34m━━━ Resetting project: $(PROJ) ━━━\033[0m"
+	bash bin/reset.sh "$(PROJ)"
+
+purge: ## Remove project wiring AND project storage data  (usage: make purge PROJ=path/to/project)
+	@if [ -z "$(PROJ)" ]; then echo "Usage: make purge PROJ=path/to/project"; exit 1; fi
+	echo -e "\n\033[1m\033[34m━━━ Purging project: $(PROJ) ━━━\033[0m"
+	bash bin/purge.sh "$(PROJ)"
+
+uninstall: ## Completely remove Telamon from this system (destructive — shows confirmation prompt)
+	echo -e "\n\033[1m\033[34m━━━ Uninstalling Telamon... ━━━\033[0m"
+	bash bin/uninstall.sh
 
 restart: ## Stop then start Telamon services
 	echo -e "\n\033[1m\033[34m━━━ Restarting Telamon services... ━━━\033[0m"
