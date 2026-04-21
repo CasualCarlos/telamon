@@ -4,7 +4,7 @@ mode: primary
 temperature: 0.2
 model: github-copilot/claude-opus-4.6
 permission:
-  bash: deny
+  bash: allow
   task: allow
 ---
 
