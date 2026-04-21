@@ -15,7 +15,7 @@ title: Telamon
     <div class="hero-install">
       <span class="prompt">$</span> git clone https://github.com/hgraca/telamon ~/telamon<br>
       <span class="prompt">$</span> cd ~/telamon && make up<br>
-      <span class="prompt">$</span> make init PROJ=path/to/your-project
+      <span class="prompt">$</span> telamon init path/to/your-project
     </div>
     <div class="hero-actions">
       <a href="{{ '/developer-workflow' | relative_url }}" class="btn btn-primary">Read the docs</a>
@@ -113,7 +113,7 @@ title: Telamon
         <span class="step-number">1</span>
         <div>
           <h3>Clone and install</h3>
-          <p>One command installs everything &mdash; Docker, Node.js, Python, opencode, Obsidian, and all memory tools.</p>
+          <p>One command installs everything &mdash; Docker, Node.js, Python, opencode, Obsidian, all memory tools, and the global <code>telamon</code> CLI.</p>
           <code>git clone https://github.com/hgraca/telamon ~/telamon && cd ~/telamon && make up</code>
         </div>
       </div>
@@ -121,8 +121,8 @@ title: Telamon
         <span class="step-number">2</span>
         <div>
           <h3>Initialise a project</h3>
-          <p>Wire up memory, knowledge graph, and vault for your project. Run once per project.</p>
-          <code>make init PROJ=path/to/your-project</code>
+          <p>Wire up memory, knowledge graph, and vault for your project. Run once per project, from anywhere.</p>
+          <code>telamon init path/to/your-project</code>
         </div>
       </div>
       <div class="install-step">
