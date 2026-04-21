@@ -79,9 +79,9 @@ Delegate to @critic for feedback on all documents produced so far.
 
 ### Step 5: Planning summary and approval
 
-Create `<issue-folder>/summary.md` by following the `telamon.summarize_plan` skill.
-
-Output the summary to the human stakeholder and ask for final approval.
+1. Create `<issue-folder>/summary.md` by following the `telamon.summarize_plan` skill.
+2. Format all markdown files in the issue folder: `.ai/telamon/scripts/format-md.py <issue-folder>`.
+3. Output the summary to the human stakeholder and ask for final approval.
 
 ### Step 6: Transition
 
