@@ -57,7 +57,7 @@ title: Telamon
       <div class="feature-card">
         <div class="feature-icon">&#x1f916;</div>
         <h3>Multi-Agent System</h3>
-        <p>10 specialized agent roles &mdash; architect, developer, tester, reviewer, and more &mdash; with structured delegation and slash commands.</p>
+        <p>Two agents: <strong>Telamon</strong>, an autonomous orchestrator that delegates to 10 specialized sub-agents, and <strong>Companion</strong>, a pair programmer that works alongside you. Slash commands trigger structured workflows.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">&#x26a1;</div>

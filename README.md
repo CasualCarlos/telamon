@@ -41,7 +41,7 @@ cd path/to/your-project && opencode
 | **Session recall** | Cass (conversation history search) |
 | **Automatic session capture** | OpenCode plugin — promotes learnings before compaction |
 | **Token efficiency** | RTK (output compression) + Caveman (terse communication mode) |
-| **Multi-agent system** | 10 specialized roles + structured delegation + slash commands |
+| **Multi-agent system** | 2 agents: Telamon (autonomous orchestrator + 10 sub-agents) and Companion (pair programmer) |
 | **MCP integrations** | GitHub, Chrome DevTools, Playwright, ast-grep, Context7, Exa, grep.app |
 | **Optional observability** | Langfuse for token tracking (opt-in) |
 | **Optional temporal graph** | Graphiti + Neo4j for architectural evolution (opt-in) |

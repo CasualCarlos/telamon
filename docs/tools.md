@@ -248,52 +248,69 @@ Beyond Telamon-managed tools, several third-party MCP servers are available to e
 
 ## Multi-agent system
 
-### Roles
+Telamon ships two primary agents. Pick the one that matches how you want to work.
 
-| Agent | Role |
-|---|---|
-| **telamon** (orchestrator) | Classifies requests, delegates to specialists, leads workflows |
-| **architect** | Designs technical plans and ADRs |
-| **developer** | Implements plans into production code |
-| **tester** | Validates implementations, writes tests |
-| **reviewer** | Reviews changesets against plan and conventions |
-| **critic** | Audits codebase for inconsistencies and pattern drift |
-| **po** (product owner) | Domain expert, backlog grooming, requirements |
-| **security** | Security audits, threat modelling, vulnerability assessment |
-| **ui-designer** | Visual specs, design tokens, screen layouts |
-| **ux-designer** | User flows, interaction specs, state definitions |
+### Primary agents
+
+| Agent | Model | Style | When to use |
+|---|---|---|---|
+| **Telamon** (orchestrator) | Claude Opus | Autonomous — classifies requests, plans, delegates, implements | Stories, epics, multi-step tasks, anything you want done end-to-end |
+| **Companion** (pair programmer) | Claude Sonnet | Collaborative — asks before acting, works in small increments | Exploratory work, debugging, learning a codebase, design discussions |
+
+**Telamon** is the default. It receives every request, classifies it by type and size, and either handles it directly or delegates to one of 10 specialized sub-agents. It leads planning workflows (backlog → architecture → review) and implementation workflows (test → develop → review) end-to-end. It writes documentation and manages the knowledge vault itself.
+
+**Companion** never delegates and never runs autonomous multi-step workflows. It works *with* you — one function, one test, one change at a time. It shares reasoning before showing code, offers alternatives, and pauses after every meaningful step to check in. Think of it as a senior colleague who pairs with you, not a bot that produces output.
+
+### Telamon's sub-agents
+
+Telamon delegates to these specialists. Each sub-agent has constrained permissions (read-only agents can't edit files, designers can't run shell commands, etc.).
+
+| Sub-agent | Role | Permissions |
+|---|---|---|
+| **architect** | Designs technical plans and ADRs | Read-only — no code, no shell |
+| **developer** | Implements plans into production code | Full file + shell access |
+| **tester** | Writes and runs tests, validates implementations | Shell (test commands only) + file access |
+| **reviewer** | Reviews changesets against plan and conventions | Read-only + test commands |
+| **critic** | Audits codebase for inconsistencies and pattern drift | Read-only — no code, no shell |
+| **po** (product owner) | Domain expert, backlog grooming, requirements clarification | Read-only — no code, no shell |
+| **security** | Security audits, threat modelling, vulnerability assessment | Read-only + audit commands |
+| **ui-designer** | Visual specs, design tokens, screen layouts | Read-only — no code, no shell |
+| **ux-designer** | User flows, interaction specs, state definitions | Read-only — no code, no shell |
 
 ### Slash commands
 
-| Command | Purpose |
+| Command | What it does |
 |---|---|
-| `/plan` | Plan a story or feature |
-| `/implement` | Implement an approved plan |
-| `/story` | Plan and implement end-to-end |
-| `/epic` | Break an epic into stories, plan and implement each |
-| `/dev` | Delegate a code task to the developer |
-| `/test` | Write or run tests |
-| `/review` | Review a code changeset |
-| `/gh_review` | Review a GitHub pull request |
+| `/story <brief>` | Plan and implement a story end-to-end |
+| `/epic <brief>` | Break an epic into stories, plan and implement each |
+| `/plan <brief>` | Plan a story or feature (backlog + architecture) |
+| `/implement <brief>` | Implement an approved plan |
+| `/dev <task>` | Delegate a code task directly to the developer |
+| `/test` | Write or run tests for the current changeset |
+| `/review` | Review the current code changeset |
+| `/gh_review <PR#>` | Address review comments on a GitHub PR |
 | `/eval` | Run agent evaluations with promptfoo |
-| `/archive` | Archive completed work notes |
-| `/caveman` | Toggle token-efficient communication |
-| `/vault-audit` | Audit the knowledge vault |
+| `/caveman [level]` | Toggle token-efficient communication (`lite` / `full` / `ultra`) |
+| `/archive <note>` | Archive a completed work note |
+| `/vault-audit` | Deep structural audit of the knowledge vault |
+| `/address-retro <path>` | Implement improvements from a retrospective |
+| `/format-md <path>` | Align markdown tables in a file or directory |
+| `/script <path>` | Run a shell script and pass output to the LLM |
 
 ---
 
 ## Under the hood: skills library
 
-Telamon ships a library of skills that guide the agent through structured workflows. See [Repository Layout](repository-layout.md) for the full directory structure.
+Skills are structured instruction sets that guide agents through specific tasks. Telamon loads the right skill automatically based on context. Companion loads project-convention skills (architecture rules, PHP rules, testing, etc.) to inform its suggestions.
 
 ### Memory & context
 recall-memories, remember-lessons-learned, remember-task, remember-checkpoint, remember-session, memory-management, thinking, qmd, ogham, obsidian, cass, graphify, repomix
 
-### Development conventions
-architecture-rules, explicit-architecture, rest-conventions, create-adr, create-use-case, documentation-rules, git-rules, makefile, testing, testing/promptfoo, php-rules, laravel, message-bus
+### Workflow (Telamon only)
+agent-communication, plan-story, implement-story, epic, plan-implementation, execute-plan, review-plan, review-changeset, review-security, audit-codebase, retrospective, summarize-plan, test-codebase, exception-handling, optimize-instructions, ui-specification, ux-design, address-retro, improve-reviewer, gh-review, caveman
 
-### Workflow
-agent-communication, plan-story, implement-story, epic, plan-implementation, execute-plan, review-plan, review-changeset, review-security, audit-codebase, retrospective, summarize-plan, test-codebase, exception-handling, optimize-instructions, ui-specification, ux-design
+### Development conventions (both agents)
+architecture-rules, explicit-architecture, rest-conventions, create-adr, create-use-case, documentation-rules, git-rules, makefile, testing, testing/promptfoo, php-rules, laravel, message-bus
 
 ### General engineering ([addyosmani/agent-skills](https://github.com/addyosmani/agent-skills))
 api-and-interface-design, browser-testing-with-devtools, ci-cd-and-automation, code-review-and-quality, code-simplification, context-engineering, debugging-and-error-recovery, deprecation-and-migration, documentation-and-adrs, frontend-ui-engineering, git-workflow-and-versioning, idea-refine, incremental-implementation, performance-optimization, planning-and-task-breakdown, security-and-hardening, shipping-and-launch, source-driven-development, spec-driven-development, test-driven-development, using-agent-skills
