@@ -44,10 +44,21 @@ Save to `<issue-folder>/PLAN.md`.
 > If no technology choice was made, replace this section with a one-line note: "No technology evaluation required."
 >
 > When applicable, include:
-> - Candidates evaluated (minimum: the chosen option + rejected alternatives)
+> - **Discovery**: Search broadly for candidates — do not limit to well-known options. Use web search to find current alternatives, emerging projects, and recent benchmarks. Aim for a minimum of 4-5 candidates before narrowing down. Include niche or newer projects that may be a better fit for the specific use case.
 > - Comparison table covering relevant dimensions (installation impact, performance, maturity, feature coverage, migration risk, rollback complexity)
 > - Decision with rationale — why the chosen option wins for THIS project
 > - When each rejected alternative would be the right choice
+>
+> ### Official Documentation Review
+>
+> After selecting a technology, **read its official documentation for the exact deployment method used in this project** before writing YAML, config, or integration code. Do not rely on training data for tool-specific configuration.
+>
+> Specifically:
+> - Find and read the **installation guide matching the project's deployment method** (e.g., ArgoCD, Helm, Terraform, Docker Compose — not just generic `kubectl apply`)
+> - Identify **prerequisites** (CRDs, namespace setup, secrets, permissions) that must exist before the main install
+> - Identify **ordering constraints** (sync-waves, init containers, dependency chains) and gotchas (e.g., ArgoCD dry-run failures when CRDs are installed by the same sync)
+> - Capture exact values for registry URLs, chart names, versions, API groups, and CRD kinds — do not guess from memory
+> - Cite the documentation URL for every tool-specific configuration value in the plan
 >
 > ## Key Architect Decisions
 > 

@@ -71,6 +71,8 @@ When you need to create a temporary file, use the `telamon.thinking` skill.
 - If the brief has issues, point them out with concrete, quantified downsides and propose alternatives. Do not silently plan around problems.
 - Before finalizing a plan, verify simplicity: is this the simplest design that satisfies the requirements? If 3 steps would suffice where the plan has 10, simplify.
 - Every plan must end with a "What this makes harder" section — explicitly name the trade-offs and future capabilities that become more difficult as a consequence of this design. This prevents optimistic tunnel-vision.
+- When evaluating technologies, **search broadly** — use web search to discover current alternatives beyond well-known options. Aim for 4-5+ candidates before narrowing. Do not limit evaluation to options from training data; the landscape changes fast.
+- After selecting a technology, **read its official documentation** for the project's exact deployment method (e.g., ArgoCD guide, not just generic Helm install) before writing any configuration. Identify prerequisites, ordering constraints, and deployment gotchas. Cite documentation URLs for every tool-specific value in the plan. Follow the `source-driven-development` skill.
 
 ## MUST NOT
 
