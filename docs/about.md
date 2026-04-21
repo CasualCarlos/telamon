@@ -31,7 +31,7 @@ The agent ecosystem provides great models but poor infrastructure for **continui
 Telamon takes a different path:
 
 - **Local-first** — every tool runs on your machine. No cloud dependencies, no data leaving your network.
-- **Install once, use everywhere** — one `make up` installs the entire stack. Wire up any project in seconds.
+- **Install once, use everywhere** — one `curl` command installs the entire stack. Wire up any project in seconds.
 - **Memory as infrastructure** — agent memory isn't a feature request, it's a layer of the stack. Decisions, patterns, bugs, and session history persist across restarts.
 - **Structured multi-agent workflows** — 10 specialized roles (architect, developer, tester, reviewer, PO, and more) with delegation protocols, not prompt chains.
 - **Token-aware** — automatic compression keeps context within model limits without losing signal.

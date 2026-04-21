@@ -5,131 +5,132 @@ description: Step-by-step guide to using Telamon day-to-day.
 nav_section: docs
 ---
 
-Step-by-step guide to using Telamon day-to-day.
+Everything you need to use Telamon day-to-day.
+
+## Quick reference
+
+```bash
+# Install (one-time)
+curl -fsSL https://raw.githubusercontent.com/hgraca/telamon/main/install.sh | bash
+
+# Initialise a project (one-time per project)
+telamon init path/to/your-project
+
+# Start Telamon (daily)
+telamon up
+
+# Work
+cd path/to/your-project && opencode
+
+# When done, tell the agent "wrap up"
+```
+
+That's it. The agent handles memory, context, and knowledge capture automatically.
 
 ---
 
-## 1. One-time: Install Telamon
+## The five steps in detail
+
+### 1. Install Telamon (one-time)
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/hgraca/telamon/main/install.sh | bash
 ```
 
-This clones the repository to `~/.telamon` and runs `make up`, which will:
-1. Copy `.env.dist` -> `.env` (if not present)
-2. Install prerequisite host tools (Homebrew, Docker) — `--pre-docker` phase
-3. Start Docker services (`postgres`, `ollama`)
-4. Install remaining tools (opencode, Ogham, Graphify, cass, RTK, codebase-index, Obsidian MCP) — `--post-docker` phase
-5. Install the global `telamon` CLI (symlink at `~/.local/bin/telamon`) and a desktop menu entry
-
-If `.ai/telamon/telamon.ini` exists with `project_name` set, the installer reads it silently (no prompts for project name/profile). If `.env` already has `POSTGRES_PASSWORD` set, the password prompt is also skipped.
+After install, the `telamon` command is available globally. See [Commands](make-targets.md) for the full list.
 
 > The installer is **idempotent** — safe to re-run at any time. Already-installed tools are skipped.
 
-After this initial `make up`, you can use the `telamon` CLI from anywhere on the system.
-
----
-
-## 2. One-time per project: Initialise
+### 2. Initialise a project (one-time per project)
 
 ```bash
-# From anywhere:
 telamon init path/to/your-project
-
-# Or cd into the project first:
-cd path/to/your-project
-telamon init
+# or: cd path/to/your-project && telamon init
 ```
 
-> **Equivalent make target:** `make init PROJ=path/to/your-project` (from the Telamon directory)
+After this, opening `opencode` in the project automatically loads Telamon context and skills.
 
-This will:
-- Create the full Obsidian vault at `storage/obsidian/<project-name>/` with:
-  - `bootstrap/` (always-on context files)
-  - `brain/` notes (`memories.md`, `key_decisions.md`, `patterns.md`, `gotchas.md`)
-  - `work/active/`, `work/archive/`, `work/incidents/` folders
-  - `reference/` and `thinking/` folders
-- Symlink `<project>/.opencode/skills/telamon` -> `<telamon-root>/src/skills` (agent skills)
-- Write `<project>/.ai/telamon/telamon.ini` with the project name variable
-- Install the **Graphify** git hook and OpenCode plugin in the project
-- Install the **session-capture** OpenCode plugin in the project (auto-captures before compaction)
-- Schedule a **cass** background job to incrementally index agent sessions every 30 minutes
-- Register **QMD** vault collections (`<project>-brain`, `-work`, `-reference`, `-thinking`) and build the initial semantic index
-
-After this, when `opencode` starts in the project, it automatically loads Telamon context and skills.
-
----
-
-## 3. Every day: Start Telamon
+### 3. Start Telamon (daily)
 
 ```bash
-telamon up        # from anywhere — if not already running
+telamon up
 ```
 
 Check status at any time:
 
 ```bash
 telamon status    # quick installation status
-telamon doctor    # comprehensive health check (connectivity, secrets, config)
+telamon doctor    # comprehensive health check
 ```
+
+### 4. Work
+
+Open your project in opencode and work normally. The agent uses Telamon's tools automatically — you don't need to do anything special.
+
+### 5. Wrap up
+
+When you're done, say *"wrap up"*. The agent saves session learnings and archives completed work.
+
+> This also runs automatically before every context compaction, so nothing is lost even if you forget.
 
 ---
 
-## 4. Every agent session: Automatic memory bootstrap
+## Under the hood
 
-At the start of every session (via the `telamon.recall_memories` skill) **the agent will automatically**:
+### What the installer does
 
-- Graphify plugin injects god nodes, communities, and surprising connections into the first tool call (no manual action needed)
+The curl script clones the repository to `~/.telamon` and runs `make up`, which:
 
-```bash
-ogham use <project-name>     # activate this project's memory profile (ogham switch_profile MCP tool)
-ogham search "<topic>"        # surface relevant past context (ogham hybrid_search MCP tool)
-```
+1. Copies `.env.dist` → `.env` (if not present)
+2. Installs prerequisite host tools (Homebrew, Docker) — pre-docker phase
+3. Starts Docker services (Postgres, Ollama)
+4. Installs remaining tools (opencode, Ogham, Graphify, cass, RTK, codebase-index, Obsidian MCP) — post-docker phase
+5. Installs the global `telamon` CLI (symlink at `~/.local/bin/telamon`) and a desktop menu entry
 
-Then check and build (once each, if missing):
-- Codebase index: `index_codebase` tool
-- cass index (first time only): `cass index --full`
+If `.ai/telamon/telamon.ini` exists with `project_name` set, the installer reads it silently (no prompts). If `.env` already has `POSTGRES_PASSWORD` set, the password prompt is also skipped.
 
-Then run QMD vault index refresh and gather context (see the `telamon.qmd` skill for details):
-```bash
-qmd update && qmd embed
-qmd query "what patterns and gotchas should I know" -n 5
-```
+### What project init does
 
----
+`telamon init` wires up a project with all Telamon tools:
 
-## 5. During work
+- Creates the Obsidian vault at `storage/obsidian/<project-name>/` with `bootstrap/`, `brain/`, `work/`, `reference/`, and `thinking/` folders
+- Symlinks agent skills into `<project>/.opencode/skills/telamon`
+- Writes `<project>/.ai/telamon/telamon.ini` with the project name
+- Installs the Graphify git hook and OpenCode plugin
+- Installs the session-capture OpenCode plugin (auto-captures before compaction)
+- Schedules a cass background job to index agent sessions every 30 minutes
+- Registers QMD vault collections and builds the initial semantic index
 
-The agent automatically:
-- Searches Ogham before repeating known work: `ogham search "<topic>"`
-- Searches the codebase semantically via the codebase-index MCP
-- Queries Graphify for architectural context via the Graphify MCP (god nodes, communities, graph queries)
-- Searches past sessions when needed: `cass search --robot "<topic>"`
-- Reads `brain/key_decisions.md`, `brain/patterns.md`, and `brain/gotchas.md` to stay aligned with project context
+### What the agent does at session start
 
----
+Via the `telamon.recall_memories` skill, the agent automatically:
 
-## 6. Saving knowledge
+- Activates the project's Ogham memory profile
+- Searches for relevant past context (decisions, patterns, bugs)
+- Receives Graphify god nodes, communities, and surprising connections (injected by the opencode plugin)
+- Receives a git change summary since the last session (injected by the diff-context plugin)
+- Builds the codebase index if missing
+- Refreshes the QMD vault index
+
+### What the agent does during work
+
+The agent uses Telamon tools transparently:
+
+- Searches Ogham before repeating known work
+- Searches the codebase semantically via codebase-index
+- Queries Graphify for architectural context (god nodes, communities, relationships)
+- Searches past sessions when needed via cass
+- Reads `brain/` notes to stay aligned with project decisions and patterns
+
+### How knowledge is saved
 
 The agent saves to **both** Ogham (fast semantic recall) and Obsidian `brain/` (human-readable, curated):
 
 | Event | Ogham | Obsidian |
 |---|---|---|
-| Non-trivial bug fixed | `ogham store "bug: <desc>"` | Append to `brain/gotchas.md` |
-| Architectural decision | `ogham store "decision: X over Y because Z"` | Append to `brain/key_decisions.md` |
-| Pattern established | `ogham store "pattern: <desc>"` | Append to `brain/patterns.md` |
-| Session ends | `ogham store "session: <summary>"` (ogham store_memory MCP tool) | Archive completed `work/active/` notes |
+| Non-trivial bug fixed | Stored as a bug memory | Appended to `brain/gotchas.md` |
+| Architectural decision | Stored as a decision memory | Appended to `brain/key_decisions.md` |
+| Pattern established | Stored as a pattern memory | Appended to `brain/patterns.md` |
+| Session ends | Stored as a session summary | Work notes archived from `active/` to `archive/` |
 
 The **session-capture plugin** handles this automatically before every compaction. On explicit wrap-up it also presents a summary of what was saved.
-
----
-
-## 7. Wrap-up
-
-When you say *"wrap up"* the agent will:
-1. Promote session learnings to `brain/` notes
-2. Archive completed `work/active/` notes to `work/archive/YYYY/`
-3. Save to Ogham via `ogham store_memory` (MCP tool) or `ogham store` (CLI) — capture significant decisions, patterns, and bugs
-4. Report what was saved
-
-> This also runs automatically before every context compaction via the session-capture plugin.
