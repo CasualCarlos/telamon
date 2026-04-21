@@ -25,6 +25,10 @@ Produce a structured summary report at the end of a planning stage.
 >
 > # Issue: Replace scripts and raw K8s manifests with Helm charts
 >
+> ## Technology Choice
+>
+> _(If the plan involved choosing between competing technologies, summarize the evaluation here FIRST. Include: candidates, comparison table, decision rationale, when rejected alternatives would be right. If no technology choice was made, omit this section.)_
+>
 > ## Artifacts Produced
 > |Document|Path|
 > |---|---|

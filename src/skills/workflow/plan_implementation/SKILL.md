@@ -37,6 +37,18 @@ Save to `<issue-folder>/PLAN.md`.
 > **Brief**: Reference to the brief or task ID.
 > **Status**: DRAFT | IN REVIEW | FINAL
 >
+> ## Technology Choice
+>
+> _(Place technology evaluation FIRST when the plan involves choosing between competing tools, frameworks, or approaches. Readers must understand WHY before reading HOW.)_
+>
+> If no technology choice was made, replace this section with a one-line note: "No technology evaluation required."
+>
+> When applicable, include:
+> - Candidates evaluated (minimum: the chosen option + rejected alternatives)
+> - Comparison table covering relevant dimensions (installation impact, performance, maturity, feature coverage, migration risk, rollback complexity)
+> - Decision with rationale — why the chosen option wins for THIS project
+> - When each rejected alternative would be the right choice
+>
 > ## Key Architect Decisions
 > 
 > |#| Decision | Rationale |

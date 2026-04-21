@@ -89,16 +89,41 @@ Signal back to Telamon:
 
 ## Templates
 
+### Backlog Document Structure
+
+> # Backlog: <Title>
+>
+> ## Risks & Open Questions
+>
+> _(Place risks and open questions FIRST so readers see unknowns before diving into tasks.)_
+>
+> | # | Risk/Question | Impact | Mitigation |
+> |---|---|---|---|
+> | 1 | ... | Task N | ... |
+>
+> ---
+>
+> ## Phase 1 — <Phase Title>
+>
+> ### Task 1 — <Task Title>
+> _(use task template below)_
+>
+> ---
+>
+> ## Phase N — <Phase Title>
+>
+> ### Task N — <Task Title>
+> _(use task template below)_
+
 ### Backlog Task Template
 
-> ## Task <n> - Title
-> - **Priority**: LOW | MEDIUM | HIGH
-> - **Status**: TODO | IN PROGRESS | IN REVIEW | DONE | REJECTED
+> ### Task <n> — <Title>
+> - **Priority**: P0 | P1 | P2
 > - **Dependencies**: Task <x>, ...
-> - **Owner**: <@agent>
 > - **Description**: <task_description>
->
-> ### Acceptance Criteria
->
-> - <acceptance_criterion_1>
-> - <acceptance_criterion_2>
+> - **Requirements**:
+>   - <requirement_1>
+>   - <requirement_2>
+> - **Acceptance Criteria**:
+>   - <acceptance_criterion_1>
+>   - <acceptance_criterion_2>
