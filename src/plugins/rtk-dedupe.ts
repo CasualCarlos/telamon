@@ -1,19 +1,20 @@
 import type { Plugin } from "@opencode-ai/plugin"
 import { RtkOpenCodePlugin } from "./rtk.ts"
 
-// Wrapper around the upstream RTK OpenCode plugin that adds consecutive-duplicate
-// detection. When the agent issues the exact same command twice in a row, the
-// second invocation bypasses RTK and runs the command bare. This prevents the
-// agent from getting stuck in a loop where RTK-rewritten commands produce the
-// same failure repeatedly — giving the bare command a chance to succeed.
+// Wrapper around the upstream RTK OpenCode plugin that adds duplicate
+// detection. When the agent issues the same command more than twice, the
+// third invocation is replaced with a warning echo — breaking retry loops
+// where the agent keeps re-running a failing command.
 //
 // Dedup logic:
-//   - lastCommand is set to the original command before delegating to RTK.
-//   - If the next command equals lastCommand, it is passed through unchanged
-//     and lastCommand is reset to null.
-//   - On reset, the command after the bare one will delegate to RTK again,
-//     creating an alternating pattern for repeated identical commands:
-//     RTK → bare → RTK → bare → …
+//   - recentCommands tracks the last MAX_TRACKED unique commands with their
+//     attempt count, using Map insertion order for FIFO eviction.
+//   - 1st attempt: delegate to RTK for rewriting.
+//   - 2nd attempt (same command): run bare, bypassing RTK.
+//   - 3rd+ attempt: replace with echo warning, stopping the retry loop.
+//
+// Unlike the previous single-lastCommand approach, this catches interleaved
+// retries (A, B, C, A, B, C) — not just immediate consecutive duplicates.
 //
 // rtk.ts is NOT registered in opencode.jsonc — only this wrapper is.
 // rtk.ts is kept in src/plugins/ as an import dependency.
@@ -27,7 +28,11 @@ export const RtkDedupePlugin: Plugin = async (ctx) => {
     | ((input: unknown, output: unknown) => Promise<void>)
     | undefined
 
-  let lastCommand: string | null = null
+  // Track recent commands with attempt counts.
+  // Uses Map insertion order for FIFO eviction.
+  const recentCommands = new Map<string, number>()
+  const MAX_TRACKED = 20
+  const MAX_ATTEMPTS = 2
 
   return {
     "tool.execute.before": async (input, output) => {
@@ -40,17 +45,34 @@ export const RtkDedupePlugin: Plugin = async (ctx) => {
       const command = (args as Record<string, unknown>).command
       if (typeof command !== "string" || !command) return
 
-      if (command === lastCommand) {
-        // 2nd consecutive identical command — run bare, reset state
-        lastCommand = null
+      const count = recentCommands.get(command) ?? 0
+
+      if (count >= MAX_ATTEMPTS) {
+        // Already tried via RTK and bare — block with warning
+        recentCommands.set(command, count + 1)
+        ;(args as Record<string, unknown>).command =
+          `echo "[rtk-dedupe] This exact command was already attempted ${count} times. Stopping retry loop — try a different approach or tool. If this is a CLI for an authenticated service (e.g. gh, aws), verify auth is working or use the equivalent MCP tool instead."`
         return
       }
 
-      // Record this command, then delegate to the upstream RTK plugin
-      lastCommand = command
-      if (rtkBefore) {
-        await rtkBefore(input, output)
+      // Track this attempt (delete + set moves entry to end of Map for LRU)
+      recentCommands.delete(command)
+      recentCommands.set(command, count + 1)
+
+      // Evict oldest entries if over limit
+      while (recentCommands.size > MAX_TRACKED) {
+        const oldest = recentCommands.keys().next().value
+        if (oldest !== undefined) recentCommands.delete(oldest)
+        else break
       }
+
+      if (count === 0) {
+        // First attempt — delegate to RTK for rewriting
+        if (rtkBefore) {
+          await rtkBefore(input, output)
+        }
+      }
+      // count === 1 → second attempt, run bare (skip RTK rewrite)
     },
   }
 }
