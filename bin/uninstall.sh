@@ -272,7 +272,44 @@ _remove_shell_block "${SHELL_RC}" "${AI_MARKER}" "ai-memory-stack block"
 step "Removing ai-qmd-wrapper block from ${SHELL_RC}..."
 _remove_shell_block "${SHELL_RC}" "${QMD_MARKER}" "ai-qmd-wrapper block"
 
-# ── 7. Remove ALL storage/ contents ──────────────────────────────────────────
+# ── 7. Remove CLI and desktop entry ──────────────────────────────────────────
+header "Removing CLI and desktop entry"
+
+CLI_SYMLINK="${HOME}/.local/bin/telamon"
+step "Removing ~/.local/bin/telamon..."
+if [[ -L "${CLI_SYMLINK}" ]]; then
+  rm -f "${CLI_SYMLINK}"
+  log "Removed ~/.local/bin/telamon"
+  REMOVED+=("~/.local/bin/telamon")
+else
+  skip "~/.local/bin/telamon (not found)"
+fi
+
+OS="$(uname -s)"
+if [[ "${OS}" == "Linux" ]]; then
+  DESKTOP_FILE="${HOME}/.local/share/applications/telamon.desktop"
+  step "Removing telamon.desktop..."
+  if [[ -f "${DESKTOP_FILE}" ]]; then
+    rm -f "${DESKTOP_FILE}"
+    log "Removed ~/.local/share/applications/telamon.desktop"
+    REMOVED+=("~/.local/share/applications/telamon.desktop")
+    update-desktop-database "${HOME}/.local/share/applications" 2>/dev/null || true
+  else
+    skip "telamon.desktop (not found)"
+  fi
+elif [[ "${OS}" == "Darwin" ]]; then
+  APP_DIR="${HOME}/Applications/Telamon.app"
+  step "Removing Telamon.app..."
+  if [[ -d "${APP_DIR}" ]]; then
+    rm -rf "${APP_DIR}"
+    log "Removed ~/Applications/Telamon.app"
+    REMOVED+=("~/Applications/Telamon.app")
+  else
+    skip "Telamon.app (not found)"
+  fi
+fi
+
+# ── 8. Remove ALL storage/ contents ──────────────────────────────────────────
 header "Removing storage/"
 step "Removing ${TELAMON_ROOT}/storage/..."
 if [[ -d "${TELAMON_ROOT}/storage" ]]; then
@@ -283,7 +320,7 @@ else
   skip "storage/ (not found)"
 fi
 
-# ── 8. Summary ────────────────────────────────────────────────────────────────
+# ── 9. Summary ────────────────────────────────────────────────────────────────
 echo
 echo -e "${TEXT_BOLD}${TEXT_GREEN}══════════════════════════════════════════${TEXT_CLEAR}"
 echo -e "${TEXT_BOLD}${TEXT_GREEN}  ✔  Telamon uninstalled${TEXT_CLEAR}"
@@ -298,7 +335,7 @@ echo
 echo -e "  ${TEXT_DIM}⏱  Total uninstall time: $(_fmt_duration ${SECONDS})${TEXT_CLEAR}"
 echo
 
-# ── 9. Remove Telamon root directory ──────────────────────────────────────────
+# ── 10. Remove Telamon root directory ─────────────────────────────────────────
 header "Removing Telamon"
 step "Removing ${TELAMON_ROOT}..."
 rm -rf "${TELAMON_ROOT}"

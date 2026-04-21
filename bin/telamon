@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+# bin/telamon — Global CLI entry point for Telamon
+
+set -euo pipefail
+
+# Portable symlink resolution (macOS BSD readlink has no -f)
+_resolve() {
+  local p="$1"
+  while [ -L "$p" ]; do
+    local d; d="$(cd "$(dirname "$p")" && pwd)"
+    p="$(readlink "$p")"
+    [[ "$p" != /* ]] && p="$d/$p"
+  done
+  echo "$(cd "$(dirname "$p")" && pwd)/$(basename "$p")"
+}
+
+TELAMON_ROOT="$(cd "$(dirname "$(_resolve "${BASH_SOURCE[0]}")")/.." && pwd)"
+
+_usage() {
+  cat <<'EOF'
+Telamon — Harness for Agentic Software Development
+
+Usage: telamon <command> [args]
+
+Commands:
+  up                  Start Telamon services
+  down                Shut down Telamon services
+  restart             Restart Telamon services
+  status              Show installation status
+  update              Upgrade all Telamon tools
+  doctor              Run health check
+  init [path]         Initialise a project (default: current dir)
+  reset [path]        Remove project wiring, keep data (default: current dir)
+  purge [path]        Remove project wiring and data (default: current dir)
+  uninstall           Completely remove Telamon
+  help                Show this help
+EOF
+}
+
+CMD="${1:-}"
+
+case "${CMD}" in
+  up)        make -C "${TELAMON_ROOT}" up ;;
+  down)      make -C "${TELAMON_ROOT}" down ;;
+  restart)   make -C "${TELAMON_ROOT}" restart ;;
+  status)    make -C "${TELAMON_ROOT}" status ;;
+  update)    make -C "${TELAMON_ROOT}" update ;;
+  doctor)    make -C "${TELAMON_ROOT}" doctor ;;
+  uninstall) make -C "${TELAMON_ROOT}" uninstall ;;
+  init|reset|purge)
+    PROJ="${2:-.}"
+    [[ "${PROJ}" != /* ]] && PROJ="$(pwd)/${PROJ}"
+    make -C "${TELAMON_ROOT}" "${CMD}" "PROJ=${PROJ}" ;;
+  help|"") _usage ;;
+  *) echo "Error: unknown command '${CMD}'" >&2; echo >&2; _usage >&2; exit 1 ;;
+esac
