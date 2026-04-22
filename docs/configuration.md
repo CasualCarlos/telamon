@@ -46,6 +46,27 @@ OPENAI_API_KEY=your-openai-key       # used by Graphiti for entity extraction
 
 ---
 
+## Per-project settings
+
+Each initialized project has a config file at `.ai/telamon/telamon.ini` (created by `telamon init`). Edit this file to override defaults for a specific project.
+
+```ini
+[telamon]
+project_name = my-app
+rtk_enabled = true
+caveman_enabled = true
+```
+
+| Key | Default | Description |
+|---|---|---|
+| `project_name` | Directory basename | Display name used in memory vaults and logs |
+| `rtk_enabled` | `true` | Enable [RTK](tools.md#rtk--token-compression-proxy) output compression. Set to `false` to run all bash commands without RTK rewriting. |
+| `caveman_enabled` | `true` | Enable [Caveman](tools.md#caveman--token-efficient-communication-mode) terse communication mode. Set to `false` for normal verbose responses. |
+
+Changes take effect on the next opencode session — no restart required for RTK (read at plugin init) or Caveman (read at bootstrap).
+
+---
+
 ## Under the hood
 
 ### What the installer installs
