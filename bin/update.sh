@@ -122,6 +122,48 @@ else
   done
 fi
 
+# ── Project config sync ───────────────────────────────────────────────────────
+header "Project config sync"
+
+# Defaults MUST match src/install/opencode/init.sh template (step 5)
+_INI_DEFAULTS=(
+  "rtk_enabled=true"
+  "caveman_enabled=true"
+)
+
+while IFS= read -r _ppath_file; do
+  [[ -f "${_ppath_file}" ]] || continue
+  _project_dir="$(cat "${_ppath_file}")"
+  _project_name="$(basename "$(dirname "${_ppath_file}")")"
+
+  if [[ ! -d "${_project_dir}" ]]; then
+    skip "${_project_name}: project directory not found (${_project_dir})"
+    continue
+  fi
+
+  _ini_file="${_project_dir}/.ai/telamon/telamon.ini"
+  if [[ ! -f "${_ini_file}" ]]; then
+    skip "${_project_name}: no telamon.ini found"
+    continue
+  fi
+
+  _added=()
+  for _pair in "${_INI_DEFAULTS[@]}"; do
+    _key="${_pair%%=*}"
+    _default="${_pair#*=}"
+    if ! grep -qE "^[[:space:]]*${_key}[[:space:]]*=" "${_ini_file}"; then
+      echo "${_key} = ${_default}" >> "${_ini_file}"
+      _added+=("${_key}")
+    fi
+  done
+
+  if [[ "${#_added[@]}" -gt 0 ]]; then
+    log "${_project_name}: added $(IFS=', '; echo "${_added[*]}")"
+  else
+    info "${_project_name}: up to date"
+  fi
+done < <(find "${TELAMON_ROOT}/storage/graphify" -name ".project-path" 2>/dev/null || true)
+
 # ── Per-app updates ────────────────────────────────────────────────────────────
 # Each src/install/<app>/update.sh exits:
 #   0 — success
