@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs"
+import { join } from "node:path"
 import type { Plugin } from "@opencode-ai/plugin"
 import { RtkOpenCodePlugin } from "./rtk.ts"
 
@@ -20,6 +22,24 @@ import { RtkOpenCodePlugin } from "./rtk.ts"
 // rtk.ts is kept in src/plugins/ as an import dependency.
 
 export const RtkDedupePlugin: Plugin = async (ctx) => {
+  // Read telamon.ini and check rtk_enabled flag.
+  // Defaults to enabled if file is missing or key is absent.
+  let rtkEnabled = true
+  try {
+    const iniPath = join(process.cwd(), ".ai/telamon/telamon.ini")
+    const iniContent = readFileSync(iniPath, "utf8")
+    const match = iniContent.match(/^\s*rtk_enabled\s*=\s*(\S+)/m)
+    if (match && match[1].toLowerCase() === "false") {
+      rtkEnabled = false
+    }
+  } catch {
+    // File missing — default to enabled
+  }
+
+  if (!rtkEnabled) {
+    return {}
+  }
+
   // Initialise the upstream RTK plugin, forwarding the full plugin context.
   // If rtk binary is not in PATH, RtkOpenCodePlugin returns {} and rtkBefore
   // will be undefined — the wrapper then passes all commands through unchanged.
