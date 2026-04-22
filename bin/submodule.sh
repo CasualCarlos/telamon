@@ -20,6 +20,10 @@ export INSTALL_PATH TELAMON_ROOT
 
 ENV_FILE="${TELAMON_ROOT}/.env"
 
+BUILTIN_REPOS=(
+  "https://github.com/addyosmani/agent-skills.git"
+)
+
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
 # _derive_path <url>
@@ -197,22 +201,17 @@ cmd_list() {
     done
   fi
 
-  header "Built-in submodules (from .gitmodules)"
-  if [[ -f "${TELAMON_ROOT}/.gitmodules" ]]; then
-    while IFS= read -r line; do
-      if [[ "${line}" =~ ^[[:space:]]*path[[:space:]]*=[[:space:]]*(.*) ]]; then
-        local bpath="${BASH_REMATCH[1]}"
-        local bfull="${TELAMON_ROOT}/${bpath}"
-        if [[ -d "${bfull}/.git" ]]; then
-          echo -e "  ${TEXT_GREEN}✔${TEXT_CLEAR}  ${bpath}"
-        else
-          echo -e "  ${TEXT_RED}✖${TEXT_CLEAR}  ${bpath}  ${TEXT_DIM}— not cloned${TEXT_CLEAR}"
-        fi
-      fi
-    done < "${TELAMON_ROOT}/.gitmodules"
-  else
-    info "No .gitmodules file found."
-  fi
+  header "Built-in vendor repos"
+  for _burl in "${BUILTIN_REPOS[@]}"; do
+    local bpath
+    bpath="$(_derive_path "${_burl}")"
+    local bfull="${TELAMON_ROOT}/${bpath}"
+    if [[ -d "${bfull}/.git" ]]; then
+      echo -e "  ${TEXT_GREEN}✔${TEXT_CLEAR}  ${bpath}  ${TEXT_DIM}(${_burl})${TEXT_CLEAR}"
+    else
+      echo -e "  ${TEXT_RED}✖${TEXT_CLEAR}  ${bpath}  ${TEXT_DIM}(${_burl}) — not cloned${TEXT_CLEAR}"
+    fi
+  done
 }
 
 _usage() {

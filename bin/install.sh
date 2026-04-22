@@ -43,9 +43,30 @@ export TELAMON_ROOT STATE_DIR SECRETS_DIR
 # ── PATH ──────────────────────────────────────────────────────────────────────
 export PATH="$HOME/.local/bin:$HOME/.cargo/bin:/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:/usr/local/bin:$PATH"
 
-# ── Git submodules ────────────────────────────────────────────────────────────
-# Ensure vendor skill repos are checked out (safe to re-run).
-git -C "${TELAMON_ROOT}" submodule update --init --recursive 2>/dev/null || true
+# ── Built-in vendor repos ────────────────────────────────────────────────────
+# Clone mandatory vendor repos if not already present (plain clones, not submodules).
+_derive_vendor_path() {
+  local url="${1%/}"; url="${url%.git}"
+  local org_repo
+  if [[ "${url}" == git@* ]]; then org_repo="${url##*:}"
+  else
+    local p="${url#*://}"; p="${p#*/}"
+    org_repo="$(basename "$(dirname "${p}")")/$(basename "${p}")"
+  fi
+  echo "vendor/${org_repo}"
+}
+
+BUILTIN_REPOS=(
+  "https://github.com/addyosmani/agent-skills.git"
+)
+
+for _url in "${BUILTIN_REPOS[@]}"; do
+  _dest="${TELAMON_ROOT}/$(_derive_vendor_path "${_url}")"
+  if [[ ! -d "${_dest}/.git" ]]; then
+    mkdir -p "$(dirname "${_dest}")"
+    git clone --depth 1 "${_url}" "${_dest}" 2>/dev/null || true
+  fi
+done
 
 # ── load_saved_inputs ──────────────────────────────────────────────────────────
 # Sources the saved setup-inputs file and exports vars for child scripts.
