@@ -56,17 +56,6 @@ if [[ "${_STASHED}" -eq 1 && "${FAILED}" -eq 0 ]]; then
     || { echo -e "  ${TEXT_RED}✖${TEXT_CLEAR}  git stash pop failed — resolve conflicts manually"; FAILED=$((FAILED + 1)); }
 fi
 
-# ── Git submodules ────────────────────────────────────────────────────────────
-header "Git submodules"
-step "Updating vendor skill repos..."
-git -C "${TELAMON_ROOT}" submodule update --init --recursive \
-  && git -C "${TELAMON_ROOT}" submodule update --remote --merge \
-  && log "Submodules updated" \
-  || { echo -e "  ${TEXT_RED}✖${TEXT_CLEAR}  Submodule update failed"; FAILED=$((FAILED + 1)); }
-
-# ── User submodules ───────────────────────────────────────────────────────────
-header "User submodules"
-
 _derive_vendor_path() {
   local url="${1%/}"
   url="${url%.git}"
@@ -82,6 +71,31 @@ _derive_vendor_path() {
   fi
   echo "vendor/${org_repo}"
 }
+
+# ── Built-in vendor repos ─────────────────────────────────────────────────────
+header "Built-in vendor repos"
+BUILTIN_REPOS=(
+  "https://github.com/addyosmani/agent-skills.git"
+)
+
+for _url in "${BUILTIN_REPOS[@]}"; do
+  _dest="${TELAMON_ROOT}/$(_derive_vendor_path "${_url}")"
+  if [[ -d "${_dest}/.git" ]]; then
+    step "Pulling ${_dest} ..."
+    git -C "${_dest}" pull --rebase \
+      && log "Updated: ${_dest}" \
+      || { echo -e "  ${TEXT_RED}✖${TEXT_CLEAR}  git pull failed for ${_dest}"; FAILED=$((FAILED + 1)); }
+  else
+    step "Cloning ${_url} → ${_dest} ..."
+    mkdir -p "$(dirname "${_dest}")"
+    git clone --depth 1 "${_url}" "${_dest}" \
+      && log "Cloned: ${_dest}" \
+      || { echo -e "  ${TEXT_RED}✖${TEXT_CLEAR}  git clone failed for ${_url}"; FAILED=$((FAILED + 1)); }
+  fi
+done
+
+# ── User submodules ───────────────────────────────────────────────────────────
+header "User submodules"
 
 _raw_submodules="$(grep -s '^TELAMON_SUBMODULES=' "${TELAMON_ROOT}/.env" | head -1 | cut -d= -f2- | tr -d "\"'")"
 
