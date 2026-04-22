@@ -64,6 +64,50 @@ git -C "${TELAMON_ROOT}" submodule update --init --recursive \
   && log "Submodules updated" \
   || { echo -e "  ${TEXT_RED}✖${TEXT_CLEAR}  Submodule update failed"; FAILED=$((FAILED + 1)); }
 
+# ── User submodules ───────────────────────────────────────────────────────────
+header "User submodules"
+
+_derive_vendor_path() {
+  local url="${1%/}"
+  url="${url%.git}"
+  local org_repo
+  if [[ "${url}" == git@* ]]; then
+    org_repo="${url##*:}"
+  else
+    local path_part="${url#*://}"
+    path_part="${path_part#*/}"
+    local repo; repo="$(basename "${path_part}")"
+    local org;  org="$(basename "$(dirname "${path_part}")")"
+    org_repo="${org}/${repo}"
+  fi
+  echo "vendor/${org_repo}"
+}
+
+_raw_submodules="$(grep -s '^TELAMON_SUBMODULES=' "${TELAMON_ROOT}/.env" | head -1 | cut -d= -f2- | tr -d "\"'")"
+
+if [[ -z "${_raw_submodules}" ]]; then
+  skip "no user submodules configured"
+else
+  IFS=',' read -ra _user_repos <<< "${_raw_submodules}"
+  for _url in "${_user_repos[@]}"; do
+    _url="${_url// /}"
+    [[ -z "${_url}" ]] && continue
+    _dest="${TELAMON_ROOT}/$(_derive_vendor_path "${_url}")"
+    if [[ -d "${_dest}/.git" ]]; then
+      step "Pulling ${_dest} ..."
+      git -C "${_dest}" pull --rebase \
+        && log "Updated: ${_dest}" \
+        || { echo -e "  ${TEXT_RED}✖${TEXT_CLEAR}  git pull failed for ${_dest}"; FAILED=$((FAILED + 1)); }
+    else
+      step "Cloning ${_url} → ${_dest} ..."
+      mkdir -p "$(dirname "${_dest}")"
+      git clone --depth 1 "${_url}" "${_dest}" \
+        && log "Cloned: ${_dest}" \
+        || { echo -e "  ${TEXT_RED}✖${TEXT_CLEAR}  git clone failed for ${_url}"; FAILED=$((FAILED + 1)); }
+    fi
+  done
+fi
+
 # ── Per-app updates ────────────────────────────────────────────────────────────
 # Each src/install/<app>/update.sh exits:
 #   0 — success

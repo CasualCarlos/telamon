@@ -23,17 +23,20 @@ Telamon — Harness for Agentic Software Development
 Usage: telamon <command> [args]
 
 Commands:
-  up                  Start Telamon services
-  down                Shut down Telamon services
-  restart             Restart Telamon services
-  status              Show installation status
-  update              Upgrade all Telamon tools
-  doctor              Run health check
-  init [path]         Initialise a project (default: current dir)
-  reset [path]        Remove project wiring, keep data (default: current dir)
-  purge [path]        Remove project wiring and data (default: current dir)
-  uninstall           Completely remove Telamon
-  help                Show this help
+  up                     Start Telamon services
+  down                   Shut down Telamon services
+  restart                Restart Telamon services
+  status                 Show installation status
+  update                 Upgrade all Telamon tools
+  doctor                 Run health check
+  init [path]            Initialise a project (default: current dir)
+  reset [path]           Remove project wiring, keep data (default: current dir)
+  purge [path]           Remove project wiring and data (default: current dir)
+  submodule add <url>    Clone a git repo into vendor/ and register in .env
+  submodule remove <url> Remove a registered submodule
+  submodule list         Show all registered submodules
+  uninstall              Completely remove Telamon
+  help                   Show this help
 EOF
 }
 
@@ -46,6 +49,7 @@ case "${CMD}" in
   status)    make -C "${TELAMON_ROOT}" status ;;
   update)    make -C "${TELAMON_ROOT}" update ;;
   doctor)    make -C "${TELAMON_ROOT}" doctor ;;
+  submodule) shift; bash "${TELAMON_ROOT}/bin/submodule.sh" "$@" ;;
   uninstall) make -C "${TELAMON_ROOT}" uninstall ;;
   init|reset|purge)
     PROJ="${2:-.}"
