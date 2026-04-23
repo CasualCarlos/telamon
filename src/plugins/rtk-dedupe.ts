@@ -22,37 +22,18 @@ import { RtkOpenCodePlugin } from "./rtk.ts"
 // rtk.ts is kept in src/plugins/ as an import dependency.
 
 export const RtkDedupePlugin: Plugin = async (ctx) => {
-  // ── Per-project config: 3-tier priority ──────────────────────────────────
-  // 1. Explicit telamon.ini setting always wins
-  // 2. No explicit setting → auto-detect: disable for github-copilot provider
-  // 3. No explicit setting, no detection → default enabled
+  // Read telamon.ini and check rtk_enabled flag.
+  // Defaults to enabled if file is missing or key is absent.
   let rtkEnabled = true
-  let explicitSetting = false
-
   try {
     const iniPath = join(process.cwd(), ".ai/telamon/telamon.ini")
     const iniContent = readFileSync(iniPath, "utf8")
     const match = iniContent.match(/^\s*rtk_enabled\s*=\s*(\S+)/m)
-    if (match) {
-      explicitSetting = true
-      rtkEnabled = match[1].toLowerCase() !== "false"
+    if (match && match[1].toLowerCase() === "false") {
+      rtkEnabled = false
     }
   } catch {
-    // File missing or unreadable — continue with auto-detection
-  }
-
-  if (!explicitSetting) {
-    try {
-      const config = await ctx.client.config.get()
-      // SDK response shape may vary — try common access patterns
-      const configData = (config as any)?.data ?? config
-      const model = String(configData?.model ?? "")
-      if (model.startsWith("github-copilot/")) {
-        rtkEnabled = false
-      }
-    } catch {
-      // Config unavailable — default to enabled
-    }
+    // File missing — default to enabled
   }
 
   if (!rtkEnabled) {
